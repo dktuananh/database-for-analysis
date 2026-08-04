@@ -1,0 +1,10 @@
+# Local source data; the published repository contains the optimized Parquet outputs.
+Global_Superstore2.csv
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+.venv/
+
+# Local tooling
+.DS_Store
