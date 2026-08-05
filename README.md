@@ -1,50 +1,74 @@
-# Global Superstore Parquet Data
+# Global Superstore Analytics Lakehouse
 
-Bộ dữ liệu Parquet sẵn sàng cho dashboard, được chuyển đổi từ `Global_Superstore2.csv`.
+Đây là project phân tích dữ liệu mẫu theo mô hình dimensional analytics có thể chạy trực tiếp bằng DuckDB, Power BI, Spark hoặc Polars. Parquet là nguồn dữ liệu chuẩn; không có database engine bắt buộc phải cài kèm.
 
-## Datasets
-
-| File | Mục đích | Số dòng |
-| --- | --- | ---: |
-| `data/fact_sales.parquet` | Bảng giao dịch chi tiết, có thể drill-down và lọc theo thời gian/địa lý/sản phẩm. | 51,290 |
-| `data/monthly_kpis.parquet` | KPI theo tháng, tối ưu cho biểu đồ xu hướng và các thẻ tổng quan. | 48 |
-| `data/country_kpis.parquet` | KPI theo quốc gia, tối ưu cho bản đồ và bảng xếp hạng. | 147 |
-
-`data/dataset_manifest.json` cung cấp schema, kích thước và khoảng thời gian của bộ dữ liệu.
-
-## Thay đổi so với CSV gốc
-
-- Tên cột dùng `snake_case` để dễ dùng trong SQL và JavaScript.
-- `order_date` và `ship_date` được lưu kiểu ngày; CSV gốc dùng định dạng `dd-mm-yyyy`.
-- `postal_code` giữ kiểu chuỗi để không mất định dạng mã bưu chính.
-- Bổ sung `order_year`, `order_month` và `ship_days` cho phân tích dashboard.
-- Các file dùng Parquet + nén Zstandard, có dictionary encoding và statistics để truy vấn hiệu quả.
-
-## Dùng trong dashboard
-
-Sau khi repository được public, dùng URL raw dưới đây và thay `<owner>` bằng GitHub username hoặc tổ chức:
+## Cấu trúc dữ liệu
 
 ```text
-https://raw.githubusercontent.com/<owner>/database-for-analysis/main/data/fact_sales.parquet
+data/
+├── README.md
+└── global_superstore/                 # Một data domain độc lập
+    ├── dimensions/                    # Bảng tham chiếu, một file/entity
+    │   ├── dim_date.parquet
+    │   ├── dim_customer.parquet
+    │   ├── dim_product.parquet
+    │   ├── dim_geography.parquet
+    │   ├── dim_ship_mode.parquet
+    │   └── dim_order_priority.parquet
+    ├── facts/                         # Sự kiện; Hive partition theo order_year
+    │   ├── fact_order/order_year=YYYY/part-00000.parquet
+    │   └── fact_order_line/order_year=YYYY/part-00000.parquet
+    ├── marts/                         # KPI tổng hợp cho dashboard nhanh
+    │   ├── monthly_sales_kpis.parquet
+    │   └── country_sales_kpis.parquet
+    └── metadata/data_catalog.json     # Schema, grain, khoá và quan hệ
 ```
 
-Ví dụ DuckDB:
+Mỗi data domain sau này dùng cùng layout `data/<domain_name>/{dimensions,facts,marts,metadata}`. Ví dụ dữ liệu Returns hoặc Marketing được thêm ở `data/returns/...` hay `data/marketing/...`, không trộn file với Global Superstore. Khi cần phân tích liên domain, dùng các conformed dimension (chẳng hạn `dim_date`, `dim_customer`) và ghi rõ mapping trong catalog của domain mới.
+
+## Mô hình dữ liệu
+
+```text
+ dim_date (2 vai trò) ──────┐
+ dim_customer ─────────────┤
+ dim_geography ────────────┤
+ dim_ship_mode ────────────┤
+ dim_order_priority ───────┤
+                             ▼
+                       fact_order ────< fact_order_line >──── dim_product
+```
+
+- `fact_order` có grain là một order header duy nhất.
+- `fact_order_line` có grain là một dòng giao dịch và chứa các measure `sales`, `quantity`, `discount`, `profit`, `shipping_cost`.
+- Dimension và fact có primary key/foreign key rõ ràng. `data_catalog.json` là data contract có thể đọc bằng máy.
+- Fact được partition theo `order_year` kiểu Hive. Giá trị partition không lặp trong file, nên query engine có thể loại cả thư mục trước khi quét Parquet.
+- Parquet dùng Zstandard, dictionary encoding, statistics và row group 10.000 dòng.
+
+`Order ID` và `Product ID` của CSV nguồn không luôn duy nhất trên toàn bộ dataset. Vì thế mô hình giữ chúng như business attribute, còn `*_key` là hash key xác định theo natural grain. Build sẽ dừng nếu có duplicate key hoặc bản ghi mồ côi.
+
+## Chạy lại pipeline
+
+Yêu cầu Python 3.10+ với `pandas` và `pyarrow`.
+
+```powershell
+python scripts/convert_csv_to_parquet.py
+python scripts/validate_model.py
+```
+
+CSV nguồn `Global_Superstore2.csv` nằm ở thư mục gốc và được `.gitignore`; output Parquet cùng catalog là artefact được version control. Pipeline ghi lại duy nhất `data/global_superstore`, vì vậy không xoá dữ liệu của domain khác.
+
+## Demo phân tích bằng DuckDB
+
+Cài DuckDB nếu cần: `pip install duckdb`. Mở DuckDB rồi chạy toàn bộ file [sql/demo_analysis.sql](sql/demo_analysis.sql). File này tạo view từ Parquet và có ba câu query mẫu: doanh thu/lợi nhuận theo tháng–category, quốc gia lỗ nhiều nhất, và SLA vận chuyển.
+
+Ví dụ truy vấn ngắn:
 
 ```sql
 SELECT order_year, SUM(sales) AS sales, SUM(profit) AS profit
-FROM read_parquet('https://raw.githubusercontent.com/<owner>/database-for-analysis/main/data/fact_sales.parquet')
-GROUP BY order_year
-ORDER BY order_year;
+FROM read_parquet(
+  'data/global_superstore/facts/fact_order_line/**/*.parquet',
+  hive_partitioning = true
+)
+WHERE order_year = 2014
+GROUP BY order_year;
 ```
-
-## Tái tạo dữ liệu
-
-Yêu cầu Python 3.10+ cùng `pandas` và `pyarrow`. Đặt CSV nguồn tại thư mục gốc, sau đó chạy:
-
-```bash
-python scripts/convert_csv_to_parquet.py
-```
-
-## Lưu ý sử dụng
-
-CSV gốc không được đưa lên repository để tránh trùng lặp và giảm dung lượng. Hãy kiểm tra quyền sử dụng/phân phối của nguồn dữ liệu trước khi tái sử dụng hoặc xuất bản bộ dữ liệu.

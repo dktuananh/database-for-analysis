@@ -1,0 +1,1233 @@
+{
+  "model_name": "global_superstore_analytics",
+  "model_version": "2.0.0",
+  "storage_format": "Parquet / Zstandard / dictionary encoding / statistics",
+  "source": {
+    "file": "Global_Superstore2.csv",
+    "encoding": "Windows-1252 (cp1252)",
+    "date_format": "dd-mm-yyyy",
+    "rows": 51290,
+    "date_range": {
+      "min_order_date": "2011-01-01",
+      "max_order_date": "2014-12-31",
+      "max_ship_date": "2015-01-07"
+    }
+  },
+  "key_strategy": {
+    "description": "Deterministic SHA-256 prefixes (64-bit hexadecimal) from the declared natural grain. The build validates uniqueness.",
+    "reason": "The source Order ID and Product ID are not globally unique, so they are retained as business attributes rather than used as primary keys."
+  },
+  "logical_datasets": {
+    "dim_date": {
+      "layer": "dimensions",
+      "path": "dim_date.parquet",
+      "grain": "one row per calendar date",
+      "schema": [
+        {
+          "name": "date_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "date",
+          "type": "date32[day]",
+          "nullable": false
+        },
+        {
+          "name": "year",
+          "type": "int16",
+          "nullable": false
+        },
+        {
+          "name": "quarter",
+          "type": "int8",
+          "nullable": false
+        },
+        {
+          "name": "month",
+          "type": "int8",
+          "nullable": false
+        },
+        {
+          "name": "month_name",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "year_month",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "week_of_year",
+          "type": "int8",
+          "nullable": false
+        },
+        {
+          "name": "day_of_month",
+          "type": "int8",
+          "nullable": false
+        },
+        {
+          "name": "day_of_week",
+          "type": "int8",
+          "nullable": false
+        },
+        {
+          "name": "day_name",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "is_weekend",
+          "type": "bool",
+          "nullable": false
+        }
+      ],
+      "primary_key": "date_key"
+    },
+    "dim_customer": {
+      "layer": "dimensions",
+      "path": "dim_customer.parquet",
+      "grain": "one row per source customer",
+      "schema": [
+        {
+          "name": "customer_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "customer_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "customer_name",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "segment",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "primary_key": "customer_key"
+    },
+    "dim_product": {
+      "layer": "dimensions",
+      "path": "dim_product.parquet",
+      "grain": "one row per distinct product attribute combination",
+      "schema": [
+        {
+          "name": "product_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "product_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "category",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "sub_category",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "product_name",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "primary_key": "product_key"
+    },
+    "dim_geography": {
+      "layer": "dimensions",
+      "path": "dim_geography.parquet",
+      "grain": "one row per market/region/country/state/city/postal-code combination",
+      "schema": [
+        {
+          "name": "geography_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "market",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "region",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "country",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "city",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "postal_code",
+          "type": "string",
+          "nullable": true
+        }
+      ],
+      "primary_key": "geography_key"
+    },
+    "dim_ship_mode": {
+      "layer": "dimensions",
+      "path": "dim_ship_mode.parquet",
+      "grain": "one row per shipping mode",
+      "schema": [
+        {
+          "name": "ship_mode_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "ship_mode",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "primary_key": "ship_mode_key"
+    },
+    "dim_order_priority": {
+      "layer": "dimensions",
+      "path": "dim_order_priority.parquet",
+      "grain": "one row per order priority",
+      "schema": [
+        {
+          "name": "order_priority_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_priority",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "primary_key": "order_priority_key"
+    },
+    "fact_order": {
+      "layer": "facts",
+      "path": "fact_order/order_year=*/part-*.parquet",
+      "grain": "one row per distinct source order header",
+      "schema": [
+        {
+          "name": "order_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_date_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "ship_date_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "customer_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "geography_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "ship_mode_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_priority_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_year",
+          "type": "int16",
+          "nullable": false
+        },
+        {
+          "name": "ship_days",
+          "type": "int16",
+          "nullable": false
+        }
+      ],
+      "primary_key": "order_key",
+      "partition_by": "order_year",
+      "partitioning": "Hive directory; the partition field is logical and is not repeated in the Parquet file"
+    },
+    "fact_order_line": {
+      "layer": "facts",
+      "path": "fact_order_line/order_year=*/part-*.parquet",
+      "grain": "one row per source row / order line",
+      "schema": [
+        {
+          "name": "line_item_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "order_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "product_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_year",
+          "type": "int16",
+          "nullable": false
+        },
+        {
+          "name": "sales",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "quantity",
+          "type": "int16",
+          "nullable": false
+        },
+        {
+          "name": "discount",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "profit",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "shipping_cost",
+          "type": "double",
+          "nullable": false
+        }
+      ],
+      "primary_key": "line_item_key",
+      "partition_by": "order_year",
+      "partitioning": "Hive directory; the partition field is logical and is not repeated in the Parquet file"
+    },
+    "monthly_sales_kpis": {
+      "layer": "marts",
+      "path": "monthly_sales_kpis.parquet",
+      "grain": "one row per order month",
+      "schema": [
+        {
+          "name": "month_start",
+          "type": "date32[day]",
+          "nullable": false
+        },
+        {
+          "name": "order_year",
+          "type": "int16",
+          "nullable": false
+        },
+        {
+          "name": "order_month",
+          "type": "int8",
+          "nullable": false
+        },
+        {
+          "name": "line_items",
+          "type": "int64",
+          "nullable": false
+        },
+        {
+          "name": "orders",
+          "type": "int64",
+          "nullable": false
+        },
+        {
+          "name": "customers",
+          "type": "int64",
+          "nullable": false
+        },
+        {
+          "name": "sales",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "quantity",
+          "type": "int64",
+          "nullable": false
+        },
+        {
+          "name": "profit",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "profit_margin",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "shipping_cost",
+          "type": "double",
+          "nullable": false
+        }
+      ]
+    },
+    "country_sales_kpis": {
+      "layer": "marts",
+      "path": "country_sales_kpis.parquet",
+      "grain": "one row per country",
+      "schema": [
+        {
+          "name": "country",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "line_items",
+          "type": "int64",
+          "nullable": false
+        },
+        {
+          "name": "orders",
+          "type": "int64",
+          "nullable": false
+        },
+        {
+          "name": "customers",
+          "type": "int64",
+          "nullable": false
+        },
+        {
+          "name": "sales",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "quantity",
+          "type": "int64",
+          "nullable": false
+        },
+        {
+          "name": "profit",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "profit_margin",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "shipping_cost",
+          "type": "double",
+          "nullable": false
+        }
+      ]
+    }
+  },
+  "relationships": [
+    {
+      "from": "fact_order.customer_key",
+      "to": "dim_customer.customer_key",
+      "cardinality": "many-to-one"
+    },
+    {
+      "from": "fact_order.geography_key",
+      "to": "dim_geography.geography_key",
+      "cardinality": "many-to-one"
+    },
+    {
+      "from": "fact_order.ship_mode_key",
+      "to": "dim_ship_mode.ship_mode_key",
+      "cardinality": "many-to-one"
+    },
+    {
+      "from": "fact_order.order_priority_key",
+      "to": "dim_order_priority.order_priority_key",
+      "cardinality": "many-to-one"
+    },
+    {
+      "from": "fact_order.order_date_key",
+      "to": "dim_date.date_key",
+      "cardinality": "many-to-one",
+      "role": "order date"
+    },
+    {
+      "from": "fact_order.ship_date_key",
+      "to": "dim_date.date_key",
+      "cardinality": "many-to-one",
+      "role": "ship date"
+    },
+    {
+      "from": "fact_order_line.order_key",
+      "to": "fact_order.order_key",
+      "cardinality": "many-to-one"
+    },
+    {
+      "from": "fact_order_line.product_key",
+      "to": "dim_product.product_key",
+      "cardinality": "many-to-one"
+    }
+  ],
+  "files": [
+    {
+      "path": "data/global_superstore/dimensions/dim_date.parquet",
+      "rows": 1468,
+      "columns": [
+        {
+          "name": "date_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "date",
+          "type": "date32[day]",
+          "nullable": false
+        },
+        {
+          "name": "year",
+          "type": "int16",
+          "nullable": false
+        },
+        {
+          "name": "quarter",
+          "type": "int8",
+          "nullable": false
+        },
+        {
+          "name": "month",
+          "type": "int8",
+          "nullable": false
+        },
+        {
+          "name": "month_name",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "year_month",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "week_of_year",
+          "type": "int8",
+          "nullable": false
+        },
+        {
+          "name": "day_of_month",
+          "type": "int8",
+          "nullable": false
+        },
+        {
+          "name": "day_of_week",
+          "type": "int8",
+          "nullable": false
+        },
+        {
+          "name": "day_name",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "is_weekend",
+          "type": "bool",
+          "nullable": false
+        }
+      ],
+      "size_bytes": 19334,
+      "compression": "zstd"
+    },
+    {
+      "path": "data/global_superstore/dimensions/dim_customer.parquet",
+      "rows": 1590,
+      "columns": [
+        {
+          "name": "customer_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "customer_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "customer_name",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "segment",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "size_bytes": 37520,
+      "compression": "zstd"
+    },
+    {
+      "path": "data/global_superstore/dimensions/dim_product.parquet",
+      "rows": 10768,
+      "columns": [
+        {
+          "name": "product_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "product_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "category",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "sub_category",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "product_name",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "size_bytes": 267853,
+      "compression": "zstd"
+    },
+    {
+      "path": "data/global_superstore/dimensions/dim_geography.parquet",
+      "rows": 3847,
+      "columns": [
+        {
+          "name": "geography_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "market",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "region",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "country",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "city",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "postal_code",
+          "type": "string",
+          "nullable": true
+        }
+      ],
+      "size_bytes": 96773,
+      "compression": "zstd"
+    },
+    {
+      "path": "data/global_superstore/dimensions/dim_ship_mode.parquet",
+      "rows": 4,
+      "columns": [
+        {
+          "name": "ship_mode_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "ship_mode",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "size_bytes": 1989,
+      "compression": "zstd"
+    },
+    {
+      "path": "data/global_superstore/dimensions/dim_order_priority.parquet",
+      "rows": 4,
+      "columns": [
+        {
+          "name": "order_priority_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_priority",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "size_bytes": 2049,
+      "compression": "zstd"
+    },
+    {
+      "path": "data/global_superstore/facts/fact_order/order_year=2011/part-00000.parquet",
+      "rows": 4516,
+      "columns": [
+        {
+          "name": "order_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_date_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "ship_date_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "customer_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "geography_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "ship_mode_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_priority_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "ship_days",
+          "type": "int16",
+          "nullable": false
+        }
+      ],
+      "size_bytes": 136819,
+      "compression": "zstd"
+    },
+    {
+      "path": "data/global_superstore/facts/fact_order/order_year=2012/part-00000.parquet",
+      "rows": 5480,
+      "columns": [
+        {
+          "name": "order_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_date_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "ship_date_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "customer_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "geography_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "ship_mode_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_priority_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "ship_days",
+          "type": "int16",
+          "nullable": false
+        }
+      ],
+      "size_bytes": 161113,
+      "compression": "zstd"
+    },
+    {
+      "path": "data/global_superstore/facts/fact_order/order_year=2013/part-00000.parquet",
+      "rows": 6890,
+      "columns": [
+        {
+          "name": "order_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_date_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "ship_date_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "customer_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "geography_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "ship_mode_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_priority_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "ship_days",
+          "type": "int16",
+          "nullable": false
+        }
+      ],
+      "size_bytes": 196999,
+      "compression": "zstd"
+    },
+    {
+      "path": "data/global_superstore/facts/fact_order/order_year=2014/part-00000.parquet",
+      "rows": 8868,
+      "columns": [
+        {
+          "name": "order_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_date_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "ship_date_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "customer_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "geography_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "ship_mode_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "order_priority_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "ship_days",
+          "type": "int16",
+          "nullable": false
+        }
+      ],
+      "size_bytes": 246893,
+      "compression": "zstd"
+    },
+    {
+      "path": "data/global_superstore/facts/fact_order_line/order_year=2011/part-00000.parquet",
+      "rows": 8998,
+      "columns": [
+        {
+          "name": "line_item_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "order_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "product_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "sales",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "quantity",
+          "type": "int16",
+          "nullable": false
+        },
+        {
+          "name": "discount",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "profit",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "shipping_cost",
+          "type": "double",
+          "nullable": false
+        }
+      ],
+      "size_bytes": 280922,
+      "compression": "zstd"
+    },
+    {
+      "path": "data/global_superstore/facts/fact_order_line/order_year=2012/part-00000.parquet",
+      "rows": 10962,
+      "columns": [
+        {
+          "name": "line_item_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "order_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "product_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "sales",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "quantity",
+          "type": "int16",
+          "nullable": false
+        },
+        {
+          "name": "discount",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "profit",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "shipping_cost",
+          "type": "double",
+          "nullable": false
+        }
+      ],
+      "size_bytes": 338805,
+      "compression": "zstd"
+    },
+    {
+      "path": "data/global_superstore/facts/fact_order_line/order_year=2013/part-00000.parquet",
+      "rows": 13799,
+      "columns": [
+        {
+          "name": "line_item_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "order_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "product_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "sales",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "quantity",
+          "type": "int16",
+          "nullable": false
+        },
+        {
+          "name": "discount",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "profit",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "shipping_cost",
+          "type": "double",
+          "nullable": false
+        }
+      ],
+      "size_bytes": 415101,
+      "compression": "zstd"
+    },
+    {
+      "path": "data/global_superstore/facts/fact_order_line/order_year=2014/part-00000.parquet",
+      "rows": 17531,
+      "columns": [
+        {
+          "name": "line_item_key",
+          "type": "int32",
+          "nullable": false
+        },
+        {
+          "name": "order_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "product_key",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "sales",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "quantity",
+          "type": "int16",
+          "nullable": false
+        },
+        {
+          "name": "discount",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "profit",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "shipping_cost",
+          "type": "double",
+          "nullable": false
+        }
+      ],
+      "size_bytes": 507512,
+      "compression": "zstd"
+    },
+    {
+      "path": "data/global_superstore/marts/monthly_sales_kpis.parquet",
+      "rows": 48,
+      "columns": [
+        {
+          "name": "month_start",
+          "type": "date32[day]",
+          "nullable": false
+        },
+        {
+          "name": "order_year",
+          "type": "int16",
+          "nullable": false
+        },
+        {
+          "name": "order_month",
+          "type": "int8",
+          "nullable": false
+        },
+        {
+          "name": "line_items",
+          "type": "int64",
+          "nullable": false
+        },
+        {
+          "name": "orders",
+          "type": "int64",
+          "nullable": false
+        },
+        {
+          "name": "customers",
+          "type": "int64",
+          "nullable": false
+        },
+        {
+          "name": "sales",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "quantity",
+          "type": "int64",
+          "nullable": false
+        },
+        {
+          "name": "profit",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "profit_margin",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "shipping_cost",
+          "type": "double",
+          "nullable": false
+        }
+      ],
+      "size_bytes": 9467,
+      "compression": "zstd"
+    },
+    {
+      "path": "data/global_superstore/marts/country_sales_kpis.parquet",
+      "rows": 147,
+      "columns": [
+        {
+          "name": "country",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "line_items",
+          "type": "int64",
+          "nullable": false
+        },
+        {
+          "name": "orders",
+          "type": "int64",
+          "nullable": false
+        },
+        {
+          "name": "customers",
+          "type": "int64",
+          "nullable": false
+        },
+        {
+          "name": "sales",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "quantity",
+          "type": "int64",
+          "nullable": false
+        },
+        {
+          "name": "profit",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "profit_margin",
+          "type": "double",
+          "nullable": false
+        },
+        {
+          "name": "shipping_cost",
+          "type": "double",
+          "nullable": false
+        }
+      ],
+      "size_bytes": 12924,
+      "compression": "zstd"
+    }
+  ]
+}
