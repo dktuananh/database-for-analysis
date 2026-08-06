@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Data portfolio với các dashboard thực tế, xây dựng từ mô hình Parquet có quan hệ rõ ràng." />
+    <title>Data Workbench | Analytics portfolio</title>
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Data Workbench, trang chủ">
+          <span class="brand-mark" aria-hidden="true">DW</span>
+          <span>Data Workbench</span>
+        </a>
+        <button class="menu-button" type="button" aria-label="Mở điều hướng" aria-expanded="false" data-menu-button>Menu</button>
+        <nav class="nav-links" aria-label="Điều hướng chính" data-menu>
+          <a href="#projects">Projects</a>
+          <a href="#model">Data model</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="home-hero" aria-labelledby="home-title">
+          <div class="home-hero-copy">
+            <p class="eyebrow">Analytics portfolio</p>
+            <h1 id="home-title">Dữ liệu có cấu trúc. Quyết định có căn cứ.</h1>
+            <p>Các project phân tích có mô hình rõ ràng, dashboard dùng được và dữ liệu sẵn sàng để truy vấn.</p>
+            <a class="button" href="global-superstore/">Mở dashboard</a>
+          </div>
+          <div class="hero-visual">
+            <img src="assets/images/superstore-hero.webp" alt="Bàn làm việc phân tích dữ liệu bán lẻ với biểu đồ và bản đồ thế giới" width="1536" height="1024" fetchpriority="high" />
+            <div class="hero-fact">
+              <strong>51.290</strong>
+              <span>dòng giao dịch đã được chuẩn hoá</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="section intro-layout" aria-labelledby="approach-title">
+          <h2 id="approach-title">Từ file nguồn đến sản phẩm phân tích có thể trình bày.</h2>
+          <p>Dashboard không chỉ là biểu đồ. Mỗi project bắt đầu bằng fact, dimension, khoá liên kết và quy tắc kiểm tra dữ liệu.</p>
+        </section>
+
+        <section class="section" id="projects" aria-labelledby="projects-title">
+          <div class="projects-heading">
+            <p class="eyebrow">Projects</p>
+            <h2 id="projects-title">Dashboard đang có</h2>
+            <p>Mỗi project là một domain dữ liệu riêng, có thể mở rộng mà không ảnh hưởng tới mô hình hiện tại.</p>
+          </div>
+          <div class="project-grid">
+            <a class="project-card primary" href="global-superstore/">
+              <div>
+                <p class="project-kind">Retail analytics</p>
+                <h3>Global Superstore</h3>
+                <p>Phân tích doanh thu, lợi nhuận, thị trường và hiệu quả giao hàng trên mô hình dimensional Parquet.</p>
+              </div>
+              <span class="project-arrow">Xem dashboard ↗</span>
+            </a>
+            <article class="project-card coming-soon" aria-label="Project mới đang được chuẩn bị">
+              <div>
+                <p class="project-kind">Project mới</p>
+                <h3>Không gian cho domain tiếp theo.</h3>
+                <p>Thêm project mới tại <code>data/&lt;domain&gt;</code> và tạo dashboard độc lập trong thư mục này.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="architecture" id="model" aria-labelledby="model-title">
+          <div class="architecture-copy">
+            <p class="eyebrow">Data model</p>
+            <h2 id="model-title">Tổ chức để có thể phân tích lâu dài.</h2>
+            <p>Fact được partition theo năm. Dimension được chuẩn hoá. KPI dashboard được xuất từ chính mô hình đó.</p>
+          </div>
+          <div class="model-map" aria-label="Luồng mô hình dữ liệu">
+            <div class="model-node"><strong>Dimensions</strong><span>khách hàng, sản phẩm, địa lý, thời gian</span></div>
+            <div class="model-node"><strong>Facts</strong><span>order header và line item</span></div>
+            <div class="model-node"><strong>Marts</strong><span>KPI tháng và quốc gia</span></div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <span>Data Workbench</span>
+        <a href="global-superstore/">Global Superstore dashboard</a>
+      </footer>
+    </div>
+    <script src="assets/site.js"></script>
+  </body>
+</html>

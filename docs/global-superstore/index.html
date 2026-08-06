@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Dashboard phân tích doanh thu, lợi nhuận và vận hành Global Superstore." />
+    <title>Global Superstore | Data Workbench</title>
+    <link rel="stylesheet" href="../assets/site.css" />
+  </head>
+  <body class="dashboard-page">
+    <div class="dashboard-shell">
+      <header class="topbar">
+        <a class="brand" href="../" aria-label="Data Workbench, trang chủ">
+          <span class="brand-mark" aria-hidden="true">DW</span>
+          <span>Data Workbench</span>
+        </a>
+        <button class="menu-button" type="button" aria-label="Mở điều hướng" aria-expanded="false" data-menu-button>Menu</button>
+        <nav class="nav-links" aria-label="Điều hướng chính" data-menu>
+          <a href="../">Projects</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="dashboard-header" aria-labelledby="dashboard-title">
+          <div>
+            <p class="eyebrow">Retail analytics</p>
+            <h1 id="dashboard-title">Global Superstore</h1>
+            <p>Bức tranh doanh thu, lợi nhuận và fulfilment dựa trên fact order line cùng các dimension đã chuẩn hoá.</p>
+          </div>
+          <div class="filter-control">
+            <label for="year-filter">Phạm vi dữ liệu</label>
+            <select id="year-filter" disabled aria-describedby="filter-help">
+              <option>Đang tải</option>
+            </select>
+          </div>
+        </section>
+
+        <section class="dashboard-status" aria-live="polite">
+          <span id="filter-help">Dữ liệu được tổng hợp từ Parquet dimensional model.</span>
+          <strong id="status-message">Đang tải dữ liệu</strong>
+        </section>
+
+        <section id="dashboard-loading" aria-label="Đang tải dashboard">
+          <div class="loading-grid">
+            <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+          </div>
+        </section>
+
+        <section id="dashboard-error" class="error-state" hidden>
+          <h2>Không thể tải dashboard</h2>
+          <p>Hãy chạy <code>python scripts/build_dashboard_assets.py</code> để tạo lại file dữ liệu cho website.</p>
+        </section>
+
+        <section id="dashboard-content" hidden>
+          <div class="metrics-grid" aria-label="Các chỉ số chính">
+            <article class="metric-card"><p class="metric-label">Doanh thu</p><strong class="metric-value" id="metric-sales">-</strong><span class="metric-note" id="metric-lines">-</span></article>
+            <article class="metric-card"><p class="metric-label">Lợi nhuận</p><strong class="metric-value" id="metric-profit">-</strong><span class="metric-note" id="metric-margin">-</span></article>
+            <article class="metric-card"><p class="metric-label">Đơn hàng</p><strong class="metric-value" id="metric-orders">-</strong><span class="metric-note" id="metric-customers">-</span></article>
+            <article class="metric-card"><p class="metric-label">Độ phủ thị trường</p><strong class="metric-value" id="metric-countries">-</strong><span class="metric-note">quốc gia có giao dịch</span></article>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="dashboard-panel" aria-labelledby="trend-title">
+              <h2 id="trend-title">Xu hướng doanh thu và lợi nhuận</h2>
+              <p class="panel-copy">Doanh thu và lợi nhuận theo tháng đặt cùng một thang đo để nhìn rõ biến động.</p>
+              <canvas id="trend-chart" class="chart-canvas" aria-label="Biểu đồ xu hướng doanh thu và lợi nhuận theo tháng" role="img"></canvas>
+              <div class="chart-legend" aria-hidden="true"><span>Doanh thu</span><span>Lợi nhuận</span></div>
+            </section>
+            <section class="dashboard-panel" aria-labelledby="category-title">
+              <h2 id="category-title">Category performance</h2>
+              <p class="panel-copy">Doanh thu theo nhóm sản phẩm.</p>
+              <canvas id="category-chart" class="chart-canvas" aria-label="Biểu đồ doanh thu theo nhóm sản phẩm" role="img"></canvas>
+            </section>
+          </div>
+
+          <div class="detail-grid">
+            <section class="dashboard-panel" aria-labelledby="market-title">
+              <h2 id="market-title">Thị trường</h2>
+              <p class="panel-copy">Xếp hạng theo doanh thu, có thể dùng để ưu tiên phân tích sâu.</p>
+              <div class="table-wrap"><table class="data-table"><thead><tr><th>Market</th><th>Sales</th><th>Profit</th></tr></thead><tbody id="market-rows"></tbody></table></div>
+            </section>
+            <section class="dashboard-panel" aria-labelledby="shipping-title">
+              <h2 id="shipping-title">Hiệu quả giao hàng</h2>
+              <p class="panel-copy">Thời gian giao trung bình được tính ở grain order.</p>
+              <div class="table-wrap"><table class="data-table"><thead><tr><th>Ship mode</th><th>Orders</th><th>Avg. days</th></tr></thead><tbody id="shipping-rows"></tbody></table></div>
+            </section>
+          </div>
+
+          <section class="dashboard-panel country-panel" aria-labelledby="country-title">
+            <h2 id="country-title">Top quốc gia theo doanh thu</h2>
+            <p class="panel-copy">Sáu thị trường quốc gia dẫn đầu trong phạm vi bộ lọc hiện tại.</p>
+            <div class="table-wrap"><table class="data-table"><thead><tr><th>Country</th><th>Orders</th><th>Sales</th><th>Profit</th></tr></thead><tbody id="country-rows"></tbody></table></div>
+          </section>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <span>Global Superstore</span>
+        <a href="../">Về trang project</a>
+      </footer>
+    </div>
+    <script src="../assets/site.js"></script>
+    <script src="../assets/dashboard.js"></script>
+  </body>
+</html>

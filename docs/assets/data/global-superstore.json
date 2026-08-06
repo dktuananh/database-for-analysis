@@ -1,0 +1,1363 @@
+{
+  "project": {
+    "id": "global_superstore",
+    "name": "Global Superstore",
+    "period": "2011-2014",
+    "description": "Retail sales, profit and fulfilment analysis from a dimensional Parquet model.",
+    "source_rows": 51290
+  },
+  "filters": {
+    "years": [
+      2011,
+      2012,
+      2013,
+      2014
+    ]
+  },
+  "dashboard": {
+    "all": {
+      "summary": {
+        "sales": 12642501.91,
+        "profit": 1467457.29,
+        "orders": 25754,
+        "customers": 1590,
+        "line_items": 51290,
+        "countries": 147,
+        "profit_margin": 11.61
+      },
+      "monthly": [
+        {
+          "year_month": "2011-01",
+          "year": 2011,
+          "month": 1,
+          "sales": 98898.49,
+          "profit": 8321.8
+        },
+        {
+          "year_month": "2011-02",
+          "year": 2011,
+          "month": 2,
+          "sales": 91152.16,
+          "profit": 12417.91
+        },
+        {
+          "year_month": "2011-03",
+          "year": 2011,
+          "month": 3,
+          "sales": 145729.37,
+          "profit": 15303.57
+        },
+        {
+          "year_month": "2011-04",
+          "year": 2011,
+          "month": 4,
+          "sales": 116915.76,
+          "profit": 12902.32
+        },
+        {
+          "year_month": "2011-05",
+          "year": 2011,
+          "month": 5,
+          "sales": 146747.84,
+          "profit": 12183.83
+        },
+        {
+          "year_month": "2011-06",
+          "year": 2011,
+          "month": 6,
+          "sales": 215207.38,
+          "profit": 23415.25
+        },
+        {
+          "year_month": "2011-07",
+          "year": 2011,
+          "month": 7,
+          "sales": 115510.42,
+          "profit": 5585.0
+        },
+        {
+          "year_month": "2011-08",
+          "year": 2011,
+          "month": 8,
+          "sales": 207581.49,
+          "profit": 23713.67
+        },
+        {
+          "year_month": "2011-09",
+          "year": 2011,
+          "month": 9,
+          "sales": 290214.46,
+          "profit": 35776.88
+        },
+        {
+          "year_month": "2011-10",
+          "year": 2011,
+          "month": 10,
+          "sales": 199071.26,
+          "profit": 25963.42
+        },
+        {
+          "year_month": "2011-11",
+          "year": 2011,
+          "month": 11,
+          "sales": 298496.54,
+          "profit": 32709.18
+        },
+        {
+          "year_month": "2011-12",
+          "year": 2011,
+          "month": 12,
+          "sales": 333925.73,
+          "profit": 40647.98
+        },
+        {
+          "year_month": "2012-01",
+          "year": 2012,
+          "month": 1,
+          "sales": 135780.72,
+          "profit": 10401.64
+        },
+        {
+          "year_month": "2012-02",
+          "year": 2012,
+          "month": 2,
+          "sales": 100510.22,
+          "profit": 15000.1
+        },
+        {
+          "year_month": "2012-03",
+          "year": 2012,
+          "month": 3,
+          "sales": 163076.77,
+          "profit": 17992.92
+        },
+        {
+          "year_month": "2012-04",
+          "year": 2012,
+          "month": 4,
+          "sales": 161052.27,
+          "profit": 17366.97
+        },
+        {
+          "year_month": "2012-05",
+          "year": 2012,
+          "month": 5,
+          "sales": 208364.89,
+          "profit": 29876.7
+        },
+        {
+          "year_month": "2012-06",
+          "year": 2012,
+          "month": 6,
+          "sales": 256175.7,
+          "profit": 34407.15
+        },
+        {
+          "year_month": "2012-07",
+          "year": 2012,
+          "month": 7,
+          "sales": 145236.79,
+          "profit": 15585.39
+        },
+        {
+          "year_month": "2012-08",
+          "year": 2012,
+          "month": 8,
+          "sales": 303142.94,
+          "profit": 43573.88
+        },
+        {
+          "year_month": "2012-09",
+          "year": 2012,
+          "month": 9,
+          "sales": 289389.17,
+          "profit": 27776.18
+        },
+        {
+          "year_month": "2012-10",
+          "year": 2012,
+          "month": 10,
+          "sales": 252939.85,
+          "profit": 30662.88
+        },
+        {
+          "year_month": "2012-11",
+          "year": 2012,
+          "month": 11,
+          "sales": 323512.42,
+          "profit": 31820.72
+        },
+        {
+          "year_month": "2012-12",
+          "year": 2012,
+          "month": 12,
+          "sales": 338256.97,
+          "profit": 32950.75
+        },
+        {
+          "year_month": "2013-01",
+          "year": 2013,
+          "month": 1,
+          "sales": 199185.91,
+          "profit": 26810.56
+        },
+        {
+          "year_month": "2013-02",
+          "year": 2013,
+          "month": 2,
+          "sales": 167239.65,
+          "profit": 23762.5
+        },
+        {
+          "year_month": "2013-03",
+          "year": 2013,
+          "month": 3,
+          "sales": 198594.03,
+          "profit": 23433.77
+        },
+        {
+          "year_month": "2013-04",
+          "year": 2013,
+          "month": 4,
+          "sales": 177821.32,
+          "profit": 19462.04
+        },
+        {
+          "year_month": "2013-05",
+          "year": 2013,
+          "month": 5,
+          "sales": 260498.56,
+          "profit": 28495.69
+        },
+        {
+          "year_month": "2013-06",
+          "year": 2013,
+          "month": 6,
+          "sales": 396519.61,
+          "profit": 45478.41
+        },
+        {
+          "year_month": "2013-07",
+          "year": 2013,
+          "month": 7,
+          "sales": 229928.95,
+          "profit": 28863.83
+        },
+        {
+          "year_month": "2013-08",
+          "year": 2013,
+          "month": 8,
+          "sales": 326488.79,
+          "profit": 31023.67
+        },
+        {
+          "year_month": "2013-09",
+          "year": 2013,
+          "month": 9,
+          "sales": 376619.25,
+          "profit": 38905.67
+        },
+        {
+          "year_month": "2013-10",
+          "year": 2013,
+          "month": 10,
+          "sales": 293406.64,
+          "profit": 42433.22
+        },
+        {
+          "year_month": "2013-11",
+          "year": 2013,
+          "month": 11,
+          "sales": 373989.36,
+          "profit": 48063.0
+        },
+        {
+          "year_month": "2013-12",
+          "year": 2013,
+          "month": 12,
+          "sales": 405454.38,
+          "profit": 50202.87
+        },
+        {
+          "year_month": "2014-01",
+          "year": 2014,
+          "month": 1,
+          "sales": 241268.56,
+          "profit": 28001.39
+        },
+        {
+          "year_month": "2014-02",
+          "year": 2014,
+          "month": 2,
+          "sales": 184837.36,
+          "profit": 19751.7
+        },
+        {
+          "year_month": "2014-03",
+          "year": 2014,
+          "month": 3,
+          "sales": 263100.77,
+          "profit": 37357.26
+        },
+        {
+          "year_month": "2014-04",
+          "year": 2014,
+          "month": 4,
+          "sales": 242771.86,
+          "profit": 23782.3
+        },
+        {
+          "year_month": "2014-05",
+          "year": 2014,
+          "month": 5,
+          "sales": 288401.05,
+          "profit": 33953.56
+        },
+        {
+          "year_month": "2014-06",
+          "year": 2014,
+          "month": 6,
+          "sales": 401814.06,
+          "profit": 43778.6
+        },
+        {
+          "year_month": "2014-07",
+          "year": 2014,
+          "month": 7,
+          "sales": 258705.68,
+          "profit": 28035.87
+        },
+        {
+          "year_month": "2014-08",
+          "year": 2014,
+          "month": 8,
+          "sales": 456619.94,
+          "profit": 53542.89
+        },
+        {
+          "year_month": "2014-09",
+          "year": 2014,
+          "month": 9,
+          "sales": 481157.24,
+          "profit": 67979.45
+        },
+        {
+          "year_month": "2014-10",
+          "year": 2014,
+          "month": 10,
+          "sales": 422766.63,
+          "profit": 58209.83
+        },
+        {
+          "year_month": "2014-11",
+          "year": 2014,
+          "month": 11,
+          "sales": 555279.03,
+          "profit": 62856.59
+        },
+        {
+          "year_month": "2014-12",
+          "year": 2014,
+          "month": 12,
+          "sales": 503143.69,
+          "profit": 46916.52
+        }
+      ],
+      "categories": [
+        {
+          "category": "Technology",
+          "sales": 4744557.5,
+          "profit": 663778.73
+        },
+        {
+          "category": "Furniture",
+          "sales": 4110874.19,
+          "profit": 285204.72
+        },
+        {
+          "category": "Office Supplies",
+          "sales": 3787070.23,
+          "profit": 518473.83
+        }
+      ],
+      "markets": [
+        {
+          "market": "APAC",
+          "sales": 3585744.13,
+          "profit": 436000.05,
+          "orders": 5437
+        },
+        {
+          "market": "EU",
+          "sales": 2938089.06,
+          "profit": 372829.74,
+          "orders": 5122
+        },
+        {
+          "market": "US",
+          "sales": 2297200.86,
+          "profit": 286397.02,
+          "orders": 5009
+        },
+        {
+          "market": "LATAM",
+          "sales": 2164605.17,
+          "profit": 221643.49,
+          "orders": 5149
+        },
+        {
+          "market": "EMEA",
+          "sales": 806161.31,
+          "profit": 43897.97,
+          "orders": 2543
+        },
+        {
+          "market": "Africa",
+          "sales": 783773.21,
+          "profit": 88871.63,
+          "orders": 2289
+        },
+        {
+          "market": "Canada",
+          "sales": 66928.17,
+          "profit": 17817.39,
+          "orders": 205
+        }
+      ],
+      "countries": [
+        {
+          "country": "United States",
+          "sales": 2297200.86,
+          "profit": 286397.02,
+          "orders": 5009
+        },
+        {
+          "country": "Australia",
+          "sales": 925235.85,
+          "profit": 103907.43,
+          "orders": 1420
+        },
+        {
+          "country": "France",
+          "sales": 858931.08,
+          "profit": 109029.0,
+          "orders": 1476
+        },
+        {
+          "country": "China",
+          "sales": 700562.02,
+          "profit": 150683.08,
+          "orders": 925
+        },
+        {
+          "country": "Germany",
+          "sales": 628840.03,
+          "profit": 107322.82,
+          "orders": 1019
+        },
+        {
+          "country": "Mexico",
+          "sales": 622590.62,
+          "profit": 102818.1,
+          "orders": 1329
+        }
+      ],
+      "shipping": [
+        {
+          "ship_mode": "Same Day",
+          "orders": 1349,
+          "avg_ship_days": 0.04
+        },
+        {
+          "ship_mode": "First Class",
+          "orders": 3847,
+          "avg_ship_days": 2.19
+        },
+        {
+          "ship_mode": "Second Class",
+          "orders": 5146,
+          "avg_ship_days": 3.22
+        },
+        {
+          "ship_mode": "Standard Class",
+          "orders": 15412,
+          "avg_ship_days": 5.0
+        }
+      ]
+    },
+    "years": {
+      "2011": {
+        "summary": {
+          "sales": 2259450.9,
+          "profit": 248940.81,
+          "orders": 4516,
+          "customers": 1309,
+          "line_items": 8998,
+          "countries": 133,
+          "profit_margin": 11.02
+        },
+        "monthly": [
+          {
+            "year_month": "2011-01",
+            "year": 2011,
+            "month": 1,
+            "sales": 98898.49,
+            "profit": 8321.8
+          },
+          {
+            "year_month": "2011-02",
+            "year": 2011,
+            "month": 2,
+            "sales": 91152.16,
+            "profit": 12417.91
+          },
+          {
+            "year_month": "2011-03",
+            "year": 2011,
+            "month": 3,
+            "sales": 145729.37,
+            "profit": 15303.57
+          },
+          {
+            "year_month": "2011-04",
+            "year": 2011,
+            "month": 4,
+            "sales": 116915.76,
+            "profit": 12902.32
+          },
+          {
+            "year_month": "2011-05",
+            "year": 2011,
+            "month": 5,
+            "sales": 146747.84,
+            "profit": 12183.83
+          },
+          {
+            "year_month": "2011-06",
+            "year": 2011,
+            "month": 6,
+            "sales": 215207.38,
+            "profit": 23415.25
+          },
+          {
+            "year_month": "2011-07",
+            "year": 2011,
+            "month": 7,
+            "sales": 115510.42,
+            "profit": 5585.0
+          },
+          {
+            "year_month": "2011-08",
+            "year": 2011,
+            "month": 8,
+            "sales": 207581.49,
+            "profit": 23713.67
+          },
+          {
+            "year_month": "2011-09",
+            "year": 2011,
+            "month": 9,
+            "sales": 290214.46,
+            "profit": 35776.88
+          },
+          {
+            "year_month": "2011-10",
+            "year": 2011,
+            "month": 10,
+            "sales": 199071.26,
+            "profit": 25963.42
+          },
+          {
+            "year_month": "2011-11",
+            "year": 2011,
+            "month": 11,
+            "sales": 298496.54,
+            "profit": 32709.18
+          },
+          {
+            "year_month": "2011-12",
+            "year": 2011,
+            "month": 12,
+            "sales": 333925.73,
+            "profit": 40647.98
+          }
+        ],
+        "categories": [
+          {
+            "category": "Technology",
+            "sales": 827652.06,
+            "profit": 109247.35
+          },
+          {
+            "category": "Furniture",
+            "sales": 756192.38,
+            "profit": 53696.93
+          },
+          {
+            "category": "Office Supplies",
+            "sales": 675606.45,
+            "profit": 85996.53
+          }
+        ],
+        "markets": [
+          {
+            "market": "APAC",
+            "sales": 639245.26,
+            "profit": 83031.58,
+            "orders": 966
+          },
+          {
+            "market": "US",
+            "sales": 484247.5,
+            "profit": 49543.97,
+            "orders": 969
+          },
+          {
+            "market": "EU",
+            "sales": 478743.28,
+            "profit": 61625.62,
+            "orders": 861
+          },
+          {
+            "market": "LATAM",
+            "sales": 385098.16,
+            "profit": 36708.42,
+            "orders": 882
+          },
+          {
+            "market": "EMEA",
+            "sales": 136420.32,
+            "profit": 5280.03,
+            "orders": 413
+          },
+          {
+            "market": "Africa",
+            "sales": 127187.27,
+            "profit": 10944.11,
+            "orders": 389
+          },
+          {
+            "market": "Canada",
+            "sales": 8509.11,
+            "profit": 1807.08,
+            "orders": 36
+          }
+        ],
+        "countries": [
+          {
+            "country": "United States",
+            "sales": 484247.5,
+            "profit": 49543.97,
+            "orders": 969
+          },
+          {
+            "country": "China",
+            "sales": 155693.61,
+            "profit": 33181.38,
+            "orders": 177
+          },
+          {
+            "country": "Australia",
+            "sales": 137580.06,
+            "profit": 17516.73,
+            "orders": 231
+          },
+          {
+            "country": "France",
+            "sales": 128194.52,
+            "profit": 18435.68,
+            "orders": 217
+          },
+          {
+            "country": "Mexico",
+            "sales": 111361.05,
+            "profit": 18521.75,
+            "orders": 234
+          },
+          {
+            "country": "Germany",
+            "sales": 110006.78,
+            "profit": 19554.86,
+            "orders": 188
+          }
+        ],
+        "shipping": [
+          {
+            "ship_mode": "Same Day",
+            "orders": 231,
+            "avg_ship_days": 0.05
+          },
+          {
+            "ship_mode": "First Class",
+            "orders": 687,
+            "avg_ship_days": 2.21
+          },
+          {
+            "ship_mode": "Second Class",
+            "orders": 900,
+            "avg_ship_days": 3.21
+          },
+          {
+            "ship_mode": "Standard Class",
+            "orders": 2698,
+            "avg_ship_days": 4.99
+          }
+        ]
+      },
+      "2012": {
+        "summary": {
+          "sales": 2677438.69,
+          "profit": 307415.28,
+          "orders": 5480,
+          "customers": 1373,
+          "line_items": 10962,
+          "countries": 129,
+          "profit_margin": 11.48
+        },
+        "monthly": [
+          {
+            "year_month": "2012-01",
+            "year": 2012,
+            "month": 1,
+            "sales": 135780.72,
+            "profit": 10401.64
+          },
+          {
+            "year_month": "2012-02",
+            "year": 2012,
+            "month": 2,
+            "sales": 100510.22,
+            "profit": 15000.1
+          },
+          {
+            "year_month": "2012-03",
+            "year": 2012,
+            "month": 3,
+            "sales": 163076.77,
+            "profit": 17992.92
+          },
+          {
+            "year_month": "2012-04",
+            "year": 2012,
+            "month": 4,
+            "sales": 161052.27,
+            "profit": 17366.97
+          },
+          {
+            "year_month": "2012-05",
+            "year": 2012,
+            "month": 5,
+            "sales": 208364.89,
+            "profit": 29876.7
+          },
+          {
+            "year_month": "2012-06",
+            "year": 2012,
+            "month": 6,
+            "sales": 256175.7,
+            "profit": 34407.15
+          },
+          {
+            "year_month": "2012-07",
+            "year": 2012,
+            "month": 7,
+            "sales": 145236.79,
+            "profit": 15585.39
+          },
+          {
+            "year_month": "2012-08",
+            "year": 2012,
+            "month": 8,
+            "sales": 303142.94,
+            "profit": 43573.88
+          },
+          {
+            "year_month": "2012-09",
+            "year": 2012,
+            "month": 9,
+            "sales": 289389.17,
+            "profit": 27776.18
+          },
+          {
+            "year_month": "2012-10",
+            "year": 2012,
+            "month": 10,
+            "sales": 252939.85,
+            "profit": 30662.88
+          },
+          {
+            "year_month": "2012-11",
+            "year": 2012,
+            "month": 11,
+            "sales": 323512.42,
+            "profit": 31820.72
+          },
+          {
+            "year_month": "2012-12",
+            "year": 2012,
+            "month": 12,
+            "sales": 338256.97,
+            "profit": 32950.75
+          }
+        ],
+        "categories": [
+          {
+            "category": "Technology",
+            "sales": 1023441.51,
+            "profit": 145976.94
+          },
+          {
+            "category": "Furniture",
+            "sales": 858902.56,
+            "profit": 58132.83
+          },
+          {
+            "category": "Office Supplies",
+            "sales": 795094.63,
+            "profit": 103305.51
+          }
+        ],
+        "markets": [
+          {
+            "market": "APAC",
+            "sales": 762719.33,
+            "profit": 89410.85,
+            "orders": 1182
+          },
+          {
+            "market": "EU",
+            "sales": 655461.69,
+            "profit": 83984.58,
+            "orders": 1149
+          },
+          {
+            "market": "US",
+            "sales": 470532.51,
+            "profit": 61618.6,
+            "orders": 1038
+          },
+          {
+            "market": "LATAM",
+            "sales": 464733.3,
+            "profit": 50184.9,
+            "orders": 1110
+          },
+          {
+            "market": "EMEA",
+            "sales": 163414.36,
+            "profit": 5419.58,
+            "orders": 516
+          },
+          {
+            "market": "Africa",
+            "sales": 144480.7,
+            "profit": 11908.94,
+            "orders": 436
+          },
+          {
+            "market": "Canada",
+            "sales": 16096.8,
+            "profit": 4887.84,
+            "orders": 49
+          }
+        ],
+        "countries": [
+          {
+            "country": "United States",
+            "sales": 470532.51,
+            "profit": 61618.6,
+            "orders": 1038
+          },
+          {
+            "country": "Australia",
+            "sales": 203950.84,
+            "profit": 25528.72,
+            "orders": 306
+          },
+          {
+            "country": "France",
+            "sales": 192184.58,
+            "profit": 23034.74,
+            "orders": 334
+          },
+          {
+            "country": "Mexico",
+            "sales": 156964.97,
+            "profit": 24955.27,
+            "orders": 299
+          },
+          {
+            "country": "Germany",
+            "sales": 154835.15,
+            "profit": 24867.44,
+            "orders": 233
+          },
+          {
+            "country": "India",
+            "sales": 141493.04,
+            "profit": 27438.8,
+            "orders": 185
+          }
+        ],
+        "shipping": [
+          {
+            "ship_mode": "Same Day",
+            "orders": 287,
+            "avg_ship_days": 0.05
+          },
+          {
+            "ship_mode": "First Class",
+            "orders": 795,
+            "avg_ship_days": 2.18
+          },
+          {
+            "ship_mode": "Second Class",
+            "orders": 1051,
+            "avg_ship_days": 3.23
+          },
+          {
+            "ship_mode": "Standard Class",
+            "orders": 3347,
+            "avg_ship_days": 4.97
+          }
+        ]
+      },
+      "2013": {
+        "summary": {
+          "sales": 3405746.45,
+          "profit": 406935.23,
+          "orders": 6890,
+          "customers": 1458,
+          "line_items": 13799,
+          "countries": 137,
+          "profit_margin": 11.95
+        },
+        "monthly": [
+          {
+            "year_month": "2013-01",
+            "year": 2013,
+            "month": 1,
+            "sales": 199185.91,
+            "profit": 26810.56
+          },
+          {
+            "year_month": "2013-02",
+            "year": 2013,
+            "month": 2,
+            "sales": 167239.65,
+            "profit": 23762.5
+          },
+          {
+            "year_month": "2013-03",
+            "year": 2013,
+            "month": 3,
+            "sales": 198594.03,
+            "profit": 23433.77
+          },
+          {
+            "year_month": "2013-04",
+            "year": 2013,
+            "month": 4,
+            "sales": 177821.32,
+            "profit": 19462.04
+          },
+          {
+            "year_month": "2013-05",
+            "year": 2013,
+            "month": 5,
+            "sales": 260498.56,
+            "profit": 28495.69
+          },
+          {
+            "year_month": "2013-06",
+            "year": 2013,
+            "month": 6,
+            "sales": 396519.61,
+            "profit": 45478.41
+          },
+          {
+            "year_month": "2013-07",
+            "year": 2013,
+            "month": 7,
+            "sales": 229928.95,
+            "profit": 28863.83
+          },
+          {
+            "year_month": "2013-08",
+            "year": 2013,
+            "month": 8,
+            "sales": 326488.79,
+            "profit": 31023.67
+          },
+          {
+            "year_month": "2013-09",
+            "year": 2013,
+            "month": 9,
+            "sales": 376619.25,
+            "profit": 38905.67
+          },
+          {
+            "year_month": "2013-10",
+            "year": 2013,
+            "month": 10,
+            "sales": 293406.64,
+            "profit": 42433.22
+          },
+          {
+            "year_month": "2013-11",
+            "year": 2013,
+            "month": 11,
+            "sales": 373989.36,
+            "profit": 48063.0
+          },
+          {
+            "year_month": "2013-12",
+            "year": 2013,
+            "month": 12,
+            "sales": 405454.38,
+            "profit": 50202.87
+          }
+        ],
+        "categories": [
+          {
+            "category": "Technology",
+            "sales": 1277305.25,
+            "profit": 173626.59
+          },
+          {
+            "category": "Furniture",
+            "sales": 1117723.55,
+            "profit": 84062.9
+          },
+          {
+            "category": "Office Supplies",
+            "sales": 1010717.64,
+            "profit": 149245.74
+          }
+        ],
+        "markets": [
+          {
+            "market": "APAC",
+            "sales": 974580.86,
+            "profit": 123103.13,
+            "orders": 1404
+          },
+          {
+            "market": "EU",
+            "sales": 761680.36,
+            "profit": 98275.18,
+            "orders": 1334
+          },
+          {
+            "market": "US",
+            "sales": 608473.83,
+            "profit": 81726.93,
+            "orders": 1310
+          },
+          {
+            "market": "LATAM",
+            "sales": 608140.77,
+            "profit": 61415.37,
+            "orders": 1477
+          },
+          {
+            "market": "Africa",
+            "sales": 229068.79,
+            "profit": 26687.11,
+            "orders": 625
+          },
+          {
+            "market": "EMEA",
+            "sales": 204640.68,
+            "profit": 10598.04,
+            "orders": 682
+          },
+          {
+            "market": "Canada",
+            "sales": 19161.15,
+            "profit": 5129.46,
+            "orders": 58
+          }
+        ],
+        "countries": [
+          {
+            "country": "United States",
+            "sales": 608473.83,
+            "profit": 81726.93,
+            "orders": 1310
+          },
+          {
+            "country": "Australia",
+            "sales": 268971.85,
+            "profit": 28831.78,
+            "orders": 366
+          },
+          {
+            "country": "France",
+            "sales": 230114.68,
+            "profit": 32416.48,
+            "orders": 391
+          },
+          {
+            "country": "China",
+            "sales": 195664.24,
+            "profit": 44473.94,
+            "orders": 248
+          },
+          {
+            "country": "Mexico",
+            "sales": 158784.9,
+            "profit": 28010.26,
+            "orders": 374
+          },
+          {
+            "country": "India",
+            "sales": 151729.08,
+            "profit": 32896.86,
+            "orders": 204
+          }
+        ],
+        "shipping": [
+          {
+            "ship_mode": "Same Day",
+            "orders": 383,
+            "avg_ship_days": 0.03
+          },
+          {
+            "ship_mode": "First Class",
+            "orders": 1012,
+            "avg_ship_days": 2.14
+          },
+          {
+            "ship_mode": "Second Class",
+            "orders": 1386,
+            "avg_ship_days": 3.2
+          },
+          {
+            "ship_mode": "Standard Class",
+            "orders": 4109,
+            "avg_ship_days": 5.04
+          }
+        ]
+      },
+      "2014": {
+        "summary": {
+          "sales": 4299865.87,
+          "profit": 504165.97,
+          "orders": 8868,
+          "customers": 1511,
+          "line_items": 17531,
+          "countries": 138,
+          "profit_margin": 11.73
+        },
+        "monthly": [
+          {
+            "year_month": "2014-01",
+            "year": 2014,
+            "month": 1,
+            "sales": 241268.56,
+            "profit": 28001.39
+          },
+          {
+            "year_month": "2014-02",
+            "year": 2014,
+            "month": 2,
+            "sales": 184837.36,
+            "profit": 19751.7
+          },
+          {
+            "year_month": "2014-03",
+            "year": 2014,
+            "month": 3,
+            "sales": 263100.77,
+            "profit": 37357.26
+          },
+          {
+            "year_month": "2014-04",
+            "year": 2014,
+            "month": 4,
+            "sales": 242771.86,
+            "profit": 23782.3
+          },
+          {
+            "year_month": "2014-05",
+            "year": 2014,
+            "month": 5,
+            "sales": 288401.05,
+            "profit": 33953.56
+          },
+          {
+            "year_month": "2014-06",
+            "year": 2014,
+            "month": 6,
+            "sales": 401814.06,
+            "profit": 43778.6
+          },
+          {
+            "year_month": "2014-07",
+            "year": 2014,
+            "month": 7,
+            "sales": 258705.68,
+            "profit": 28035.87
+          },
+          {
+            "year_month": "2014-08",
+            "year": 2014,
+            "month": 8,
+            "sales": 456619.94,
+            "profit": 53542.89
+          },
+          {
+            "year_month": "2014-09",
+            "year": 2014,
+            "month": 9,
+            "sales": 481157.24,
+            "profit": 67979.45
+          },
+          {
+            "year_month": "2014-10",
+            "year": 2014,
+            "month": 10,
+            "sales": 422766.63,
+            "profit": 58209.83
+          },
+          {
+            "year_month": "2014-11",
+            "year": 2014,
+            "month": 11,
+            "sales": 555279.03,
+            "profit": 62856.59
+          },
+          {
+            "year_month": "2014-12",
+            "year": 2014,
+            "month": 12,
+            "sales": 503143.69,
+            "profit": 46916.52
+          }
+        ],
+        "categories": [
+          {
+            "category": "Technology",
+            "sales": 1616158.67,
+            "profit": 234927.85
+          },
+          {
+            "category": "Furniture",
+            "sales": 1378055.69,
+            "profit": 89312.06
+          },
+          {
+            "category": "Office Supplies",
+            "sales": 1305651.51,
+            "profit": 179926.06
+          }
+        ],
+        "markets": [
+          {
+            "market": "APAC",
+            "sales": 1209198.69,
+            "profit": 140454.5,
+            "orders": 1885
+          },
+          {
+            "market": "EU",
+            "sales": 1042203.73,
+            "profit": 128944.36,
+            "orders": 1778
+          },
+          {
+            "market": "US",
+            "sales": 733947.02,
+            "profit": 93507.51,
+            "orders": 1692
+          },
+          {
+            "market": "LATAM",
+            "sales": 706632.94,
+            "profit": 73334.8,
+            "orders": 1680
+          },
+          {
+            "market": "EMEA",
+            "sales": 301685.94,
+            "profit": 22600.32,
+            "orders": 932
+          },
+          {
+            "market": "Africa",
+            "sales": 283036.44,
+            "profit": 39331.47,
+            "orders": 839
+          },
+          {
+            "market": "Canada",
+            "sales": 23161.11,
+            "profit": 5993.01,
+            "orders": 62
+          }
+        ],
+        "countries": [
+          {
+            "country": "United States",
+            "sales": 733947.02,
+            "profit": 93507.51,
+            "orders": 1692
+          },
+          {
+            "country": "Australia",
+            "sales": 314733.1,
+            "profit": 32030.2,
+            "orders": 517
+          },
+          {
+            "country": "France",
+            "sales": 308437.31,
+            "profit": 35142.11,
+            "orders": 534
+          },
+          {
+            "country": "China",
+            "sales": 218979.29,
+            "profit": 46793.99,
+            "orders": 301
+          },
+          {
+            "country": "Germany",
+            "sales": 216537.03,
+            "profit": 35956.05,
+            "orders": 316
+          },
+          {
+            "country": "India",
+            "sales": 205031.98,
+            "profit": 48807.68,
+            "orders": 266
+          }
+        ],
+        "shipping": [
+          {
+            "ship_mode": "Same Day",
+            "orders": 448,
+            "avg_ship_days": 0.04
+          },
+          {
+            "ship_mode": "First Class",
+            "orders": 1353,
+            "avg_ship_days": 2.22
+          },
+          {
+            "ship_mode": "Second Class",
+            "orders": 1809,
+            "avg_ship_days": 3.24
+          },
+          {
+            "ship_mode": "Standard Class",
+            "orders": 5258,
+            "avg_ship_days": 5.0
+          }
+        ]
+      }
+    }
+  }
+}

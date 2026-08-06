@@ -72,3 +72,13 @@ FROM read_parquet(
 WHERE order_year = 2014
 GROUP BY order_year;
 ```
+
+## GitHub Pages dashboard
+
+Static site nằm trong `docs/`, gồm trang chủ project và dashboard Global Superstore. Sau khi cập nhật Parquet, xuất lại dữ liệu trình duyệt bằng:
+
+```powershell
+python scripts/build_dashboard_assets.py
+```
+
+Hướng dẫn publish GitHub Pages: [docs/README.md](docs/README.md).
