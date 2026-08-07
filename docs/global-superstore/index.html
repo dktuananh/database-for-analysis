@@ -211,30 +211,47 @@
                   <div><span>Dimensional model</span><h2 id="model-title">Relationship map và role-playing date</h2></div>
                   <span class="status-badge">8 many-to-one contracts</span>
                 </div>
-                <div class="model-flow detailed-model" aria-label="Sơ đồ quan hệ dữ liệu">
-                  <div class="model-column dimensions-column">
-                    <span>Conformed dimensions</span>
-                    <strong>dim_customer</strong><strong>dim_geography</strong><strong>dim_ship_mode</strong><strong>dim_order_priority</strong>
+                <figure class="model-explorer" data-model-explorer data-active-node="fact-order">
+                  <figcaption class="model-explorer-caption">
+                    <span>Interactive ERD</span>
+                    <p>Chọn một bảng để xem grain, key và các quan hệ trực tiếp. Đường nối thể hiện hướng join từ foreign key tới primary key.</p>
+                  </figcaption>
+                  <div class="model-explorer-tools">
+                    <span class="model-legend"><i class="legend-dimension"></i> Dimension <i class="legend-fact"></i> Fact <i class="legend-mart"></i> Mart</span>
+                    <button type="button" class="model-reset-button" data-model-reset>Focus fact_order</button>
                   </div>
-                  <div class="model-join" aria-hidden="true">many to one →</div>
-                  <div class="model-column facts-column">
-                    <span>Order header</span>
-                    <strong>fact_order</strong>
-                    <small>order_date_key → dim_date</small>
-                    <small>ship_date_key → dim_date</small>
+                  <div class="model-graph" role="group" aria-label="Sơ đồ quan hệ các bảng Global Superstore">
+                    <svg class="model-links" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">
+                      <defs><marker id="erd-arrow" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z"></path></marker></defs>
+                      <path class="model-link" data-model-link="dim-date fact-order" d="M500 106 C500 160 500 178 500 226"></path>
+                      <path class="model-link" data-model-link="dim-customer fact-order" d="M268 200 C312 200 330 240 380 258"></path>
+                      <path class="model-link" data-model-link="dim-geography fact-order" d="M268 307 C314 307 335 305 380 302"></path>
+                      <path class="model-link" data-model-link="dim-ship-mode fact-order" d="M268 414 C316 414 334 360 380 334"></path>
+                      <path class="model-link" data-model-link="dim-priority fact-order" d="M268 521 C318 521 340 394 380 346"></path>
+                      <path class="model-link" data-model-link="fact-order fact-order-line" d="M500 364 L500 426"></path>
+                      <path class="model-link" data-model-link="dim-product fact-order-line" d="M734 498 C690 498 664 498 620 498"></path>
+                      <path class="model-link" data-model-link="fact-order-line marts" d="M620 452 C685 416 700 302 734 265"></path>
+                    </svg>
+                    <button type="button" class="erd-node erd-node--date" data-model-node="dim-date" aria-pressed="false"><span>Dimension</span><strong>dim_date</strong><small>2 date roles</small></button>
+                    <button type="button" class="erd-node erd-node--customer" data-model-node="dim-customer" aria-pressed="false"><span>Dimension</span><strong>dim_customer</strong><small>customer_key</small></button>
+                    <button type="button" class="erd-node erd-node--geography" data-model-node="dim-geography" aria-pressed="false"><span>Dimension</span><strong>dim_geography</strong><small>geography_key</small></button>
+                    <button type="button" class="erd-node erd-node--ship" data-model-node="dim-ship-mode" aria-pressed="false"><span>Dimension</span><strong>dim_ship_mode</strong><small>ship_mode_key</small></button>
+                    <button type="button" class="erd-node erd-node--priority" data-model-node="dim-priority" aria-pressed="false"><span>Dimension</span><strong>dim_order_priority</strong><small>order_priority_key</small></button>
+                    <button type="button" class="erd-node erd-node--order" data-model-node="fact-order" aria-pressed="true"><span>Fact table</span><strong>fact_order</strong><small>1 row = order header</small></button>
+                    <button type="button" class="erd-node erd-node--line" data-model-node="fact-order-line" aria-pressed="false"><span>Fact table</span><strong>fact_order_line</strong><small>1 row = product line</small></button>
+                    <button type="button" class="erd-node erd-node--product" data-model-node="dim-product" aria-pressed="false"><span>Dimension</span><strong>dim_product</strong><small>product_key</small></button>
+                    <button type="button" class="erd-node erd-node--marts" data-model-node="marts" aria-pressed="false"><span>Serving mart</span><strong>monthly_sales_kpis</strong><small>country_sales_kpis</small></button>
                   </div>
-                  <div class="model-join" aria-hidden="true">one to many →</div>
-                  <div class="model-column facts-column">
-                    <span>Order detail</span>
-                    <strong>fact_order_line</strong>
-                    <small>product_key → dim_product</small>
-                  </div>
-                  <div class="model-join" aria-hidden="true">aggregate →</div>
-                  <div class="model-column marts-column">
-                    <span>Serving marts</span>
-                    <strong>monthly_sales_kpis</strong><strong>country_sales_kpis</strong>
-                  </div>
-                </div>
+                  <section class="model-inspector" aria-live="polite" aria-labelledby="model-inspector-title">
+                    <div><span data-model-inspector-kind>Fact table</span><h3 id="model-inspector-title" data-model-inspector-title>fact_order</h3></div>
+                    <p data-model-inspector-copy>Đại diện một order header duy nhất và là điểm nối giữa customer, geography, shipping, priority cùng hai vai trò date.</p>
+                    <dl>
+                      <div><dt>Grain</dt><dd data-model-inspector-grain>1 row = 1 order header</dd></div>
+                      <div><dt>Primary key</dt><dd data-model-inspector-key>order_key</dd></div>
+                      <div><dt>Relations</dt><dd data-model-inspector-relations>6 incoming, 1 outgoing</dd></div>
+                    </dl>
+                  </section>
+                </figure>
               </section>
 
               <section class="content-panel modeling-decisions" aria-labelledby="decisions-title">
@@ -718,6 +735,7 @@ ORDER BY MIN(
     <div class="copy-toast" role="status" aria-live="polite" data-copy-toast hidden>Đã sao chép</div>
     <script src="../assets/site.js"></script>
     <script src="../assets/analysis-guide.js"></script>
+    <script src="../assets/model-explorer.js"></script>
     <script src="../assets/dashboard.js"></script>
   </body>
 </html>
