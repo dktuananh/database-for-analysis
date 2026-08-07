@@ -4,7 +4,66 @@
     "name": "Global Superstore",
     "period": "2011-2014",
     "description": "Retail sales, profit and fulfilment analysis from a dimensional Parquet model.",
+    "domain": "retail_analytics",
+    "difficulty": "beginner_to_intermediate",
+    "learning_path": [
+      {
+        "id": "structure",
+        "title": "Tổ chức dữ liệu",
+        "output": "Hiểu grain, fact, dimension, key và partition"
+      },
+      {
+        "id": "query",
+        "title": "Truy vấn",
+        "output": "Tạo KPI bằng DuckDB SQL trực tiếp trên Parquet"
+      },
+      {
+        "id": "eda",
+        "title": "EDA",
+        "output": "Kiểm tra chất lượng, xu hướng và các lát cắt chính"
+      },
+      {
+        "id": "dashboard",
+        "title": "Dashboard",
+        "output": "Trình bày KPI và phát hiện bằng dashboard tương tác"
+      }
+    ],
     "source_rows": 51290
+  },
+  "model": {
+    "table_count": 10,
+    "parquet_files": 16,
+    "dimensions": 6,
+    "facts": 2,
+    "marts": 2,
+    "fact_partitions": 8,
+    "quality": {
+      "dimension_primary_keys_unique": true,
+      "order_primary_key_unique": true,
+      "line_primary_key_unique": true,
+      "orphan_order_keys": 0,
+      "orphan_product_keys": 0,
+      "orphan_customer_keys": 0,
+      "orphan_geography_keys": 0,
+      "orphan_ship_mode_keys": 0,
+      "orphan_order_priority_keys": 0,
+      "orphan_order_date_keys": 0,
+      "orphan_ship_date_keys": 0,
+      "null_measure_rows": 0,
+      "invalid_quantity_rows": 0,
+      "negative_sales_rows": 0,
+      "negative_shipping_cost_rows": 0,
+      "invalid_discount_rows": 0,
+      "ship_before_order_rows": 0
+    }
+  },
+  "analysis": {
+    "latest_year": 2014,
+    "comparison_year": 2013,
+    "sales_growth_pct": 26.25,
+    "profit_growth_pct": 23.89,
+    "revenue_profit_gap_pct": 2.36,
+    "sales_cagr_pct": 23.92
   },
   "filters": {
     "years": [
@@ -23,7 +82,18 @@
         "customers": 1590,
         "line_items": 51290,
         "countries": 147,
-        "profit_margin": 11.61
+        "profit_margin": 11.61,
+        "average_order_value": 490.89,
+        "profit_per_order": 56.98,
+        "sales_per_customer": 7951.26,
+        "shipping_cost_ratio": 10.7,
+        "average_discount": 14.29,
+        "loss_making_line_share": 24.46,
+        "loss_making_products": 3033,
+        "loss_making_product_share": 28.17,
+        "repeat_customer_rate": 99.37,
+        "top_20_customer_sales_share": 46.75,
+        "revenue_volatility_index": 42.79
       },
       "monthly": [
         {
@@ -367,17 +437,29 @@
         {
           "category": "Technology",
           "sales": 4744557.5,
-          "profit": 663778.73
+          "profit": 663778.73,
+          "profit_margin": 13.99,
+          "orders": 8430,
+          "shipping_cost": 507048.74,
+          "avg_discount": 13.53
         },
         {
           "category": "Furniture",
           "sales": 4110874.19,
-          "profit": 285204.72
+          "profit": 285204.72,
+          "profit_margin": 6.94,
+          "orders": 8240,
+          "shipping_cost": 440320.66,
+          "avg_discount": 16.81
         },
         {
           "category": "Office Supplies",
           "sales": 3787070.23,
-          "profit": 518473.83
+          "profit": 518473.83,
+          "profit_margin": 13.69,
+          "orders": 19471,
+          "shipping_cost": 405451.29,
+          "avg_discount": 13.74
         }
       ],
       "markets": [
@@ -385,43 +467,57 @@
           "market": "APAC",
           "sales": 3585744.13,
           "profit": 436000.05,
-          "orders": 5437
+          "profit_margin": 12.16,
+          "orders": 5437,
+          "customers": 796
         },
         {
           "market": "EU",
           "sales": 2938089.06,
           "profit": 372829.74,
-          "orders": 5122
+          "profit_margin": 12.69,
+          "orders": 5122,
+          "customers": 795
         },
         {
           "market": "US",
           "sales": 2297200.86,
           "profit": 286397.02,
-          "orders": 5009
+          "profit_margin": 12.47,
+          "orders": 5009,
+          "customers": 793
         },
         {
           "market": "LATAM",
           "sales": 2164605.17,
           "profit": 221643.49,
-          "orders": 5149
+          "profit_margin": 10.24,
+          "orders": 5149,
+          "customers": 794
         },
         {
           "market": "EMEA",
           "sales": 806161.31,
           "profit": 43897.97,
-          "orders": 2543
+          "profit_margin": 5.45,
+          "orders": 2543,
+          "customers": 760
         },
         {
           "market": "Africa",
           "sales": 783773.21,
           "profit": 88871.63,
-          "orders": 2289
+          "profit_margin": 11.34,
+          "orders": 2289,
+          "customers": 754
         },
         {
           "market": "Canada",
           "sales": 66928.17,
           "profit": 17817.39,
-          "orders": 205
+          "profit_margin": 26.62,
+          "orders": 205,
+          "customers": 181
         }
       ],
       "countries": [
@@ -429,59 +525,184 @@
           "country": "United States",
           "sales": 2297200.86,
           "profit": 286397.02,
+          "profit_margin": 12.47,
           "orders": 5009
         },
         {
           "country": "Australia",
           "sales": 925235.85,
           "profit": 103907.43,
+          "profit_margin": 11.23,
           "orders": 1420
         },
         {
           "country": "France",
           "sales": 858931.08,
           "profit": 109029.0,
+          "profit_margin": 12.69,
           "orders": 1476
         },
         {
           "country": "China",
           "sales": 700562.02,
           "profit": 150683.08,
+          "profit_margin": 21.51,
           "orders": 925
         },
         {
           "country": "Germany",
           "sales": 628840.03,
           "profit": 107322.82,
+          "profit_margin": 17.07,
           "orders": 1019
         },
         {
           "country": "Mexico",
           "sales": 622590.62,
           "profit": 102818.1,
+          "profit_margin": 16.51,
           "orders": 1329
+        }
+      ],
+      "segments": [
+        {
+          "segment": "Consumer",
+          "sales": 6507949.42,
+          "profit": 749239.78,
+          "profit_margin": 11.51,
+          "orders": 13305,
+          "customers": 818,
+          "average_order_value": 489.14
+        },
+        {
+          "segment": "Corporate",
+          "sales": 3824697.52,
+          "profit": 441208.33,
+          "profit_margin": 11.54,
+          "orders": 7732,
+          "customers": 476,
+          "average_order_value": 494.66
+        },
+        {
+          "segment": "Home Office",
+          "sales": 2309854.97,
+          "profit": 277009.18,
+          "profit_margin": 11.99,
+          "orders": 4717,
+          "customers": 296,
+          "average_order_value": 489.69
         }
       ],
       "shipping": [
         {
           "ship_mode": "Same Day",
           "orders": 1349,
-          "avg_ship_days": 0.04
+          "avg_ship_days": 0.04,
+          "sales": 667201.98,
+          "profit": 76173.07,
+          "shipping_cost": 115974.06,
+          "shipping_cost_ratio": 17.38
         },
         {
           "ship_mode": "First Class",
           "orders": 3847,
-          "avg_ship_days": 2.19
+          "avg_ship_days": 2.19,
+          "sales": 1830976.14,
+          "profit": 208104.68,
+          "shipping_cost": 308103.25,
+          "shipping_cost_ratio": 16.83
         },
         {
           "ship_mode": "Second Class",
           "orders": 5146,
-          "avg_ship_days": 3.22
+          "avg_ship_days": 3.22,
+          "sales": 2565671.68,
+          "profit": 292583.53,
+          "shipping_cost": 314112.62,
+          "shipping_cost_ratio": 12.24
         },
         {
           "ship_mode": "Standard Class",
           "orders": 15412,
-          "avg_ship_days": 5.0
+          "avg_ship_days": 5.0,
+          "sales": 7578652.11,
+          "profit": 890596.02,
+          "shipping_cost": 614630.76,
+          "shipping_cost_ratio": 8.11
+        }
+      ],
+      "discount_bands": [
+        {
+          "discount_band": "0%",
+          "line_items": 29009,
+          "sales": 6992410.95,
+          "profit": 1770695.27,
+          "profit_margin": 25.32
+        },
+        {
+          "discount_band": "0-10%",
+          "line_items": 4679,
+          "sales": 1962618.85,
+          "profit": 338189.26,
+          "profit_margin": 17.23
+        },
+        {
+          "discount_band": "10-20%",
+          "line_items": 6274,
+          "sales": 1757261.34,
+          "profit": 173254.84,
+          "profit_margin": 9.86
+        },
+        {
+          "discount_band": "20-30%",
+          "line_items": 967,
+          "sales": 382554.69,
+          "profit": -21155.61,
+          "profit_margin": -5.53
+        },
+        {
+          "discount_band": "Trên 30%",
+          "line_items": 10361,
+          "sales": 1547656.09,
+          "profit": -793526.47,
+          "profit_margin": -51.27
+        }
+      ],
+      "loss_products": [
+        {
+          "product_name": "Cubify CubeX 3D Printer Double Head Print",
+          "category": "Technology",
+          "orders": 3,
+          "sales": 11099.96,
+          "profit": -8879.97
+        },
+        {
+          "product_name": "Hoover Stove, White",
+          "category": "Office Supplies",
+          "orders": 6,
+          "sales": 11728.83,
+          "profit": -4958.16
+        },
+        {
+          "product_name": "Lexmark MX611dhe Monochrome Laser Printer",
+          "category": "Technology",
+          "orders": 4,
+          "sales": 16829.9,
+          "profit": -4589.97
+        },
+        {
+          "product_name": "Apple Smart Phone, Full Size",
+          "category": "Technology",
+          "orders": 4,
+          "sales": 7259.16,
+          "profit": -4574.64
+        },
+        {
+          "product_name": "Motorola Smart Phone, Cordless",
+          "category": "Technology",
+          "orders": 7,
+          "sales": 10348.76,
+          "profit": -3998.68
         }
       ]
     },
@@ -494,7 +715,18 @@
           "customers": 1309,
           "line_items": 8998,
           "countries": 133,
-          "profit_margin": 11.02
+          "profit_margin": 11.02,
+          "average_order_value": 500.32,
+          "profit_per_order": 55.12,
+          "sales_per_customer": 1726.09,
+          "shipping_cost_ratio": 10.81,
+          "average_discount": 14.82,
+          "loss_making_line_share": 24.69,
+          "loss_making_products": 1495,
+          "loss_making_product_share": 25.73,
+          "repeat_customer_rate": 74.71,
+          "top_20_customer_sales_share": 58.26,
+          "revenue_volatility_index": 42.35
         },
         "monthly": [
           {
@@ -586,17 +818,29 @@
           {
             "category": "Technology",
             "sales": 827652.06,
-            "profit": 109247.35
+            "profit": 109247.35,
+            "profit_margin": 13.2,
+            "orders": 1454,
+            "shipping_cost": 89350.95,
+            "avg_discount": 14.7
           },
           {
             "category": "Furniture",
             "sales": 756192.38,
-            "profit": 53696.93
+            "profit": 53696.93,
+            "profit_margin": 7.1,
+            "orders": 1483,
+            "shipping_cost": 82204.04,
+            "avg_discount": 17.33
           },
           {
             "category": "Office Supplies",
             "sales": 675606.45,
-            "profit": 85996.53
+            "profit": 85996.53,
+            "profit_margin": 12.73,
+            "orders": 3388,
+            "shipping_cost": 72716.09,
+            "avg_discount": 14.05
           }
         ],
         "markets": [
@@ -604,43 +848,57 @@
             "market": "APAC",
             "sales": 639245.26,
             "profit": 83031.58,
-            "orders": 966
+            "profit_margin": 12.99,
+            "orders": 966,
+            "customers": 572
           },
           {
             "market": "US",
             "sales": 484247.5,
             "profit": 49543.97,
-            "orders": 969
+            "profit_margin": 10.23,
+            "orders": 969,
+            "customers": 595
           },
           {
             "market": "EU",
             "sales": 478743.28,
             "profit": 61625.62,
-            "orders": 861
+            "profit_margin": 12.87,
+            "orders": 861,
+            "customers": 533
           },
           {
             "market": "LATAM",
             "sales": 385098.16,
             "profit": 36708.42,
-            "orders": 882
+            "profit_margin": 9.53,
+            "orders": 882,
+            "customers": 523
           },
           {
             "market": "EMEA",
             "sales": 136420.32,
             "profit": 5280.03,
-            "orders": 413
+            "profit_margin": 3.87,
+            "orders": 413,
+            "customers": 329
           },
           {
             "market": "Africa",
             "sales": 127187.27,
             "profit": 10944.11,
-            "orders": 389
+            "profit_margin": 8.6,
+            "orders": 389,
+            "customers": 302
           },
           {
             "market": "Canada",
             "sales": 8509.11,
             "profit": 1807.08,
-            "orders": 36
+            "profit_margin": 21.24,
+            "orders": 36,
+            "customers": 36
           }
         ],
         "countries": [
@@ -648,59 +906,184 @@
             "country": "United States",
             "sales": 484247.5,
             "profit": 49543.97,
+            "profit_margin": 10.23,
             "orders": 969
           },
           {
             "country": "China",
             "sales": 155693.61,
             "profit": 33181.38,
+            "profit_margin": 21.31,
             "orders": 177
           },
           {
             "country": "Australia",
             "sales": 137580.06,
             "profit": 17516.73,
+            "profit_margin": 12.73,
             "orders": 231
           },
           {
             "country": "France",
             "sales": 128194.52,
             "profit": 18435.68,
+            "profit_margin": 14.38,
             "orders": 217
           },
           {
             "country": "Mexico",
             "sales": 111361.05,
             "profit": 18521.75,
+            "profit_margin": 16.63,
             "orders": 234
           },
           {
             "country": "Germany",
             "sales": 110006.78,
             "profit": 19554.86,
+            "profit_margin": 17.78,
             "orders": 188
+          }
+        ],
+        "segments": [
+          {
+            "segment": "Consumer",
+            "sales": 1173671.28,
+            "profit": 117337.49,
+            "profit_margin": 10.0,
+            "orders": 2379,
+            "customers": 683,
+            "average_order_value": 493.35
+          },
+          {
+            "segment": "Corporate",
+            "sales": 691662.64,
+            "profit": 84746.94,
+            "profit_margin": 12.25,
+            "orders": 1347,
+            "customers": 387,
+            "average_order_value": 513.48
+          },
+          {
+            "segment": "Home Office",
+            "sales": 394116.98,
+            "profit": 46856.38,
+            "profit_margin": 11.89,
+            "orders": 790,
+            "customers": 239,
+            "average_order_value": 498.88
           }
         ],
         "shipping": [
           {
             "ship_mode": "Same Day",
             "orders": 231,
-            "avg_ship_days": 0.05
+            "avg_ship_days": 0.05,
+            "sales": 112000.85,
+            "profit": 18233.74,
+            "shipping_cost": 19284.75,
+            "shipping_cost_ratio": 17.22
           },
           {
             "ship_mode": "First Class",
             "orders": 687,
-            "avg_ship_days": 2.21
+            "avg_ship_days": 2.21,
+            "sales": 316413.26,
+            "profit": 27455.0,
+            "shipping_cost": 58989.81,
+            "shipping_cost_ratio": 18.64
           },
           {
             "ship_mode": "Second Class",
             "orders": 900,
-            "avg_ship_days": 3.21
+            "avg_ship_days": 3.21,
+            "sales": 446070.19,
+            "profit": 50860.95,
+            "shipping_cost": 55463.71,
+            "shipping_cost_ratio": 12.43
           },
           {
             "ship_mode": "Standard Class",
             "orders": 2698,
-            "avg_ship_days": 4.99
+            "avg_ship_days": 4.99,
+            "sales": 1384966.6,
+            "profit": 152391.12,
+            "shipping_cost": 110532.81,
+            "shipping_cost_ratio": 7.98
+          }
+        ],
+        "discount_bands": [
+          {
+            "discount_band": "0%",
+            "line_items": 5000,
+            "sales": 1220498.46,
+            "profit": 306758.58,
+            "profit_margin": 25.13
+          },
+          {
+            "discount_band": "0-10%",
+            "line_items": 773,
+            "sales": 318746.47,
+            "profit": 59286.96,
+            "profit_margin": 18.6
+          },
+          {
+            "discount_band": "10-20%",
+            "line_items": 1205,
+            "sales": 333851.0,
+            "profit": 33938.06,
+            "profit_margin": 10.17
+          },
+          {
+            "discount_band": "20-30%",
+            "line_items": 191,
+            "sales": 85431.26,
+            "profit": -5919.25,
+            "profit_margin": -6.93
+          },
+          {
+            "discount_band": "Trên 30%",
+            "line_items": 1829,
+            "sales": 300923.69,
+            "profit": -145123.53,
+            "profit_margin": -48.23
+          }
+        ],
+        "loss_products": [
+          {
+            "product_name": "GBC DocuBind P400 Electric Binding System",
+            "category": "Office Supplies",
+            "orders": 2,
+            "sales": 5443.96,
+            "profit": -2640.32
+          },
+          {
+            "product_name": "Hoover Stove, White",
+            "category": "Office Supplies",
+            "orders": 2,
+            "sales": 4022.93,
+            "profit": -1898.26
+          },
+          {
+            "product_name": "Lexmark MX611dhe Monochrome Laser Printer",
+            "category": "Technology",
+            "orders": 2,
+            "sales": 11219.93,
+            "profit": -1869.99
+          },
+          {
+            "product_name": "Hoover Stove, White",
+            "category": "Office Supplies",
+            "orders": 1,
+            "sales": 1359.86,
+            "profit": -1869.88
+          },
+          {
+            "product_name": "Office Star Executive Leather Armchair, Adjustable",
+            "category": "Furniture",
+            "orders": 1,
+            "sales": 1503.74,
+            "profit": -1842.1
           }
         ]
       },
@@ -712,7 +1095,18 @@
           "customers": 1373,
           "line_items": 10962,
           "countries": 129,
-          "profit_margin": 11.48
+          "profit_margin": 11.48,
+          "average_order_value": 488.58,
+          "profit_per_order": 56.1,
+          "sales_per_customer": 1950.06,
+          "shipping_cost_ratio": 10.59,
+          "average_discount": 14.13,
+          "loss_making_line_share": 24.53,
+          "loss_making_products": 1666,
+          "loss_making_product_share": 25.66,
+          "repeat_customer_rate": 76.69,
+          "top_20_customer_sales_share": 54.45,
+          "revenue_volatility_index": 34.84
         },
         "monthly": [
           {
@@ -804,17 +1198,29 @@
           {
             "category": "Technology",
             "sales": 1023441.51,
-            "profit": 145976.94
+            "profit": 145976.94,
+            "profit_margin": 14.26,
+            "orders": 1832,
+            "shipping_cost": 112037.77,
+            "avg_discount": 13.29
           },
           {
             "category": "Furniture",
             "sales": 858902.56,
-            "profit": 58132.83
+            "profit": 58132.83,
+            "profit_margin": 6.77,
+            "orders": 1725,
+            "shipping_cost": 89389.81,
+            "avg_discount": 16.49
           },
           {
             "category": "Office Supplies",
             "sales": 795094.63,
-            "profit": 103305.51
+            "profit": 103305.51,
+            "profit_margin": 12.99,
+            "orders": 4193,
+            "shipping_cost": 82064.31,
+            "avg_discount": 13.69
           }
         ],
         "markets": [
@@ -822,43 +1228,57 @@
             "market": "APAC",
             "sales": 762719.33,
             "profit": 89410.85,
-            "orders": 1182
+            "profit_margin": 11.72,
+            "orders": 1182,
+            "customers": 625
           },
           {
             "market": "EU",
             "sales": 655461.69,
             "profit": 83984.58,
-            "orders": 1149
+            "profit_margin": 12.81,
+            "orders": 1149,
+            "customers": 598
           },
           {
             "market": "US",
             "sales": 470532.51,
             "profit": 61618.6,
-            "orders": 1038
+            "profit_margin": 13.1,
+            "orders": 1038,
+            "customers": 573
           },
           {
             "market": "LATAM",
             "sales": 464733.3,
             "profit": 50184.9,
-            "orders": 1110
+            "profit_margin": 10.8,
+            "orders": 1110,
+            "customers": 575
           },
           {
             "market": "EMEA",
             "sales": 163414.36,
             "profit": 5419.58,
-            "orders": 516
+            "profit_margin": 3.32,
+            "orders": 516,
+            "customers": 372
           },
           {
             "market": "Africa",
             "sales": 144480.7,
             "profit": 11908.94,
-            "orders": 436
+            "profit_margin": 8.24,
+            "orders": 436,
+            "customers": 330
           },
           {
             "market": "Canada",
             "sales": 16096.8,
             "profit": 4887.84,
-            "orders": 49
+            "profit_margin": 30.37,
+            "orders": 49,
+            "customers": 48
           }
         ],
         "countries": [
@@ -866,59 +1286,184 @@
             "country": "United States",
             "sales": 470532.51,
             "profit": 61618.6,
+            "profit_margin": 13.1,
             "orders": 1038
           },
           {
             "country": "Australia",
             "sales": 203950.84,
             "profit": 25528.72,
+            "profit_margin": 12.52,
             "orders": 306
           },
           {
             "country": "France",
             "sales": 192184.58,
             "profit": 23034.74,
+            "profit_margin": 11.99,
             "orders": 334
           },
           {
             "country": "Mexico",
             "sales": 156964.97,
             "profit": 24955.27,
+            "profit_margin": 15.9,
             "orders": 299
           },
           {
             "country": "Germany",
             "sales": 154835.15,
             "profit": 24867.44,
+            "profit_margin": 16.06,
             "orders": 233
           },
           {
             "country": "India",
             "sales": 141493.04,
             "profit": 27438.8,
+            "profit_margin": 19.39,
             "orders": 185
+          }
+        ],
+        "segments": [
+          {
+            "segment": "Consumer",
+            "sales": 1463760.3,
+            "profit": 165799.19,
+            "profit_margin": 11.33,
+            "orders": 2898,
+            "customers": 708,
+            "average_order_value": 505.09
+          },
+          {
+            "segment": "Corporate",
+            "sales": 774459.57,
+            "profit": 90556.7,
+            "profit_margin": 11.69,
+            "orders": 1625,
+            "customers": 415,
+            "average_order_value": 476.59
+          },
+          {
+            "segment": "Home Office",
+            "sales": 439218.82,
+            "profit": 51059.39,
+            "profit_margin": 11.63,
+            "orders": 957,
+            "customers": 250,
+            "average_order_value": 458.95
           }
         ],
         "shipping": [
           {
             "ship_mode": "Same Day",
             "orders": 287,
-            "avg_ship_days": 0.05
+            "avg_ship_days": 0.05,
+            "sales": 147535.32,
+            "profit": 15737.7,
+            "shipping_cost": 25823.66,
+            "shipping_cost_ratio": 17.5
           },
           {
             "ship_mode": "First Class",
             "orders": 795,
-            "avg_ship_days": 2.18
+            "avg_ship_days": 2.18,
+            "sales": 389839.89,
+            "profit": 46786.47,
+            "shipping_cost": 64503.92,
+            "shipping_cost_ratio": 16.55
           },
           {
             "ship_mode": "Second Class",
             "orders": 1051,
-            "avg_ship_days": 3.23
+            "avg_ship_days": 3.23,
+            "sales": 507134.89,
+            "profit": 52974.43,
+            "shipping_cost": 61207.8,
+            "shipping_cost_ratio": 12.07
           },
           {
             "ship_mode": "Standard Class",
             "orders": 3347,
-            "avg_ship_days": 4.97
+            "avg_ship_days": 4.97,
+            "sales": 1632928.6,
+            "profit": 191916.69,
+            "shipping_cost": 131956.51,
+            "shipping_cost_ratio": 8.08
+          }
+        ],
+        "discount_bands": [
+          {
+            "discount_band": "0%",
+            "line_items": 6205,
+            "sales": 1474108.09,
+            "profit": 365167.69,
+            "profit_margin": 24.77
+          },
+          {
+            "discount_band": "0-10%",
+            "line_items": 1085,
+            "sales": 448515.21,
+            "profit": 79534.1,
+            "profit_margin": 17.73
+          },
+          {
+            "discount_band": "10-20%",
+            "line_items": 1313,
+            "sales": 378918.65,
+            "profit": 36297.47,
+            "profit_margin": 9.58
+          },
+          {
+            "discount_band": "20-30%",
+            "line_items": 192,
+            "sales": 65214.57,
+            "profit": -2943.09,
+            "profit_margin": -4.51
+          },
+          {
+            "discount_band": "Trên 30%",
+            "line_items": 2167,
+            "sales": 310682.17,
+            "profit": -170640.89,
+            "profit_margin": -54.92
+          }
+        ],
+        "loss_products": [
+          {
+            "product_name": "Cubify CubeX 3D Printer Double Head Print",
+            "category": "Technology",
+            "orders": 1,
+            "sales": 1799.99,
+            "profit": -2639.99
+          },
+          {
+            "product_name": "Bevis Conference Table, Fully Assembled",
+            "category": "Furniture",
+            "orders": 1,
+            "sales": 555.14,
+            "profit": -1924.54
+          },
+          {
+            "product_name": "Chromcraft Bull-Nose Wood Oval Conference Tables & Bases",
+            "category": "Furniture",
+            "orders": 1,
+            "sales": 4297.64,
+            "profit": -1862.31
+          },
+          {
+            "product_name": "Samsung Smart Phone, Cordless",
+            "category": "Technology",
+            "orders": 1,
+            "sales": 1363.2,
+            "profit": -1806.24
+          },
+          {
+            "product_name": "Apple Smart Phone, with Caller ID",
+            "category": "Technology",
+            "orders": 1,
+            "sales": 2875.77,
+            "profit": -1783.08
           }
         ]
       },
@@ -930,7 +1475,18 @@
           "customers": 1458,
           "line_items": 13799,
           "countries": 137,
-          "profit_margin": 11.95
+          "profit_margin": 11.95,
+          "average_order_value": 494.3,
+          "profit_per_order": 59.06,
+          "sales_per_customer": 2335.9,
+          "shipping_cost_ratio": 10.7,
+          "average_discount": 14.03,
+          "loss_making_line_share": 24.07,
+          "loss_making_products": 1861,
+          "loss_making_product_share": 25.5,
+          "repeat_customer_rate": 82.03,
+          "top_20_customer_sales_share": 55.02,
+          "revenue_volatility_index": 30.32
         },
         "monthly": [
           {
@@ -1022,17 +1578,29 @@
           {
             "category": "Technology",
             "sales": 1277305.25,
-            "profit": 173626.59
+            "profit": 173626.59,
+            "profit_margin": 13.59,
+            "orders": 2262,
+            "shipping_cost": 135537.58,
+            "avg_discount": 13.44
           },
           {
             "category": "Furniture",
             "sales": 1117723.55,
-            "profit": 84062.9
+            "profit": 84062.9,
+            "profit_margin": 7.52,
+            "orders": 2242,
+            "shipping_cost": 119053.2,
+            "avg_discount": 16.87
           },
           {
             "category": "Office Supplies",
             "sales": 1010717.64,
-            "profit": 149245.74
+            "profit": 149245.74,
+            "profit_margin": 14.77,
+            "orders": 5144,
+            "shipping_cost": 109959.17,
+            "avg_discount": 13.29
           }
         ],
         "markets": [
@@ -1040,43 +1608,57 @@
             "market": "APAC",
             "sales": 974580.86,
             "profit": 123103.13,
-            "orders": 1404
+            "profit_margin": 12.63,
+            "orders": 1404,
+            "customers": 657
           },
           {
             "market": "EU",
             "sales": 761680.36,
             "profit": 98275.18,
-            "orders": 1334
+            "profit_margin": 12.9,
+            "orders": 1334,
+            "customers": 665
           },
           {
             "market": "US",
             "sales": 608473.83,
             "profit": 81726.93,
-            "orders": 1310
+            "profit_margin": 13.43,
+            "orders": 1310,
+            "customers": 637
           },
           {
             "market": "LATAM",
             "sales": 608140.77,
             "profit": 61415.37,
-            "orders": 1477
+            "profit_margin": 10.1,
+            "orders": 1477,
+            "customers": 671
           },
           {
             "market": "Africa",
             "sales": 229068.79,
             "profit": 26687.11,
-            "orders": 625
+            "profit_margin": 11.65,
+            "orders": 625,
+            "customers": 436
           },
           {
             "market": "EMEA",
             "sales": 204640.68,
             "profit": 10598.04,
-            "orders": 682
+            "profit_margin": 5.18,
+            "orders": 682,
+            "customers": 471
           },
           {
             "market": "Canada",
             "sales": 19161.15,
             "profit": 5129.46,
-            "orders": 58
+            "profit_margin": 26.77,
+            "orders": 58,
+            "customers": 54
           }
         ],
         "countries": [
@@ -1084,59 +1666,184 @@
             "country": "United States",
             "sales": 608473.83,
             "profit": 81726.93,
+            "profit_margin": 13.43,
             "orders": 1310
           },
           {
             "country": "Australia",
             "sales": 268971.85,
             "profit": 28831.78,
+            "profit_margin": 10.72,
             "orders": 366
           },
           {
             "country": "France",
             "sales": 230114.68,
             "profit": 32416.48,
+            "profit_margin": 14.09,
             "orders": 391
           },
           {
             "country": "China",
             "sales": 195664.24,
             "profit": 44473.94,
+            "profit_margin": 22.73,
             "orders": 248
           },
           {
             "country": "Mexico",
             "sales": 158784.9,
             "profit": 28010.26,
+            "profit_margin": 17.64,
             "orders": 374
           },
           {
             "country": "India",
             "sales": 151729.08,
             "profit": 32896.86,
+            "profit_margin": 21.68,
             "orders": 204
+          }
+        ],
+        "segments": [
+          {
+            "segment": "Consumer",
+            "sales": 1729255.3,
+            "profit": 208427.73,
+            "profit_margin": 12.05,
+            "orders": 3484,
+            "customers": 742,
+            "average_order_value": 496.34
+          },
+          {
+            "segment": "Corporate",
+            "sales": 1064973.42,
+            "profit": 125707.94,
+            "profit_margin": 11.8,
+            "orders": 2121,
+            "customers": 442,
+            "average_order_value": 502.11
+          },
+          {
+            "segment": "Home Office",
+            "sales": 611517.72,
+            "profit": 72799.56,
+            "profit_margin": 11.9,
+            "orders": 1285,
+            "customers": 274,
+            "average_order_value": 475.89
           }
         ],
         "shipping": [
           {
             "ship_mode": "Same Day",
             "orders": 383,
-            "avg_ship_days": 0.03
+            "avg_ship_days": 0.03,
+            "sales": 193993.65,
+            "profit": 15049.27,
+            "shipping_cost": 33369.07,
+            "shipping_cost_ratio": 17.2
           },
           {
             "ship_mode": "First Class",
             "orders": 1012,
-            "avg_ship_days": 2.14
+            "avg_ship_days": 2.14,
+            "sales": 472891.67,
+            "profit": 58452.43,
+            "shipping_cost": 79689.48,
+            "shipping_cost_ratio": 16.85
           },
           {
             "ship_mode": "Second Class",
             "orders": 1386,
-            "avg_ship_days": 3.2
+            "avg_ship_days": 3.2,
+            "sales": 712171.93,
+            "profit": 77701.11,
+            "shipping_cost": 88526.3,
+            "shipping_cost_ratio": 12.43
           },
           {
             "ship_mode": "Standard Class",
             "orders": 4109,
-            "avg_ship_days": 5.04
+            "avg_ship_days": 5.04,
+            "sales": 2026689.2,
+            "profit": 255732.42,
+            "shipping_cost": 162965.1,
+            "shipping_cost_ratio": 8.04
+          }
+        ],
+        "discount_bands": [
+          {
+            "discount_band": "0%",
+            "line_items": 7901,
+            "sales": 1915020.03,
+            "profit": 495953.24,
+            "profit_margin": 25.9
+          },
+          {
+            "discount_band": "0-10%",
+            "line_items": 1227,
+            "sales": 516752.64,
+            "profit": 84448.53,
+            "profit_margin": 16.34
+          },
+          {
+            "discount_band": "10-20%",
+            "line_items": 1651,
+            "sales": 461981.69,
+            "profit": 42799.3,
+            "profit_margin": 9.26
+          },
+          {
+            "discount_band": "20-30%",
+            "line_items": 253,
+            "sales": 100656.76,
+            "profit": -3076.41,
+            "profit_margin": -3.06
+          },
+          {
+            "discount_band": "Trên 30%",
+            "line_items": 2767,
+            "sales": 411335.33,
+            "profit": -213189.43,
+            "profit_margin": -51.83
+          }
+        ],
+        "loss_products": [
+          {
+            "product_name": "Cubify CubeX 3D Printer Double Head Print",
+            "category": "Technology",
+            "orders": 1,
+            "sales": 4499.98,
+            "profit": -6599.98
+          },
+          {
+            "product_name": "Motorola Smart Phone, Cordless",
+            "category": "Technology",
+            "orders": 3,
+            "sales": 4563.74,
+            "profit": -4403.41
+          },
+          {
+            "product_name": "Hoover Stove, White",
+            "category": "Office Supplies",
+            "orders": 2,
+            "sales": 3966.27,
+            "profit": -3031.5
+          },
+          {
+            "product_name": "Apple Smart Phone, Full Size",
+            "category": "Technology",
+            "orders": 1,
+            "sales": 3499.16,
+            "profit": -3009.44
+          },
+          {
+            "product_name": "Office Star Executive Leather Armchair, Black",
+            "category": "Furniture",
+            "orders": 3,
+            "sales": 3552.47,
+            "profit": -2968.48
           }
         ]
       },
@@ -1148,7 +1855,18 @@
           "customers": 1511,
           "line_items": 17531,
           "countries": 138,
-          "profit_margin": 11.73
+          "profit_margin": 11.73,
+          "average_order_value": 484.87,
+          "profit_per_order": 56.85,
+          "sales_per_customer": 2845.71,
+          "shipping_cost_ratio": 10.71,
+          "average_discount": 14.33,
+          "loss_making_line_share": 24.59,
+          "loss_making_products": 2121,
+          "loss_making_product_share": 26.02,
+          "repeat_customer_rate": 87.62,
+          "top_20_customer_sales_share": 53.05,
+          "revenue_volatility_index": 33.37
         },
         "monthly": [
           {
@@ -1240,17 +1958,29 @@
           {
             "category": "Technology",
             "sales": 1616158.67,
-            "profit": 234927.85
+            "profit": 234927.85,
+            "profit_margin": 14.54,
+            "orders": 2882,
+            "shipping_cost": 170122.44,
+            "avg_discount": 13.16
           },
           {
             "category": "Furniture",
             "sales": 1378055.69,
-            "profit": 89312.06
+            "profit": 89312.06,
+            "profit_margin": 6.48,
+            "orders": 2790,
+            "shipping_cost": 149673.61,
+            "avg_discount": 16.68
           },
           {
             "category": "Office Supplies",
             "sales": 1305651.51,
-            "profit": 179926.06
+            "profit": 179926.06,
+            "profit_margin": 13.78,
+            "orders": 6746,
+            "shipping_cost": 140711.72,
+            "avg_discount": 13.97
           }
         ],
         "markets": [
@@ -1258,43 +1988,57 @@
             "market": "APAC",
             "sales": 1209198.69,
             "profit": 140454.5,
-            "orders": 1885
+            "profit_margin": 11.62,
+            "orders": 1885,
+            "customers": 733
           },
           {
             "market": "EU",
             "sales": 1042203.73,
             "profit": 128944.36,
-            "orders": 1778
+            "profit_margin": 12.37,
+            "orders": 1778,
+            "customers": 706
           },
           {
             "market": "US",
             "sales": 733947.02,
             "profit": 93507.51,
-            "orders": 1692
+            "profit_margin": 12.74,
+            "orders": 1692,
+            "customers": 693
           },
           {
             "market": "LATAM",
             "sales": 706632.94,
             "profit": 73334.8,
-            "orders": 1680
+            "profit_margin": 10.38,
+            "orders": 1680,
+            "customers": 691
           },
           {
             "market": "EMEA",
             "sales": 301685.94,
             "profit": 22600.32,
-            "orders": 932
+            "profit_margin": 7.49,
+            "orders": 932,
+            "customers": 544
           },
           {
             "market": "Africa",
             "sales": 283036.44,
             "profit": 39331.47,
-            "orders": 839
+            "profit_margin": 13.9,
+            "orders": 839,
+            "customers": 521
           },
           {
             "market": "Canada",
             "sales": 23161.11,
             "profit": 5993.01,
-            "orders": 62
+            "profit_margin": 25.88,
+            "orders": 62,
+            "customers": 60
           }
         ],
         "countries": [
@@ -1302,59 +2046,184 @@
             "country": "United States",
             "sales": 733947.02,
             "profit": 93507.51,
+            "profit_margin": 12.74,
             "orders": 1692
           },
           {
             "country": "Australia",
             "sales": 314733.1,
             "profit": 32030.2,
+            "profit_margin": 10.18,
             "orders": 517
           },
           {
             "country": "France",
             "sales": 308437.31,
             "profit": 35142.11,
+            "profit_margin": 11.39,
             "orders": 534
           },
           {
             "country": "China",
             "sales": 218979.29,
             "profit": 46793.99,
+            "profit_margin": 21.37,
             "orders": 301
           },
           {
             "country": "Germany",
             "sales": 216537.03,
             "profit": 35956.05,
+            "profit_margin": 16.61,
             "orders": 316
           },
           {
             "country": "India",
             "sales": 205031.98,
             "profit": 48807.68,
+            "profit_margin": 23.8,
             "orders": 266
+          }
+        ],
+        "segments": [
+          {
+            "segment": "Consumer",
+            "sales": 2141262.54,
+            "profit": 257675.36,
+            "profit_margin": 12.03,
+            "orders": 4544,
+            "customers": 784,
+            "average_order_value": 471.23
+          },
+          {
+            "segment": "Corporate",
+            "sales": 1293601.88,
+            "profit": 140196.75,
+            "profit_margin": 10.84,
+            "orders": 2639,
+            "customers": 452,
+            "average_order_value": 490.19
+          },
+          {
+            "segment": "Home Office",
+            "sales": 865001.45,
+            "profit": 106293.85,
+            "profit_margin": 12.29,
+            "orders": 1685,
+            "customers": 275,
+            "average_order_value": 513.35
           }
         ],
         "shipping": [
           {
             "ship_mode": "Same Day",
             "orders": 448,
-            "avg_ship_days": 0.04
+            "avg_ship_days": 0.04,
+            "sales": 213672.17,
+            "profit": 27152.37,
+            "shipping_cost": 37496.58,
+            "shipping_cost_ratio": 17.55
           },
           {
             "ship_mode": "First Class",
             "orders": 1353,
-            "avg_ship_days": 2.22
+            "avg_ship_days": 2.22,
+            "sales": 651831.31,
+            "profit": 75410.77,
+            "shipping_cost": 104920.04,
+            "shipping_cost_ratio": 16.1
           },
           {
             "ship_mode": "Second Class",
             "orders": 1809,
-            "avg_ship_days": 3.24
+            "avg_ship_days": 3.24,
+            "sales": 900294.68,
+            "profit": 111047.04,
+            "shipping_cost": 108914.81,
+            "shipping_cost_ratio": 12.1
           },
           {
             "ship_mode": "Standard Class",
             "orders": 5258,
-            "avg_ship_days": 5.0
+            "avg_ship_days": 5.0,
+            "sales": 2534067.71,
+            "profit": 290555.8,
+            "shipping_cost": 209176.34,
+            "shipping_cost_ratio": 8.25
+          }
+        ],
+        "discount_bands": [
+          {
+            "discount_band": "0%",
+            "line_items": 9903,
+            "sales": 2382784.37,
+            "profit": 602815.77,
+            "profit_margin": 25.3
+          },
+          {
+            "discount_band": "0-10%",
+            "line_items": 1594,
+            "sales": 678604.52,
+            "profit": 114919.67,
+            "profit_margin": 16.93
+          },
+          {
+            "discount_band": "10-20%",
+            "line_items": 2105,
+            "sales": 582509.98,
+            "profit": 60220.01,
+            "profit_margin": 10.34
+          },
+          {
+            "discount_band": "20-30%",
+            "line_items": 331,
+            "sales": 131252.1,
+            "profit": -9216.86,
+            "profit_margin": -7.02
+          },
+          {
+            "discount_band": "Trên 30%",
+            "line_items": 3598,
+            "sales": 524714.89,
+            "profit": -264572.62,
+            "profit_margin": -50.42
+          }
+        ],
+        "loss_products": [
+          {
+            "product_name": "Cubify CubeX 3D Printer Triple Head Print",
+            "category": "Technology",
+            "orders": 1,
+            "sales": 7999.98,
+            "profit": -3839.99
+          },
+          {
+            "product_name": "Ibico EPK-21 Electric Binding System",
+            "category": "Office Supplies",
+            "orders": 1,
+            "sales": 1889.99,
+            "profit": -2929.48
+          },
+          {
+            "product_name": "Barricks Conference Table, Rectangular",
+            "category": "Furniture",
+            "orders": 1,
+            "sales": 2171.16,
+            "profit": -2750.28
+          },
+          {
+            "product_name": "Lexmark MX611dhe Monochrome Laser Printer",
+            "category": "Technology",
+            "orders": 2,
+            "sales": 5609.97,
+            "profit": -2719.98
+          },
+          {
+            "product_name": "Hon Conference Table, Rectangular",
+            "category": "Furniture",
+            "orders": 1,
+            "sales": 1286.67,
+            "profit": -2380.35
           }
         ]
       }

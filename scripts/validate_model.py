@@ -82,6 +82,20 @@ def main() -> None:
     assert_foreign_key(lines, "fact_order_line", "order_key", orders, "fact_order", "order_key")
     assert_foreign_key(lines, "fact_order_line", "product_key", dimensions["dim_product"], "dim_product", "product_key")
 
+    required_measures = ["sales", "quantity", "discount", "profit", "shipping_cost"]
+    if lines[required_measures].isna().any(axis=None):
+        raise AssertionError("fact_order_line contains null analytical measures")
+    if (lines["quantity"] <= 0).any():
+        raise AssertionError("fact_order_line.quantity must be greater than zero")
+    if (lines["sales"] < 0).any():
+        raise AssertionError("fact_order_line.sales cannot be negative")
+    if ((lines["discount"] < 0) | (lines["discount"] > 1)).any():
+        raise AssertionError("fact_order_line.discount must be between zero and one")
+    if (lines["shipping_cost"] < 0).any():
+        raise AssertionError("fact_order_line.shipping_cost cannot be negative")
+    if (orders["ship_days"] < 0).any():
+        raise AssertionError("fact_order.ship_days cannot be negative")
+
     enriched = (
         lines.merge(orders[["order_key", "order_date_key", "customer_key", "geography_key"]], on="order_key")
         .merge(dimensions["dim_date"][["date_key", "year", "month"]], left_on="order_date_key", right_on="date_key")
@@ -136,7 +150,7 @@ def main() -> None:
     )
 
     print(
-        "Validation passed: "
+        "Validation passed: key, relationship, domain, temporal and mart checks; "
         f"{len(lines):,} line items, {len(orders):,} orders, "
         f"{len(dimensions['dim_customer']):,} customers, {len(dimensions['dim_product']):,} products."
     )

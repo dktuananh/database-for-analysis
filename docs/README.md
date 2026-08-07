@@ -1,22 +1,37 @@
 # GitHub Pages site
 
-Static website cho data portfolio. Không cần backend: dashboard đọc aggregate JSON đã được xuất từ mô hình Parquet.
+Website tĩnh cho Data Workbench. Không cần backend: analysis workspace đọc aggregate JSON được xuất từ mô hình Parquet.
+
+## Chạy local
+
+```powershell
+python scripts/build_dashboard_assets.py
+python -m http.server 8000 --directory docs
+```
+
+Mở:
+
+- Thư viện project: `http://localhost:8000/`
+- Global Superstore: `http://localhost:8000/global-superstore/`
+
+Không mở trực tiếp file HTML bằng `file://` vì trình duyệt có thể chặn request tới JSON asset.
 
 ## Cập nhật dữ liệu website
 
 Sau khi build lại Parquet, chạy:
 
 ```powershell
+python scripts/validate_model.py
 python scripts/build_dashboard_assets.py
 ```
 
-Sau đó commit cả thay đổi trong `data/` và `docs/assets/data/`.
+Commit thay đổi trong `data/` và `docs/assets/data/`. File JSON chỉ chứa aggregate cần cho UI; Parquet vẫn là source of truth.
 
 ## Deploy GitHub Pages
 
-Trong GitHub repository, mở **Settings > Pages**, chọn **Deploy from a branch**, rồi đặt:
+Trong GitHub repository, mở **Settings > Pages**, chọn **Deploy from a branch**, sau đó đặt:
 
 - Branch: `main`
 - Folder: `/docs`
 
-Trang chủ sẽ là `<github-pages-url>/` và dashboard Global Superstore là `<github-pages-url>/global-superstore/`.
+Route project giữ dạng `<github-pages-url>/<project-slug>/`.

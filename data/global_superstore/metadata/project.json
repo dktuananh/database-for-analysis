@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "id": "global_superstore",
+  "slug": "global-superstore",
+  "name": "Global Superstore",
+  "domain": "retail_analytics",
+  "difficulty": "beginner_to_intermediate",
+  "status": "published",
+  "description": "Retail sales, profit and fulfilment analysis from a dimensional Parquet model.",
+  "business_questions": [
+    "Sales và profit thay đổi thế nào theo tháng, quý và năm; khoảng cách tăng trưởng phản ánh gì về chất lượng tăng trưởng?",
+    "Category, sub-category và product nào tạo quy mô nhưng có profit margin thấp hoặc âm?",
+    "Discount band và shipping cost ratio liên quan thế nào đến profitability theo product và market?",
+    "Top 20% customer đóng góp bao nhiêu sales và profit; mức tập trung này có ổn định theo thời gian?",
+    "Market, region và country nào vừa có quy mô đủ lớn vừa có profit margin bền vững?",
+    "Ship mode nào cân bằng tốc độ, order volume, sales và cost pressure trong từng customer segment?"
+  ],
+  "scope": {
+    "analysis_type": [
+      "descriptive",
+      "diagnostic"
+    ],
+    "not_claimed": [
+      "causal effect of discount on profit",
+      "cohort retention",
+      "production forecast"
+    ],
+    "limitations": [
+      "historical snapshot without incremental load",
+      "no slowly changing dimensions",
+      "no currency normalization",
+      "source profit is not assumed to equal accounting net income"
+    ]
+  },
+  "learning_path": [
+    {
+      "id": "structure",
+      "title": "Tổ chức dữ liệu",
+      "output": "Hiểu grain, fact, dimension, key và partition"
+    },
+    {
+      "id": "query",
+      "title": "Truy vấn",
+      "output": "Tạo KPI bằng DuckDB SQL trực tiếp trên Parquet"
+    },
+    {
+      "id": "eda",
+      "title": "EDA",
+      "output": "Kiểm tra chất lượng, xu hướng và các lát cắt chính"
+    },
+    {
+      "id": "dashboard",
+      "title": "Dashboard",
+      "output": "Trình bày KPI và phát hiện bằng dashboard tương tác"
+    }
+  ]
+}

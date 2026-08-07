@@ -3,103 +3,721 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Dashboard phân tích doanh thu, lợi nhuận và vận hành Global Superstore." />
-    <title>Global Superstore | Data Workbench</title>
+    <meta
+      name="description"
+      content="Case study Global Superstore chuyên sâu: business context, dimensional modeling, data quality, DuckDB SQL, EDA và executive dashboard."
+    />
+    <title>Global Superstore | Professional analysis workspace</title>
     <link rel="stylesheet" href="../assets/site.css" />
   </head>
-  <body class="dashboard-page">
-    <div class="dashboard-shell">
-      <header class="topbar">
-        <a class="brand" href="../" aria-label="Data Workbench, trang chủ">
+  <body class="workspace-page">
+    <div class="workspace-shell" data-workspace>
+      <header class="app-topbar">
+        <a class="brand" href="../" aria-label="Data Workbench, trang project">
           <span class="brand-mark" aria-hidden="true">DW</span>
           <span>Data Workbench</span>
         </a>
-        <button class="menu-button" type="button" aria-label="Mở điều hướng" aria-expanded="false" data-menu-button>Menu</button>
-        <nav class="nav-links" aria-label="Điều hướng chính" data-menu>
-          <a href="../">Projects</a>
-        </nav>
+        <div class="topbar-project">
+          <span>Case study</span>
+          <strong>Global Superstore</strong>
+        </div>
+        <div class="topbar-actions">
+          <span class="dataset-status">Model v2.0 đã kiểm định</span>
+          <a class="button secondary compact-button" href="../">Thư viện project</a>
+        </div>
       </header>
 
-      <main>
-        <section class="dashboard-header" aria-labelledby="dashboard-title">
-          <div>
-            <p class="eyebrow">Retail analytics</p>
-            <h1 id="dashboard-title">Global Superstore</h1>
-            <p>Bức tranh doanh thu, lợi nhuận và fulfilment dựa trên fact order line cùng các dimension đã chuẩn hoá.</p>
-          </div>
-          <div class="filter-control">
-            <label for="year-filter">Phạm vi dữ liệu</label>
-            <select id="year-filter" disabled aria-describedby="filter-help">
-              <option>Đang tải</option>
-            </select>
-          </div>
-        </section>
-
-        <section class="dashboard-status" aria-live="polite">
-          <span id="filter-help">Dữ liệu được tổng hợp từ Parquet dimensional model.</span>
-          <strong id="status-message">Đang tải dữ liệu</strong>
-        </section>
-
-        <section id="dashboard-loading" aria-label="Đang tải dashboard">
-          <div class="loading-grid">
-            <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-          </div>
-        </section>
-
-        <section id="dashboard-error" class="error-state" hidden>
-          <h2>Không thể tải dashboard</h2>
-          <p>Hãy chạy <code>python scripts/build_dashboard_assets.py</code> để tạo lại file dữ liệu cho website.</p>
-        </section>
-
-        <section id="dashboard-content" hidden>
-          <div class="metrics-grid" aria-label="Các chỉ số chính">
-            <article class="metric-card"><p class="metric-label">Doanh thu</p><strong class="metric-value" id="metric-sales">-</strong><span class="metric-note" id="metric-lines">-</span></article>
-            <article class="metric-card"><p class="metric-label">Lợi nhuận</p><strong class="metric-value" id="metric-profit">-</strong><span class="metric-note" id="metric-margin">-</span></article>
-            <article class="metric-card"><p class="metric-label">Đơn hàng</p><strong class="metric-value" id="metric-orders">-</strong><span class="metric-note" id="metric-customers">-</span></article>
-            <article class="metric-card"><p class="metric-label">Độ phủ thị trường</p><strong class="metric-value" id="metric-countries">-</strong><span class="metric-note">quốc gia có giao dịch</span></article>
+      <main class="analysis-app">
+        <aside class="workspace-sidebar" aria-label="Lộ trình phân tích">
+          <div class="sidebar-project">
+            <span class="sidebar-label">Analysis path</span>
+            <strong class="nav-copy">Global Superstore</strong>
+            <p class="nav-copy">Retail analytics, 2011-2014</p>
           </div>
 
-          <div class="dashboard-grid">
-            <section class="dashboard-panel" aria-labelledby="trend-title">
-              <h2 id="trend-title">Xu hướng doanh thu và lợi nhuận</h2>
-              <p class="panel-copy">Doanh thu và lợi nhuận theo tháng đặt cùng một thang đo để nhìn rõ biến động.</p>
-              <canvas id="trend-chart" class="chart-canvas" aria-label="Biểu đồ xu hướng doanh thu và lợi nhuận theo tháng" role="img"></canvas>
-              <div class="chart-legend" aria-hidden="true"><span>Doanh thu</span><span>Lợi nhuận</span></div>
+          <nav class="lesson-nav" aria-label="Các chặng phân tích">
+            <button class="lesson-nav-item" type="button" data-stage-target="overview" aria-current="step">
+              <span class="lesson-index">00</span>
+              <span class="nav-copy"><strong>Business framing</strong><small>Bối cảnh và analytical contract</small></span>
+              <span class="lesson-state" aria-hidden="true"></span>
+            </button>
+            <button class="lesson-nav-item" type="button" data-stage-target="structure">
+              <span class="lesson-index">01</span>
+              <span class="nav-copy"><strong>Data architecture</strong><small>Grain, model và quality gates</small></span>
+              <span class="lesson-state" aria-hidden="true"></span>
+            </button>
+            <button class="lesson-nav-item" type="button" data-stage-target="query">
+              <span class="lesson-index">02</span>
+              <span class="nav-copy"><strong>Analytical SQL</strong><small>Protocol, kiểm định và KPI</small></span>
+              <span class="lesson-state" aria-hidden="true"></span>
+            </button>
+            <button class="lesson-nav-item" type="button" data-stage-target="eda">
+              <span class="lesson-index">03</span>
+              <span class="nav-copy"><strong>EDA & evidence</strong><small>Khám phá, giả thuyết, giới hạn</small></span>
+              <span class="lesson-state" aria-hidden="true"></span>
+            </button>
+            <button class="lesson-nav-item" type="button" data-stage-target="dashboard">
+              <span class="lesson-index">04</span>
+              <span class="nav-copy"><strong>Decision dashboard</strong><small>KPI, risk và methodology</small></span>
+              <span class="lesson-state" aria-hidden="true"></span>
+            </button>
+          </nav>
+
+          <div class="sidebar-progress">
+            <div class="sidebar-progress-copy">
+              <span>Tiến độ</span>
+              <strong data-progress-label>0/5 chặng</strong>
+            </div>
+            <progress value="0" max="5" data-progress aria-label="Tiến độ hoàn thành project"></progress>
+            <button class="text-button nav-copy" type="button" data-reset-progress>Đặt lại tiến độ</button>
+          </div>
+
+          <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-label="Thu gọn thanh điều hướng">
+            <span aria-hidden="true">‹</span><span class="nav-copy">Thu gọn</span>
+          </button>
+        </aside>
+
+        <div class="lesson-workspace">
+          <div class="lesson-toolbar">
+            <div>
+              <span data-stage-position>Chặng 1/5</span>
+              <strong data-stage-title>Business framing</strong>
+            </div>
+            <span class="toolbar-save-state" data-save-state>Tiến độ lưu trên trình duyệt</span>
+          </div>
+
+          <div class="lesson-content" aria-live="polite">
+            <section class="lesson-stage" data-stage="overview" aria-labelledby="overview-title">
+              <header class="lesson-header wide-header">
+                <p class="lesson-kicker">Business framing</p>
+                <h1 id="overview-title">Từ dữ liệu giao dịch đến quyết định tăng trưởng có kiểm soát</h1>
+                <p>Case study mô phỏng một nhà bán lẻ đa quốc gia cần cân bằng tăng trưởng doanh thu, chất lượng lợi nhuận, giá trị khách hàng và hiệu quả fulfilment.</p>
+              </header>
+
+              <div class="stage-summary" aria-label="Tóm tắt phương pháp">
+                <div><span>Vai trò</span><strong>Analytics consultant</strong></div>
+                <div><span>Đơn vị quan sát</span><strong>Order header + order line</strong></div>
+                <div><span>Phương pháp</span><strong>Descriptive + diagnostic</strong></div>
+                <div><span>Đầu ra</span><strong>Decision dashboard</strong></div>
+              </div>
+
+              <section class="executive-brief" aria-labelledby="brief-title">
+                <div class="brief-main">
+                  <span class="section-label">Executive brief</span>
+                  <h2 id="brief-title">Bài toán không chỉ là “doanh thu bao nhiêu”</h2>
+                  <p>Ban điều hành cần biết tăng trưởng đến từ đâu, lợi nhuận có theo kịp doanh thu hay không, discount và shipping cost tạo áp lực ở đâu, và mức độ tập trung doanh thu vào nhóm khách hàng lớn.</p>
+                </div>
+                <dl class="brief-constraints">
+                  <div><dt>Decision horizon</dt><dd>Ngắn và trung hạn</dd></div>
+                  <div><dt>Time coverage</dt><dd>01/2011 - 12/2014</dd></div>
+                  <div><dt>Data behavior</dt><dd>Historical snapshot</dd></div>
+                  <div><dt>Currency</dt><dd>Source unit, hiển thị USD</dd></div>
+                </dl>
+              </section>
+
+              <div class="overview-metrics" aria-label="Phạm vi dữ liệu">
+                <div><span>Dòng giao dịch</span><strong id="overview-lines">51.290</strong><small>order-line grain</small></div>
+                <div><span>Đơn hàng</span><strong id="overview-orders">25.754</strong><small>order-header grain</small></div>
+                <div><span>Khách hàng</span><strong id="overview-customers">1.590</strong><small>active in snapshot</small></div>
+                <div><span>Quốc gia</span><strong id="overview-countries">147</strong><small>có giao dịch</small></div>
+              </div>
+
+              <section class="content-panel analytical-contract" aria-labelledby="contract-title">
+                <div class="panel-heading horizontal">
+                  <div><span>Analytical contract</span><h2 id="contract-title">Câu hỏi, metric và quyết định phải nối thành một chuỗi</h2></div>
+                  <span class="status-badge">5 analysis pillars</span>
+                </div>
+                <div class="table-wrap">
+                  <table class="data-table contract-table">
+                    <thead>
+                      <tr><th>Trụ cột</th><th>Câu hỏi phân tích</th><th>Metric chính</th><th>Chiều phân tích</th><th>Quyết định hỗ trợ</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td><strong>Executive growth</strong></td><td>Doanh thu và profit có cùng tăng trưởng?</td><td>Sales, profit, margin, YoY, growth gap</td><td>Month, quarter, year</td><td>Đánh giá chất lượng tăng trưởng</td></tr>
+                      <tr><td><strong>Profitability risk</strong></td><td>Discount và shipping cost làm suy giảm profit ở đâu?</td><td>Margin, discount band, shipping cost ratio</td><td>Category, product, market</td><td>Rà soát pricing và portfolio</td></tr>
+                      <tr><td><strong>Customer value</strong></td><td>Giá trị và mức tập trung doanh thu nằm ở nhóm nào?</td><td>AOV, sales/customer, repeat rate, top 20% share</td><td>Customer, segment</td><td>Ưu tiên retention và phân khúc</td></tr>
+                      <tr><td><strong>Market performance</strong></td><td>Quy mô thị trường có chuyển thành lợi nhuận?</td><td>Sales share, profit, margin, order volume</td><td>Market, region, country</td><td>Phân bổ nguồn lực thị trường</td></tr>
+                      <tr><td><strong>Planning</strong></td><td>Có tín hiệu seasonality hoặc trend break?</td><td>Monthly trend, volatility, forecast error</td><td>Time, scenario</td><td>Lập kế hoạch và cảnh báo sớm</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <div class="content-split decision-layout">
+                <section class="content-panel" aria-labelledby="deliverables-title">
+                  <div class="panel-heading"><span>Deliverables</span><h2 id="deliverables-title">Definition of done</h2></div>
+                  <ol class="deliverable-list">
+                    <li><span>01</span><div><strong>Reliable data model</strong><p>Grain, primary key, foreign key và lineage được khai báo bằng machine-readable catalog.</p></div></li>
+                    <li><span>02</span><div><strong>Reproducible analysis</strong><p>Mọi KPI có query, công thức, filter context và phép reconciliation.</p></div></li>
+                    <li><span>03</span><div><strong>Evidence-based insight</strong><p>Phân biệt rõ số đo, diễn giải, giả thuyết và khuyến nghị.</p></div></li>
+                    <li><span>04</span><div><strong>Decision-ready dashboard</strong><p>Chỉ giữ metric có vai trò trong quyết định quản trị.</p></div></li>
+                  </ol>
+                </section>
+
+                <aside class="content-panel scope-panel" aria-labelledby="scope-title">
+                  <div class="panel-heading"><span>Scope control</span><h2 id="scope-title">Điều project chưa kết luận</h2></div>
+                  <ul class="caveat-list">
+                    <li><strong>Không suy luận nhân quả</strong><span>Tương quan discount và profit không chứng minh discount gây ra lỗ.</span></li>
+                    <li><strong>Không gọi repeat rate là retention</strong><span>Snapshot không có cohort hoặc trạng thái churn.</span></li>
+                    <li><strong>Không có FX normalization</strong><span>So sánh quốc gia giả định sales đã cùng đơn vị nguồn.</span></li>
+                    <li><strong>Forecast chưa production-ready</strong><span>Cần backtest, holdout và metric sai số trước khi công bố.</span></li>
+                  </ul>
+                </aside>
+              </div>
             </section>
-            <section class="dashboard-panel" aria-labelledby="category-title">
-              <h2 id="category-title">Category performance</h2>
-              <p class="panel-copy">Doanh thu theo nhóm sản phẩm.</p>
-              <canvas id="category-chart" class="chart-canvas" aria-label="Biểu đồ doanh thu theo nhóm sản phẩm" role="img"></canvas>
+
+            <section class="lesson-stage" data-stage="structure" aria-labelledby="structure-title" hidden>
+              <header class="lesson-header wide-header">
+                <p class="lesson-kicker">Data architecture</p>
+                <h1 id="structure-title">Thiết kế grain trước, tối ưu storage sau</h1>
+                <p>Mô hình hiện hành tách order header khỏi order line để measure vận hành và measure sản phẩm không bị đếm lặp. Parquet là source of truth, không phụ thuộc database server.</p>
+              </header>
+
+              <section class="architecture-pipeline" aria-label="Luồng dữ liệu">
+                <div><span>Source</span><strong>CSV snapshot</strong><small>51.290 source rows</small></div>
+                <b aria-hidden="true">→</b>
+                <div><span>Conformed</span><strong>6 dimensions</strong><small>stable analytical keys</small></div>
+                <b aria-hidden="true">→</b>
+                <div><span>Events</span><strong>2 fact grains</strong><small>header and line</small></div>
+                <b aria-hidden="true">→</b>
+                <div><span>Serving</span><strong>2 KPI marts</strong><small>dashboard aggregates</small></div>
+              </section>
+
+              <section class="grain-comparison" aria-labelledby="grain-title">
+                <div class="section-intro">
+                  <span class="section-label">Fact grain</span>
+                  <h2 id="grain-title">Một business event, hai cấp độ quan sát</h2>
+                  <p>Nguyên tắc: measure chỉ được tổng hợp trên fact có grain phù hợp.</p>
+                </div>
+                <div class="grain-grid">
+                  <article>
+                    <span class="grain-code">fact_order</span>
+                    <strong>1 dòng = 1 order header duy nhất</strong>
+                    <p>Dùng cho order count, customer, order date, ship date, ship days, ship mode và priority.</p>
+                    <dl><div><dt>Primary key</dt><dd>order_key</dd></div><div><dt>Rows</dt><dd id="model-order-rows">25.754</dd></div><div><dt>Partition</dt><dd>order_year</dd></div></dl>
+                  </article>
+                  <article>
+                    <span class="grain-code">fact_order_line</span>
+                    <strong>1 dòng = 1 sản phẩm trong đơn</strong>
+                    <p>Dùng cho sales, quantity, discount, profit, shipping cost và product mix.</p>
+                    <dl><div><dt>Primary key</dt><dd>line_item_key</dd></div><div><dt>Rows</dt><dd id="model-line-rows">51.290</dd></div><div><dt>Partition</dt><dd>order_year</dd></div></dl>
+                  </article>
+                </div>
+                <div class="grain-rule"><strong>Anti-double-counting rule</strong><span>Khi query từ fact_order_line, số đơn phải là <code>COUNT(DISTINCT order_key)</code>. Không dùng <code>COUNT(*)</code> để đại diện order volume.</span></div>
+              </section>
+
+              <section class="content-panel model-panel" aria-labelledby="model-title">
+                <div class="panel-heading horizontal">
+                  <div><span>Dimensional model</span><h2 id="model-title">Relationship map và role-playing date</h2></div>
+                  <span class="status-badge">8 many-to-one contracts</span>
+                </div>
+                <div class="model-flow detailed-model" aria-label="Sơ đồ quan hệ dữ liệu">
+                  <div class="model-column dimensions-column">
+                    <span>Conformed dimensions</span>
+                    <strong>dim_customer</strong><strong>dim_geography</strong><strong>dim_ship_mode</strong><strong>dim_order_priority</strong>
+                  </div>
+                  <div class="model-join" aria-hidden="true">many to one →</div>
+                  <div class="model-column facts-column">
+                    <span>Order header</span>
+                    <strong>fact_order</strong>
+                    <small>order_date_key → dim_date</small>
+                    <small>ship_date_key → dim_date</small>
+                  </div>
+                  <div class="model-join" aria-hidden="true">one to many →</div>
+                  <div class="model-column facts-column">
+                    <span>Order detail</span>
+                    <strong>fact_order_line</strong>
+                    <small>product_key → dim_product</small>
+                  </div>
+                  <div class="model-join" aria-hidden="true">aggregate →</div>
+                  <div class="model-column marts-column">
+                    <span>Serving marts</span>
+                    <strong>monthly_sales_kpis</strong><strong>country_sales_kpis</strong>
+                  </div>
+                </div>
+              </section>
+
+              <section class="content-panel modeling-decisions" aria-labelledby="decisions-title">
+                <div class="panel-heading"><span>Modeling decision log</span><h2 id="decisions-title">Các quyết định có thể bảo vệ trong design review</h2></div>
+                <div class="decision-table">
+                  <div class="decision-row decision-head"><span>Vấn đề nguồn</span><span>Quyết định triển khai</span><span>Lý do và trade-off</span></div>
+                  <div class="decision-row"><strong>Order ID không duy nhất toàn cục</strong><p>Tạo <code>order_key</code> deterministic từ toàn bộ natural grain của order header.</p><p>Join ổn định và tái tạo được; business ID vẫn được giữ làm attribute.</p></div>
+                  <div class="decision-row"><strong>Product ID thay đổi mô tả</strong><p>Tạo <code>product_key</code> từ Product ID cùng category, sub-category và product name.</p><p>Không ép một mô tả tùy ý thành “đúng”; đổi lại một Product ID có thể ánh xạ nhiều analytical member.</p></div>
+                  <div class="decision-row"><strong>Geography không có natural key ổn định</strong><p>Hash đầy đủ market, region, country, state, city và postal code.</p><p>Loại join bằng free text trong fact; cần governance nếu geography thay đổi theo thời gian.</p></div>
+                  <div class="decision-row"><strong>Encoding và date format không mặc định</strong><p>Đọc CSV bằng Windows-1252 và parse date với format <code>%d-%m-%Y</code>, lỗi thì dừng build.</p><p>Transformation tường minh và audit được; tránh phụ thuộc locale của môi trường chạy.</p></div>
+                  <div class="decision-row"><strong>Date có hai vai trò</strong><p>Dùng một <code>dim_date</code>, join bằng order_date_key hoặc ship_date_key theo ngữ cảnh.</p><p>Tránh duplicate date dimension nhưng query phải đặt alias rõ ràng.</p></div>
+                  <div class="decision-row"><strong>Fact cần scan theo năm</strong><p>Hive partition cả hai fact bằng <code>order_year</code>; field nằm ở directory.</p><p>Partition pruning tốt hơn, không lặp giá trị năm trong mỗi row Parquet.</p></div>
+                </div>
+              </section>
+
+              <section class="content-panel table-catalog" aria-labelledby="catalog-title">
+                <div class="panel-heading horizontal">
+                  <div><span>Data catalog</span><h2 id="catalog-title">Logical datasets và business grain</h2></div>
+                  <span class="status-badge">10 datasets, 16 files</span>
+                </div>
+                <div class="table-wrap">
+                  <table class="data-table catalog-table professional-table">
+                    <thead><tr><th>Dataset</th><th>Layer</th><th>Grain</th><th>Key / partition</th><th>Analytical use</th></tr></thead>
+                    <tbody>
+                      <tr><td><code>dim_date</code></td><td>Dimension</td><td>1 calendar date</td><td>date_key</td><td>Time intelligence, hai date role</td></tr>
+                      <tr><td><code>dim_customer</code></td><td>Dimension</td><td>1 source customer</td><td>customer_key</td><td>Customer và segment analysis</td></tr>
+                      <tr><td><code>dim_product</code></td><td>Dimension</td><td>1 distinct product attribute set</td><td>product_key</td><td>Category, sub-category, product</td></tr>
+                      <tr><td><code>dim_geography</code></td><td>Dimension</td><td>1 full geography combination</td><td>geography_key</td><td>Market, region, country drill-down</td></tr>
+                      <tr><td><code>dim_ship_mode</code></td><td>Dimension</td><td>1 shipping mode</td><td>ship_mode_key</td><td>Fulfilment comparison</td></tr>
+                      <tr><td><code>dim_order_priority</code></td><td>Dimension</td><td>1 priority label</td><td>order_priority_key</td><td>Service-level segmentation</td></tr>
+                      <tr><td><code>fact_order</code></td><td>Fact</td><td>1 order header</td><td>order_key / order_year</td><td>Order, customer, delivery metrics</td></tr>
+                      <tr><td><code>fact_order_line</code></td><td>Fact</td><td>1 source row</td><td>line_item_key / order_year</td><td>Financial và product metrics</td></tr>
+                      <tr><td><code>monthly_sales_kpis</code></td><td>Mart</td><td>1 order month</td><td>month_start</td><td>Trend dashboard</td></tr>
+                      <tr><td><code>country_sales_kpis</code></td><td>Mart</td><td>1 country</td><td>country</td><td>Geography dashboard</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section class="content-panel quality-panel" aria-labelledby="quality-title">
+                <div class="panel-heading horizontal"><div><span>Data quality framework</span><h2 id="quality-title">Quality gates chạy trước mọi phân tích</h2></div><span class="quality-status">Validation passed</span></div>
+                <div class="quality-metrics">
+                  <div><span>Primary keys</span><strong id="quality-primary">Đang kiểm tra</strong></div>
+                  <div><span>Referential integrity</span><strong id="quality-foreign">Đang kiểm tra</strong></div>
+                  <div><span>Domain rules</span><strong id="quality-domain">Đang kiểm tra</strong></div>
+                  <div><span>Temporal rules</span><strong id="quality-temporal">Đang kiểm tra</strong></div>
+                </div>
+                <div class="quality-rule-grid">
+                  <div><strong>Completeness</strong><span>Measure bắt buộc không null; source rows khớp fact line.</span></div>
+                  <div><strong>Uniqueness</strong><span>Primary key của 6 dimension và 2 fact là duy nhất.</span></div>
+                  <div><strong>Validity</strong><span>Quantity &gt; 0, sales ≥ 0, discount trong [0, 1].</span></div>
+                  <div><strong>Consistency</strong><span>Không có orphan key; order date không sau ship date.</span></div>
+                  <div><strong>Reconciliation</strong><span>Monthly và country marts khớp phép tổng hợp từ facts.</span></div>
+                  <div><strong>Auditability</strong><span>Catalog ghi schema, compression, file rows và lineage.</span></div>
+                </div>
+                <div class="command-row"><code>python scripts/validate_model.py</code><button type="button" class="copy-button" data-copy-text="python scripts/validate_model.py">Sao chép</button></div>
+              </section>
+
+              <section class="method-note" aria-labelledby="limitations-title">
+                <div><span>Model limitations</span><h2 id="limitations-title">Giới hạn phải được giữ cùng dataset</h2></div>
+                <ul>
+                  <li>Snapshot lịch sử, chưa có incremental load hoặc late-arriving facts.</li>
+                  <li>Chưa triển khai Slowly Changing Dimension và effective dating.</li>
+                  <li>Chưa chuẩn hóa tỷ giá theo country và order date.</li>
+                  <li><code>profit</code> là measure từ source, không mặc định tương đương lợi nhuận kế toán sau thuế.</li>
+                </ul>
+              </section>
+            </section>
+
+            <section class="lesson-stage" data-stage="query" aria-labelledby="query-title" hidden>
+              <header class="lesson-header wide-header">
+                <p class="lesson-kicker">Analytical SQL</p>
+                <h1 id="query-title">Query phải đúng grain, có denominator và tự kiểm chứng</h1>
+                <p>DuckDB đọc Parquet trực tiếp. Mỗi analysis query đi qua bốn lớp: register views, validate contract, compute metric và reconcile output.</p>
+              </header>
+
+              <section class="query-protocol" aria-labelledby="protocol-title">
+                <div class="section-intro"><span class="section-label">Query protocol</span><h2 id="protocol-title">Quy trình phân tích tái lập</h2></div>
+                <ol>
+                  <li><span>01</span><strong>Register</strong><p>Tạo logical view, bật Hive partitioning và đặt alias có ngữ nghĩa.</p></li>
+                  <li><span>02</span><strong>Validate</strong><p>Kiểm row count, uniqueness, orphan key và phạm vi date trước khi aggregate.</p></li>
+                  <li><span>03</span><strong>Compute</strong><p>Khai báo numerator, denominator, filter context và grain của kết quả.</p></li>
+                  <li><span>04</span><strong>Reconcile</strong><p>Đối chiếu subtotal với control total; document mọi exclusion.</p></li>
+                </ol>
+              </section>
+
+              <section class="setup-strip" aria-labelledby="setup-title">
+                <div><span>Environment</span><h2 id="setup-title">Chạy từ repository root</h2><p>Không cần PostgreSQL hoặc data warehouse server.</p></div>
+                <div class="setup-commands">
+                  <div class="command-row"><code>pip install duckdb</code><button type="button" class="copy-button" data-copy-text="pip install duckdb">Sao chép</button></div>
+                  <div class="command-row"><code>duckdb</code><button type="button" class="copy-button" data-copy-text="duckdb">Sao chép</button></div>
+                  <div class="command-row"><code>.read sql/demo_analysis.sql</code><button type="button" class="copy-button" data-copy-text=".read sql/demo_analysis.sql">Sao chép</button></div>
+                </div>
+              </section>
+
+              <section class="query-block" aria-labelledby="scan-title">
+                <div class="query-explanation">
+                  <span>Register views</span>
+                  <h2 id="scan-title">Đọc fact từ Hive partitions</h2>
+                  <p><code>hive_partitioning = true</code> khôi phục <code>order_year</code> từ directory. Filter theo năm có thể loại partition trước khi scan row groups.</p>
+                  <div class="query-contract"><strong>Output grain</strong><span>View giữ nguyên source fact grain.</span><strong>Control</strong><span>51.290 line items, 2011-2014.</span></div>
+                </div>
+                <div class="code-window query-code">
+                  <div class="code-window-header"><span>01_register_views.sql</span><button type="button" class="copy-button inverse" data-copy-target="sql-scan">Sao chép</button></div>
+                  <pre><code id="sql-scan">CREATE OR REPLACE VIEW fact_order_line AS
+SELECT *
+FROM read_parquet(
+  'data/global_superstore/facts/fact_order_line/**/*.parquet',
+  hive_partitioning = true
+);
+
+SELECT
+  order_year,
+  COUNT(*) AS line_items,
+  ROUND(SUM(sales), 2) AS control_sales,
+  ROUND(SUM(profit), 2) AS control_profit
+FROM fact_order_line
+GROUP BY order_year
+ORDER BY order_year;</code></pre>
+                </div>
+              </section>
+
+              <section class="query-block reverse" aria-labelledby="quality-query-title">
+                <div class="query-explanation">
+                  <span>Quality assertion</span>
+                  <h2 id="quality-query-title">Chứng minh join không làm mất dòng</h2>
+                  <p>Anti-join đo orphan key. Kết quả mong đợi là 0; nếu lớn hơn 0, dừng analysis và xử lý model.</p>
+                  <div class="query-contract"><strong>Test type</strong><span>Referential integrity</span><strong>Expected</strong><span>orphan_products = 0</span></div>
+                </div>
+                <div class="code-window query-code">
+                  <div class="code-window-header"><span>02_quality_assertion.sql</span><button type="button" class="copy-button inverse" data-copy-target="sql-quality">Sao chép</button></div>
+                  <pre><code id="sql-quality">SELECT COUNT(*) AS orphan_products
+FROM fact_order_line AS line
+LEFT JOIN dim_product AS product
+  USING (product_key)
+WHERE product.product_key IS NULL;
+
+SELECT
+  COUNT(*) AS line_items,
+  COUNT(DISTINCT line_item_key) AS unique_lines,
+  COUNT(DISTINCT order_key) AS orders
+FROM fact_order_line;</code></pre>
+                </div>
+              </section>
+
+              <section class="query-block" aria-labelledby="analysis-query-title">
+                <div class="query-explanation">
+                  <span>Executive KPI</span>
+                  <h2 id="analysis-query-title">Growth và profitability theo category</h2>
+                  <p>Fact line cung cấp measure tài chính; fact order cung cấp order date; dim product cung cấp analytical hierarchy.</p>
+                  <div class="grain-warning"><strong>Denominator rule</strong><span>Profit margin = SUM(profit) / SUM(sales). Không lấy trung bình margin từng dòng.</span></div>
+                </div>
+                <div class="code-window query-code">
+                  <div class="code-window-header"><span>03_category_performance.sql</span><button type="button" class="copy-button inverse" data-copy-target="sql-analysis">Sao chép</button></div>
+                  <pre><code id="sql-analysis">SELECT
+  date.year_month,
+  product.category,
+  COUNT(DISTINCT ord.order_key) AS orders,
+  ROUND(SUM(line.sales), 2) AS sales,
+  ROUND(SUM(line.profit), 2) AS profit,
+  ROUND(
+    SUM(line.profit)
+    / NULLIF(SUM(line.sales), 0) * 100,
+    2
+  ) AS profit_margin_pct
+FROM fact_order_line AS line
+JOIN fact_order AS ord USING (order_key)
+JOIN dim_date AS date
+  ON date.date_key = ord.order_date_key
+JOIN dim_product AS product USING (product_key)
+WHERE ord.order_year = 2014
+GROUP BY date.year_month, product.category
+ORDER BY date.year_month, sales DESC;</code></pre>
+                </div>
+              </section>
+
+              <section class="query-block reverse" aria-labelledby="risk-query-title">
+                <div class="query-explanation">
+                  <span>Diagnostic query</span>
+                  <h2 id="risk-query-title">Định lượng discount risk theo band</h2>
+                  <p>Bucket giúp quan sát mối liên hệ phi tuyến giữa discount và margin. Đây là association, chưa phải causal effect.</p>
+                  <div class="query-contract"><strong>Output grain</strong><span>1 row / discount band</span><strong>Decision</strong><span>Xác định band cần drill-down theo product và market.</span></div>
+                </div>
+                <div class="code-window query-code">
+                  <div class="code-window-header"><span>04_discount_risk.sql</span><button type="button" class="copy-button inverse" data-copy-target="sql-risk">Sao chép</button></div>
+                  <pre><code id="sql-risk">WITH banded AS (
+  SELECT
+    CASE
+      WHEN discount = 0 THEN '0%'
+      WHEN discount &lt;= 0.10 THEN '0-10%'
+      WHEN discount &lt;= 0.20 THEN '10-20%'
+      WHEN discount &lt;= 0.30 THEN '20-30%'
+      ELSE 'Trên 30%'
+    END AS discount_band,
+    sales,
+    profit
+  FROM fact_order_line
+)
+SELECT
+  discount_band,
+  COUNT(*) AS line_items,
+  ROUND(SUM(sales), 2) AS sales,
+  ROUND(SUM(profit), 2) AS profit,
+  ROUND(SUM(profit) / SUM(sales) * 100, 2)
+    AS profit_margin_pct
+FROM banded
+GROUP BY discount_band
+ORDER BY MIN(
+  CASE discount_band
+    WHEN '0%' THEN 1 WHEN '0-10%' THEN 2
+    WHEN '10-20%' THEN 3 WHEN '20-30%' THEN 4
+    ELSE 5 END
+);</code></pre>
+                </div>
+              </section>
+
+              <section class="content-panel kpi-dictionary" aria-labelledby="metric-contract-title">
+                <div class="panel-heading"><span>Metric contract</span><h2 id="metric-contract-title">Định nghĩa metric trước khi đưa lên dashboard</h2></div>
+                <div class="table-wrap">
+                  <table class="data-table professional-table metric-table">
+                    <thead><tr><th>KPI</th><th>Công thức</th><th>Grain / filter context</th><th>Diễn giải đúng</th><th>Cảnh báo</th></tr></thead>
+                    <tbody>
+                      <tr><td>Total sales</td><td><code>SUM(line.sales)</code></td><td>Line, theo bộ lọc hiện hành</td><td>Quy mô doanh thu nguồn</td><td>Chưa xác minh FX normalization</td></tr>
+                      <tr><td>Profit margin</td><td><code>SUM(profit) / SUM(sales)</code></td><td>Aggregate level</td><td>Hiệu quả profit trên sales</td><td>Không AVG row margin</td></tr>
+                      <tr><td>AOV</td><td><code>SUM(sales) / COUNT(DISTINCT order_key)</code></td><td>Order</td><td>Sales trung bình mỗi order</td><td>Nhạy với outlier order</td></tr>
+                      <tr><td>YoY sales growth</td><td><code>(Sales_t / Sales_t-1) - 1</code></td><td>Cùng kỳ hoặc full year</td><td>Revenue momentum</td><td>Phải có comparable period</td></tr>
+                      <tr><td>Top 20% customer share</td><td>Sales của top 20% / total sales</td><td>Customer trong filter period</td><td>Concentration risk</td><td>Không đồng nghĩa loyalty</td></tr>
+                      <tr><td>Shipping cost ratio</td><td><code>SUM(shipping_cost) / SUM(sales)</code></td><td>Line aggregate</td><td>Fulfilment cost pressure</td><td>Không phải full logistics cost</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section class="query-pitfalls" aria-labelledby="pitfalls-title">
+                <div><span>Review checklist</span><h2 id="pitfalls-title">Các lỗi SQL làm sai kết luận</h2></div>
+                <ul>
+                  <li><strong>Fan-out join</strong><span>Join nhiều bảng ở sai grain làm nhân sales và profit.</span></li>
+                  <li><strong>Average of averages</strong><span>Trung bình margin nhóm không bằng margin tổng.</span></li>
+                  <li><strong>Incomplete period</strong><span>So YoY khi hai kỳ không có cùng số tháng.</span></li>
+                  <li><strong>Silent exclusions</strong><span>INNER JOIN làm mất orphan record mà không cảnh báo.</span></li>
+                  <li><strong>Small-base ranking</strong><span>Margin cao trên sales rất nhỏ không đủ để ưu tiên.</span></li>
+                  <li><strong>Metric ambiguity</strong><span>“Order count” phải ghi rõ unique order hay line count.</span></li>
+                </ul>
+                <a class="button secondary" href="../assets/sql/global-superstore.sql">Mở SQL workbook đầy đủ</a>
+              </section>
+            </section>
+
+            <section class="lesson-stage" data-stage="eda" aria-labelledby="eda-title" hidden>
+              <header class="lesson-header wide-header">
+                <p class="lesson-kicker">EDA & evidence</p>
+                <h1 id="eda-title">Tách measurement, interpretation và hypothesis</h1>
+                <p>EDA không phải bộ sưu tập biểu đồ. Mỗi bước cần một câu hỏi, phép đo, ngưỡng kiểm tra và quyết định có đưa tín hiệu lên dashboard hay không.</p>
+              </header>
+
+              <section class="eda-method" aria-labelledby="eda-method-title">
+                <div class="section-intro"><span class="section-label">Analysis protocol</span><h2 id="eda-method-title">Sáu lớp kiểm tra từ dữ liệu đến insight</h2></div>
+                <ol>
+                  <li><span>01</span><strong>Coverage</strong><p>Date range, row/entity counts, missingness.</p></li>
+                  <li><span>02</span><strong>Integrity</strong><p>Key uniqueness, orphan records, domain rules.</p></li>
+                  <li><span>03</span><strong>Distribution</strong><p>Skew, outlier, negative profit, discount bands.</p></li>
+                  <li><span>04</span><strong>Time</strong><p>Trend, YoY, volatility, comparable periods.</p></li>
+                  <li><span>05</span><strong>Segments</strong><p>Product, customer, market, shipping mode.</p></li>
+                  <li><span>06</span><strong>Synthesis</strong><p>Evidence, caveat, hypothesis, decision relevance.</p></li>
+                </ol>
+              </section>
+
+              <section class="evidence-kpis" aria-labelledby="evidence-title">
+                <div class="panel-heading horizontal"><div><span>Observed evidence</span><h2 id="evidence-title">Tín hiệu định lượng từ full snapshot</h2></div><span class="status-badge">Computed from Parquet</span></div>
+                <div class="insight-grid expanded-insights">
+                  <article class="insight-card"><span>Sales growth 2014 YoY</span><strong id="eda-yoy-growth">Đang tính</strong><p>So với full year 2013.</p></article>
+                  <article class="insight-card"><span>Sales CAGR 2011-2014</span><strong id="eda-cagr">Đang tính</strong><p>Tốc độ tăng trưởng kép ba năm.</p></article>
+                  <article class="insight-card"><span>Thị trường lớn nhất</span><strong id="eda-top-market">Đang tính</strong><p id="eda-market-share">Tỷ trọng sales.</p></article>
+                  <article class="insight-card"><span>Category dẫn đầu</span><strong id="eda-top-category">Đang tính</strong><p id="eda-category-margin">Profit margin.</p></article>
+                  <article class="insight-card risk-accent"><span>Margin khi discount &gt; 30%</span><strong id="eda-discount-risk">Đang tính</strong><p>Association cần drill-down.</p></article>
+                  <article class="insight-card risk-accent"><span>Loss-making products</span><strong id="eda-loss-products">Đang tính</strong><p id="eda-loss-product-share">Tỷ trọng product member.</p></article>
+                  <article class="insight-card"><span>Top 20% customer share</span><strong id="eda-customer-concentration">Đang tính</strong><p>Revenue concentration.</p></article>
+                  <article class="insight-card"><span>Shipping cost / sales</span><strong id="eda-shipping-ratio">Đang tính</strong><p>Fulfilment cost pressure.</p></article>
+                </div>
+              </section>
+
+              <section class="content-panel evidence-log" aria-labelledby="evidence-log-title">
+                <div class="panel-heading"><span>Evidence log</span><h2 id="evidence-log-title">Từ số đo đến câu hỏi hành động</h2></div>
+                <div class="table-wrap">
+                  <table class="data-table professional-table evidence-table">
+                    <thead><tr><th>Signal</th><th>Measurement</th><th>Interpretation hợp lệ</th><th>Không được kết luận</th><th>Next test</th></tr></thead>
+                    <tbody>
+                      <tr><td>Growth quality</td><td id="evidence-growth-measure">Đang tính từ snapshot</td><td>So tốc độ profit với sales để phát hiện efficiency gap</td><td>Chi phí nào gây gap nếu chưa phân rã</td><td>Bridge theo category, market, discount, shipping</td></tr>
+                      <tr><td>Discount risk</td><td id="evidence-discount-measure">Đang tính từ snapshot</td><td>High-discount lines tập trung loss lớn</td><td>Discount tự nó gây loss</td><td>Kiểm product mix, market, quantity và baseline</td></tr>
+                      <tr><td>Portfolio risk</td><td id="evidence-loss-measure">Đang tính từ snapshot</td><td>Có rationalization opportunity</td><td>Mọi product âm đều phải loại bỏ</td><td>Đặt minimum sales và persistence threshold</td></tr>
+                      <tr><td>Customer concentration</td><td id="evidence-concentration-measure">Đang tính từ snapshot</td><td>Revenue có mức tập trung đáng theo dõi</td><td>Top customer chắc chắn trung thành</td><td>So profit share, repeat cadence, segment</td></tr>
+                      <tr><td>Fulfilment</td><td id="evidence-shipping-measure">Đang tính từ snapshot</td><td>Shipping là material cost component</td><td>Ship mode cao cost là kém hiệu quả</td><td>Chuẩn hóa theo sales, margin, priority và distance proxy</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <div class="content-split eda-deep-dive">
+                <section class="content-panel" aria-labelledby="profitability-deep-title">
+                  <div class="panel-heading"><span>Diagnostic lens</span><h2 id="profitability-deep-title">Profitability decomposition</h2></div>
+                  <div class="analysis-ladder">
+                    <div><span>1</span><p><strong>Locate</strong> category, sub-category, product, market có profit âm.</p></div>
+                    <div><span>2</span><p><strong>Normalize</strong> dùng margin và profit/order, không chỉ absolute profit.</p></div>
+                    <div><span>3</span><p><strong>Explain</strong> kiểm discount band, shipping cost ratio và order mix.</p></div>
+                    <div><span>4</span><p><strong>Stress-test</strong> loại small base và kiểm tính lặp lại theo thời gian.</p></div>
+                    <div><span>5</span><p><strong>Recommend</strong> chỉ đề xuất pricing hoặc portfolio sau khi đủ evidence.</p></div>
+                  </div>
+                </section>
+
+                <section class="content-panel hypothesis-panel" aria-labelledby="hypothesis-title">
+                  <div class="panel-heading"><span>Hypothesis backlog</span><h2 id="hypothesis-title">Câu hỏi cần kiểm định tiếp</h2></div>
+                  <details open><summary>H1. High discount làm margin suy giảm?</summary><p>So sánh margin trong cùng product-market-time stratum; kiểm soát mix trước khi diễn giải.</p></details>
+                  <details><summary>H2. Growth đang phụ thuộc một số market?</summary><p>Phân rã YoY growth contribution theo market và kiểm base effect.</p></details>
+                  <details><summary>H3. Customer concentration tạo risk?</summary><p>Đo cả sales share, profit share, purchase frequency và stability theo năm.</p></details>
+                  <details><summary>H4. Faster shipping tạo giá trị?</summary><p>So AOV và margin theo ship mode trong cùng segment và order priority.</p></details>
+                  <details><summary>H5. Có seasonality đủ ổn định để forecast?</summary><p>Decompose trend-seasonality, dùng rolling-origin backtest và báo MAPE/WAPE.</p></details>
+                </section>
+              </div>
+
+              <section class="research-notes" aria-labelledby="research-notes-title">
+                <div><span>Scientific guardrails</span><h2 id="research-notes-title">Quy tắc diễn giải</h2></div>
+                <div class="guardrail-grid">
+                  <p><strong>Comparable denominator</strong> So sánh kỳ phải có cùng độ dài và coverage.</p>
+                  <p><strong>Materiality threshold</strong> Không xếp hạng margin khi sales base quá nhỏ.</p>
+                  <p><strong>Multiple dimensions</strong> Drill-down tuần tự để tránh cherry-picking.</p>
+                  <p><strong>Sensitivity analysis</strong> Kiểm insight dưới nhiều ngưỡng và filter.</p>
+                  <p><strong>Association language</strong> Dùng “liên quan”, không dùng “gây ra” khi chưa có causal design.</p>
+                  <p><strong>Reproducibility</strong> Insight phải trace được về query và snapshot version.</p>
+                </div>
+              </section>
+            </section>
+
+            <section class="lesson-stage dashboard-stage" data-stage="dashboard" aria-labelledby="dashboard-title" hidden>
+              <header class="lesson-header dashboard-lesson-header">
+                <div>
+                  <p class="lesson-kicker">Decision dashboard</p>
+                  <h1 id="dashboard-title">Executive performance & risk</h1>
+                  <p>Dashboard tách executive signal, diagnostic detail và methodology để người dùng không nhầm KPI mô tả với bằng chứng nhân quả.</p>
+                </div>
+                <div class="filter-control">
+                  <label for="year-filter">Analysis period</label>
+                  <select id="year-filter" disabled aria-describedby="filter-help"><option>Đang tải</option></select>
+                </div>
+              </header>
+
+              <div class="dashboard-status" aria-live="polite">
+                <span id="filter-help">Aggregate được build từ Parquet model v2.0.</span>
+                <strong id="status-message">Đang tải dữ liệu</strong>
+              </div>
+
+              <div class="dashboard-tabs" role="tablist" aria-label="Các trang dashboard">
+                <button type="button" role="tab" aria-selected="true" data-dashboard-tab-target="executive">Executive</button>
+                <button type="button" role="tab" aria-selected="false" data-dashboard-tab-target="profitability">Profitability & cost</button>
+                <button type="button" role="tab" aria-selected="false" data-dashboard-tab-target="customer-market">Customer & market</button>
+                <button type="button" role="tab" aria-selected="false" data-dashboard-tab-target="methodology">KPI methodology</button>
+              </div>
+
+              <section id="dashboard-loading" aria-label="Đang tải dashboard">
+                <div class="loading-grid"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+              </section>
+
+              <section id="dashboard-error" class="error-state" hidden>
+                <h2>Không thể tải dashboard</h2>
+                <p>Chạy <code>python scripts/build_dashboard_assets.py</code> để tạo lại browser asset từ Parquet.</p>
+              </section>
+
+              <section id="dashboard-content" hidden>
+                <div class="dashboard-tab-panel" role="tabpanel" data-dashboard-panel="executive">
+                  <div class="metrics-grid executive-kpis" aria-label="Executive KPI">
+                    <article class="metric-card"><p class="metric-label">Total sales</p><strong class="metric-value" id="metric-sales">-</strong><span class="metric-note" id="metric-lines">-</span></article>
+                    <article class="metric-card"><p class="metric-label">Total profit</p><strong class="metric-value" id="metric-profit">-</strong><span class="metric-note" id="metric-profit-growth">-</span></article>
+                    <article class="metric-card"><p class="metric-label">Profit margin</p><strong class="metric-value" id="metric-margin-value">-</strong><span class="metric-note">profit / sales</span></article>
+                    <article class="metric-card"><p class="metric-label">Sales growth YoY</p><strong class="metric-value" id="metric-sales-growth">-</strong><span class="metric-note" id="metric-growth-context">-</span></article>
+                    <article class="metric-card"><p class="metric-label">Average order value</p><strong class="metric-value" id="metric-aov">-</strong><span class="metric-note">sales / unique orders</span></article>
+                    <article class="metric-card"><p class="metric-label">Shipping cost ratio</p><strong class="metric-value" id="metric-shipping-ratio">-</strong><span class="metric-note">shipping cost / sales</span></article>
+                  </div>
+
+                  <div class="supporting-kpis" aria-label="Supporting KPI">
+                    <div><span>Order volume</span><strong id="metric-orders">-</strong></div>
+                    <div><span>Active customers</span><strong id="metric-customers-value">-</strong></div>
+                    <div><span>Sales / customer</span><strong id="metric-sales-customer">-</strong></div>
+                    <div><span>Repeat customer rate</span><strong id="metric-repeat-rate">-</strong></div>
+                    <div><span>Top 20% sales share</span><strong id="metric-concentration">-</strong></div>
+                    <div><span>Country coverage</span><strong id="metric-countries">-</strong></div>
+                  </div>
+
+                  <div class="dashboard-grid">
+                    <section class="dashboard-panel" aria-labelledby="trend-title">
+                      <div class="panel-heading"><span>Time series</span><h2 id="trend-title">Monthly sales và profit</h2></div>
+                      <canvas id="trend-chart" class="chart-canvas" aria-label="Biểu đồ xu hướng sales và profit theo tháng" role="img"></canvas>
+                      <div class="chart-legend" aria-hidden="true"><span>Sales</span><span>Profit</span></div>
+                    </section>
+                    <section class="dashboard-panel" aria-labelledby="category-title">
+                      <div class="panel-heading"><span>Portfolio</span><h2 id="category-title">Sales theo category</h2></div>
+                      <canvas id="category-chart" class="chart-canvas" aria-label="Biểu đồ sales theo category" role="img"></canvas>
+                    </section>
+                  </div>
+                </div>
+
+                <div class="dashboard-tab-panel" role="tabpanel" data-dashboard-panel="profitability" hidden>
+                  <div class="dashboard-page-intro"><div><span>Profitability & cost control</span><h2>Khoanh vùng loss trước khi đề xuất pricing</h2></div><p>Ưu tiên margin, discount band và shipping cost ratio. Absolute profit chỉ là điểm bắt đầu.</p></div>
+                  <div class="risk-kpis">
+                    <div><span>Average line discount</span><strong id="metric-average-discount">-</strong></div>
+                    <div><span>Loss-making line share</span><strong id="metric-loss-lines">-</strong></div>
+                    <div><span>Loss-making products</span><strong id="metric-loss-products">-</strong></div>
+                    <div><span>Profit / order</span><strong id="metric-profit-order">-</strong></div>
+                  </div>
+                  <div class="detail-grid profitability-grid">
+                    <section class="dashboard-panel" aria-labelledby="discount-title">
+                      <div class="panel-heading"><span>Pricing signal</span><h2 id="discount-title">Performance theo discount band</h2></div>
+                      <div class="table-wrap"><table class="data-table"><thead><tr><th>Discount</th><th>Lines</th><th>Sales</th><th>Profit</th><th>Margin</th></tr></thead><tbody id="discount-rows"></tbody></table></div>
+                    </section>
+                    <section class="dashboard-panel" aria-labelledby="loss-product-title">
+                      <div class="panel-heading"><span>Portfolio risk</span><h2 id="loss-product-title">Product có total profit thấp nhất</h2></div>
+                      <div class="table-wrap"><table class="data-table"><thead><tr><th>Product</th><th>Category</th><th>Sales</th><th>Profit</th></tr></thead><tbody id="loss-product-rows"></tbody></table></div>
+                    </section>
+                  </div>
+                  <section class="dashboard-panel country-panel" aria-labelledby="shipping-title">
+                    <div class="panel-heading"><span>Fulfilment</span><h2 id="shipping-title">Ship mode: speed, scale và cost pressure</h2></div>
+                    <div class="table-wrap"><table class="data-table"><thead><tr><th>Ship mode</th><th>Orders</th><th>Avg. days</th><th>Sales</th><th>Shipping cost</th><th>Cost ratio</th></tr></thead><tbody id="shipping-rows"></tbody></table></div>
+                  </section>
+                </div>
+
+                <div class="dashboard-tab-panel" role="tabpanel" data-dashboard-panel="customer-market" hidden>
+                  <div class="dashboard-page-intro"><div><span>Customer & market</span><h2>Phân biệt quy mô, hiệu quả và concentration</h2></div><p>Market lớn chưa chắc có margin tốt; repeat customer rate trong snapshot không phải cohort retention.</p></div>
+                  <div class="detail-grid">
+                    <section class="dashboard-panel" aria-labelledby="segment-title">
+                      <div class="panel-heading"><span>Customer</span><h2 id="segment-title">Performance theo segment</h2></div>
+                      <div class="table-wrap"><table class="data-table"><thead><tr><th>Segment</th><th>Customers</th><th>Orders</th><th>Sales</th><th>Margin</th><th>AOV</th></tr></thead><tbody id="segment-rows"></tbody></table></div>
+                    </section>
+                    <section class="dashboard-panel" aria-labelledby="market-title">
+                      <div class="panel-heading"><span>Market</span><h2 id="market-title">Quy mô và profit margin</h2></div>
+                      <div class="table-wrap"><table class="data-table"><thead><tr><th>Market</th><th>Orders</th><th>Sales</th><th>Profit</th><th>Margin</th></tr></thead><tbody id="market-rows"></tbody></table></div>
+                    </section>
+                  </div>
+                  <section class="dashboard-panel country-panel" aria-labelledby="country-title">
+                    <div class="panel-heading"><span>Country drill-down</span><h2 id="country-title">Top quốc gia theo sales</h2></div>
+                    <div class="table-wrap"><table class="data-table"><thead><tr><th>Country</th><th>Orders</th><th>Sales</th><th>Profit</th><th>Margin</th></tr></thead><tbody id="country-rows"></tbody></table></div>
+                  </section>
+                </div>
+
+                <div class="dashboard-tab-panel" role="tabpanel" data-dashboard-panel="methodology" hidden>
+                  <div class="dashboard-page-intro"><div><span>KPI methodology</span><h2>Định nghĩa, interpretation và limitation</h2></div><p>Một KPI chỉ chuyên nghiệp khi người đọc biết công thức, ngữ cảnh và điều metric không thể chứng minh.</p></div>
+                  <section class="content-panel kpi-reference" aria-labelledby="kpi-reference-title">
+                    <div class="panel-heading"><span>North star metrics</span><h2 id="kpi-reference-title">Executive KPI dictionary</h2></div>
+                    <div class="table-wrap">
+                      <table class="data-table professional-table">
+                        <thead><tr><th>KPI</th><th>Definition</th><th>Executive use</th><th>Primary limitation</th></tr></thead>
+                        <tbody>
+                          <tr><td>Total sales</td><td>Σ line sales</td><td>Business scale</td><td>Không phải cash collected</td></tr>
+                          <tr><td>Total profit</td><td>Σ source profit</td><td>Absolute value creation</td><td>Không mặc định là net income</td></tr>
+                          <tr><td>Profit margin</td><td>Total profit / total sales</td><td>Growth quality</td><td>Phụ thuộc cost definition nguồn</td></tr>
+                          <tr><td>Sales growth YoY</td><td>Sales_t / Sales_t-1 - 1</td><td>Revenue momentum</td><td>Cần comparable period</td></tr>
+                          <tr><td>Revenue-profit gap</td><td>Sales growth - profit growth</td><td>Scale vs efficiency signal</td><td>Chỉ là diagnostic flag</td></tr>
+                          <tr><td>AOV</td><td>Total sales / unique orders</td><td>Order economics</td><td>Không phản ánh purchase frequency</td></tr>
+                          <tr><td>Top 20% sales share</td><td>Top customer quintile sales / total</td><td>Concentration risk</td><td>Threshold phụ thuộc filter period</td></tr>
+                          <tr><td>Shipping cost ratio</td><td>Total shipping cost / total sales</td><td>Fulfilment pressure</td><td>Không gồm toàn bộ logistics cost</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+                  <div class="methodology-cards">
+                    <article><span>Refresh</span><strong>Static snapshot</strong><p>Asset được rebuild thủ công từ versioned Parquet.</p></article>
+                    <article><span>Reconciliation</span><strong>Fact to mart</strong><p>Validator so monthly và country totals với fact source.</p></article>
+                    <article><span>Forecast status</span><strong>Not published</strong><p>Chưa có backtest và accuracy report nên không hiển thị forecast.</p></article>
+                    <article><span>Decision rule</span><strong>Evidence first</strong><p>Dashboard đưa tín hiệu, không tự động tạo causal recommendation.</p></article>
+                  </div>
+                </div>
+              </section>
             </section>
           </div>
 
-          <div class="detail-grid">
-            <section class="dashboard-panel" aria-labelledby="market-title">
-              <h2 id="market-title">Thị trường</h2>
-              <p class="panel-copy">Xếp hạng theo doanh thu, có thể dùng để ưu tiên phân tích sâu.</p>
-              <div class="table-wrap"><table class="data-table"><thead><tr><th>Market</th><th>Sales</th><th>Profit</th></tr></thead><tbody id="market-rows"></tbody></table></div>
-            </section>
-            <section class="dashboard-panel" aria-labelledby="shipping-title">
-              <h2 id="shipping-title">Hiệu quả giao hàng</h2>
-              <p class="panel-copy">Thời gian giao trung bình được tính ở grain order.</p>
-              <div class="table-wrap"><table class="data-table"><thead><tr><th>Ship mode</th><th>Orders</th><th>Avg. days</th></tr></thead><tbody id="shipping-rows"></tbody></table></div>
-            </section>
-          </div>
-
-          <section class="dashboard-panel country-panel" aria-labelledby="country-title">
-            <h2 id="country-title">Top quốc gia theo doanh thu</h2>
-            <p class="panel-copy">Sáu thị trường quốc gia dẫn đầu trong phạm vi bộ lọc hiện tại.</p>
-            <div class="table-wrap"><table class="data-table"><thead><tr><th>Country</th><th>Orders</th><th>Sales</th><th>Profit</th></tr></thead><tbody id="country-rows"></tbody></table></div>
-          </section>
-        </section>
+          <footer class="lesson-footer">
+            <button class="button secondary" type="button" data-prev-stage>Quay lại</button>
+            <button class="button secondary complete-button" type="button" data-toggle-complete>Đánh dấu hoàn thành</button>
+            <button class="button" type="button" data-next-stage>Tiếp tục</button>
+          </footer>
+        </div>
       </main>
-
-      <footer class="site-footer">
-        <span>Global Superstore</span>
-        <a href="../">Về trang project</a>
-      </footer>
     </div>
+
+    <div class="copy-toast" role="status" aria-live="polite" data-copy-toast hidden>Đã sao chép</div>
     <script src="../assets/site.js"></script>
+    <script src="../assets/analysis-guide.js"></script>
     <script src="../assets/dashboard.js"></script>
   </body>
 </html>

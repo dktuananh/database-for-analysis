@@ -1,67 +1,90 @@
-# Global Superstore Analytics Lakehouse
+# Data Workbench
 
-Đây là project phân tích dữ liệu mẫu theo mô hình dimensional analytics có thể chạy trực tiếp bằng DuckDB, Power BI, Spark hoặc Polars. Parquet là nguồn dữ liệu chuẩn; không có database engine bắt buộc phải cài kèm.
+Kho database demo cho các project phân tích dữ liệu nhỏ. Mỗi project chứa dữ liệu Parquet độc lập, data catalog, truy vấn mẫu, quy trình EDA và một dashboard kết quả.
 
-## Cấu trúc dữ liệu
+Project mẫu hiện có: **Global Superstore**, gồm 51.290 line items trong giai đoạn 2011-2014.
+
+## Trải nghiệm học theo project
+
+Website trong `docs/` không chỉ hiển thị dashboard. Mỗi project đi qua năm màn hình:
+
+1. **Tổng quan**: đặt câu hỏi kinh doanh và xác định đầu ra.
+2. **Tổ chức dữ liệu**: đọc grain, fact, dimension, khóa và partition.
+3. **Truy vấn**: đọc Parquet trực tiếp bằng DuckDB và tạo KPI.
+4. **EDA**: kiểm tra chất lượng, phân phối, xu hướng và giả thuyết.
+5. **Dashboard**: trình bày kết quả từ các phép tổng hợp đã kiểm tra.
+
+Tiến độ học được lưu trong `localStorage` của trình duyệt. Các đoạn SQL có nút sao chép và dashboard dùng dữ liệu thật được xuất từ Parquet.
+
+## Analytical standards
+
+Global Superstore được trình bày như một case study có thể review, không chỉ là dashboard demo:
+
+- **Business framing**: stakeholder problem, analytical contract, decision scope và definition of done.
+- **Data architecture**: fact grain, relationship contract, modeling decision log và machine-readable catalog.
+- **Quality gates**: uniqueness, referential integrity, measure domain, temporal validity và mart reconciliation.
+- **Metric contract**: công thức, denominator, filter context, interpretation và limitation của từng KPI.
+- **EDA evidence log**: tách measurement, interpretation, unsupported claim và next test.
+- **Decision dashboard**: executive, profitability, customer-market và methodology được tách thành các trang riêng.
+
+Forecast không được công bố khi chưa có rolling-origin backtest và accuracy report. Các liên hệ giữa discount, shipping cost và profit được mô tả như association, không được diễn giải thành causal effect.
+
+## Cấu trúc repository
 
 ```text
-data/
-├── README.md
-└── global_superstore/                 # Một data domain độc lập
-    ├── dimensions/                    # Bảng tham chiếu, một file/entity
-    │   ├── dim_date.parquet
-    │   ├── dim_customer.parquet
-    │   ├── dim_product.parquet
-    │   ├── dim_geography.parquet
-    │   ├── dim_ship_mode.parquet
-    │   └── dim_order_priority.parquet
-    ├── facts/                         # Sự kiện; Hive partition theo order_year
-    │   ├── fact_order/order_year=YYYY/part-00000.parquet
-    │   └── fact_order_line/order_year=YYYY/part-00000.parquet
-    ├── marts/                         # KPI tổng hợp cho dashboard nhanh
-    │   ├── monthly_sales_kpis.parquet
-    │   └── country_sales_kpis.parquet
-    └── metadata/data_catalog.json     # Schema, grain, khoá và quan hệ
+data-workbench/
+├── data/
+│   └── <project_id>/
+│       ├── dimensions/                 # Entity tham chiếu
+│       ├── facts/                      # Event, có thể Hive partition
+│       ├── marts/                      # Aggregate cho dashboard
+│       └── metadata/
+│           ├── project.json            # Thông tin và learning path
+│           └── data_catalog.json       # Schema, grain, key, relationship
+├── sql/                                # Truy vấn mẫu theo project
+├── scripts/                            # Build, validate và xuất web asset
+├── docs/                               # Website GitHub Pages
+└── README.md
 ```
 
-Mỗi data domain sau này dùng cùng layout `data/<domain_name>/{dimensions,facts,marts,metadata}`. Ví dụ dữ liệu Returns hoặc Marketing được thêm ở `data/returns/...` hay `data/marketing/...`, không trộn file với Global Superstore. Khi cần phân tích liên domain, dùng các conformed dimension (chẳng hạn `dim_date`, `dim_customer`) và ghi rõ mapping trong catalog của domain mới.
+Quy ước chi tiết nằm tại [data/README.md](data/README.md).
 
-## Mô hình dữ liệu
-
-```text
- dim_date (2 vai trò) ──────┐
- dim_customer ─────────────┤
- dim_geography ────────────┤
- dim_ship_mode ────────────┤
- dim_order_priority ───────┤
-                             ▼
-                       fact_order ────< fact_order_line >──── dim_product
-```
-
-- `fact_order` có grain là một order header duy nhất.
-- `fact_order_line` có grain là một dòng giao dịch và chứa các measure `sales`, `quantity`, `discount`, `profit`, `shipping_cost`.
-- Dimension và fact có primary key/foreign key rõ ràng. `data_catalog.json` là data contract có thể đọc bằng máy.
-- Fact được partition theo `order_year` kiểu Hive. Giá trị partition không lặp trong file, nên query engine có thể loại cả thư mục trước khi quét Parquet.
-- Parquet dùng Zstandard, dictionary encoding, statistics và row group 10.000 dòng.
-
-`Order ID` và `Product ID` của CSV nguồn không luôn duy nhất trên toàn bộ dataset. Vì thế mô hình giữ chúng như business attribute, còn `*_key` là hash key xác định theo natural grain. Build sẽ dừng nếu có duplicate key hoặc bản ghi mồ côi.
-
-## Chạy lại pipeline
+## Chạy project Global Superstore
 
 Yêu cầu Python 3.10+ với `pandas` và `pyarrow`.
 
 ```powershell
 python scripts/convert_csv_to_parquet.py
 python scripts/validate_model.py
+python scripts/build_dashboard_assets.py
 ```
 
-CSV nguồn `Global_Superstore2.csv` nằm ở thư mục gốc và được `.gitignore`; output Parquet cùng catalog là artefact được version control. Pipeline ghi lại duy nhất `data/global_superstore`, vì vậy không xoá dữ liệu của domain khác.
+Validator sẽ dừng nếu phát hiện duplicate primary key, orphan key, measure null, quantity không dương, sales hoặc shipping cost âm, discount ngoài `[0, 1]`, ship date trước order date, hoặc mart không reconcile với fact.
 
-## Demo phân tích bằng DuckDB
+Chạy website ở local:
 
-Cài DuckDB nếu cần: `pip install duckdb`. Mở DuckDB rồi chạy toàn bộ file [sql/demo_analysis.sql](sql/demo_analysis.sql). File này tạo view từ Parquet và có ba câu query mẫu: doanh thu/lợi nhuận theo tháng–category, quốc gia lỗ nhiều nhất, và SLA vận chuyển.
+```powershell
+python -m http.server 8000 --directory docs
+```
 
-Ví dụ truy vấn ngắn:
+Sau đó mở `http://localhost:8000/global-superstore/`.
+
+## Truy vấn bằng DuckDB
+
+Cài DuckDB nếu cần:
+
+```powershell
+pip install duckdb
+duckdb
+```
+
+Trong DuckDB CLI:
+
+```sql
+.read sql/demo_analysis.sql
+```
+
+Ví dụ đọc fact đã partition theo năm:
 
 ```sql
 SELECT order_year, SUM(sales) AS sales, SUM(profit) AS profit
@@ -73,12 +96,25 @@ WHERE order_year = 2014
 GROUP BY order_year;
 ```
 
-## GitHub Pages dashboard
+## Thêm project phân tích mới
 
-Static site nằm trong `docs/`, gồm trang chủ project và dashboard Global Superstore. Sau khi cập nhật Parquet, xuất lại dữ liệu trình duyệt bằng:
+Tạo bộ khung bằng script:
 
 ```powershell
-python scripts/build_dashboard_assets.py
+python scripts/scaffold_project.py customer_churn "Customer Churn" --domain crm_analytics
 ```
 
-Hướng dẫn publish GitHub Pages: [docs/README.md](docs/README.md).
+Sau đó:
+
+1. Đưa Parquet vào đúng layer trong `data/customer_churn/`.
+2. Khai báo grain, schema, primary key và relationship trong `metadata/data_catalog.json`.
+3. Viết pipeline build và validator riêng cho domain.
+4. Thêm query mẫu vào `sql/customer_churn_analysis.sql`.
+5. Xuất JSON nhẹ cho trình duyệt và tạo route `docs/customer-churn/`.
+6. Đăng ký project trên trang thư viện trong `docs/index.html`.
+
+Không trộn file của nhiều domain trong cùng một thư mục. Khi cần phân tích liên domain, dùng conformed dimension và ghi mapping rõ trong catalog.
+
+## GitHub Pages
+
+Hướng dẫn publish nằm tại [docs/README.md](docs/README.md). Source of truth vẫn là Parquet; JSON trong `docs/assets/data/` chỉ là aggregate nhẹ dành cho trình duyệt.

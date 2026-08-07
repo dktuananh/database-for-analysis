@@ -271,6 +271,17 @@ def load_source() -> pd.DataFrame:
         raise ValueError("line_item_key must be unique.")
     if (frame["ship_date"] < frame["order_date"]).any():
         raise ValueError("ship_date cannot precede order_date.")
+    required_measures = ["sales", "quantity", "discount", "profit", "shipping_cost"]
+    if frame[required_measures].isna().any(axis=None):
+        raise ValueError("Required analytical measures cannot be null.")
+    if (frame["quantity"] <= 0).any():
+        raise ValueError("quantity must be greater than zero.")
+    if (frame["sales"] < 0).any():
+        raise ValueError("sales cannot be negative.")
+    if ((frame["discount"] < 0) | (frame["discount"] > 1)).any():
+        raise ValueError("discount must be between zero and one.")
+    if (frame["shipping_cost"] < 0).any():
+        raise ValueError("shipping_cost cannot be negative.")
 
     frame["order_year"] = frame["order_date"].dt.year.astype("int16")
     frame["order_month"] = frame["order_date"].dt.month.astype("int8")
