@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "project_id": "wine_quality",
+  "status": "passed",
+  "checks": [
+    {
+      "name": "source snapshot row count",
+      "status": "passed",
+      "details": 6497
+    },
+    {
+      "name": "wine_samples: exact column contract",
+      "status": "passed",
+      "details": [
+        "record_id",
+        "source_file",
+        "source_row",
+        "wine_type",
+        "fixed_acidity",
+        "volatile_acidity",
+        "citric_acid",
+        "residual_sugar",
+        "chlorides",
+        "free_sulfur_dioxide",
+        "total_sulfur_dioxide",
+        "density",
+        "ph",
+        "sulphates",
+        "alcohol",
+        "quality"
+      ]
+    },
+    {
+      "name": "wine_samples: non-null unique snapshot keys",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "wine_samples: source row provenance unique",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "wine_samples: contiguous source rows winequality-red.csv",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "wine_samples: key maps to source winequality-red.csv",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "wine_samples: contiguous source rows winequality-white.csv",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "wine_samples: key maps to source winequality-white.csv",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "wine_samples: required values present",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "wine_samples: finite numeric values",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "wine type population",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "quality in [0, 10]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "quality is integer score",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "ph in [0, 14]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "alcohol nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "fixed_acidity nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "sulphates nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "chlorides nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "density nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "volatile_acidity nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "citric_acid nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "quality nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "total_sulfur_dioxide nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "ph nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "residual_sugar nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "free_sulfur_dioxide nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "mart name contract",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "mart full reconciliation",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "mart population reconciles",
+      "status": "passed",
+      "details": null
+    }
+  ],
+  "profiles": {
+    "wine_samples": {
+      "rows": 6497,
+      "columns": 16,
+      "null_counts": {
+        "record_id": 0,
+        "source_file": 0,
+        "source_row": 0,
+        "wine_type": 0,
+        "fixed_acidity": 0,
+        "volatile_acidity": 0,
+        "citric_acid": 0,
+        "residual_sugar": 0,
+        "chlorides": 0,
+        "free_sulfur_dioxide": 0,
+        "total_sulfur_dioxide": 0,
+        "density": 0,
+        "ph": 0,
+        "sulphates": 0,
+        "alcohol": 0,
+        "quality": 0
+      },
+      "duplicate_value_rows_after_first": 1177,
+      "duplicate_policy": "preserved; excludes record_id/source_file/source_row from comparison",
+      "numeric_ranges": {
+        "fixed_acidity": {
+          "min": 3.8,
+          "max": 15.9
+        },
+        "volatile_acidity": {
+          "min": 0.08,
+          "max": 1.58
+        },
+        "citric_acid": {
+          "min": 0.0,
+          "max": 1.66
+        },
+        "residual_sugar": {
+          "min": 0.6,
+          "max": 65.8
+        },
+        "chlorides": {
+          "min": 0.009,
+          "max": 0.611
+        },
+        "free_sulfur_dioxide": {
+          "min": 1.0,
+          "max": 289.0
+        },
+        "total_sulfur_dioxide": {
+          "min": 6.0,
+          "max": 440.0
+        },
+        "density": {
+          "min": 0.98711,
+          "max": 1.03898
+        },
+        "ph": {
+          "min": 2.72,
+          "max": 4.01
+        },
+        "sulphates": {
+          "min": 0.22,
+          "max": 2.0
+        },
+        "alcohol": {
+          "min": 8.0,
+          "max": 14.9
+        },
+        "quality": {
+          "min": 3.0,
+          "max": 9.0
+        }
+      },
+      "target_summary": {
+        "quality": {
+          "non_null": 6497,
+          "distinct": 7
+        }
+      }
+    }
+  },
+  "observations": {}
+}

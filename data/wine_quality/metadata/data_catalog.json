@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "project_id": "wine_quality",
+  "model_version": "1.0.0",
+  "storage_format": "Parquet / Zstandard",
+  "source": {
+    "provider": "UCI Machine Learning Repository",
+    "uci_id": 186,
+    "source_url": "https://archive.ics.uci.edu/dataset/186/wine+quality",
+    "doi": "https://doi.org/10.24432/C56S3T",
+    "citation": "Cortez, P., Cerdeira, A., Almeida, F., Matos, T., & Reis, J. (2009). Wine Quality [Dataset]. UCI Machine Learning Repository.",
+    "publication_citation": "Cortez, P., Cerdeira, A., Almeida, F., Matos, T., & Reis, J. (2009). Modeling wine preferences by data mining from physicochemical properties. Decision Support Systems, 47(4), 547–553. https://doi.org/10.1016/j.dss.2009.05.016 (requested in winequality.names).",
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "license_verified_on": "2026-10-09",
+    "archive_path": "raw/source.zip",
+    "download_url": "https://archive.ics.uci.edu/static/public/186/wine%2Bquality.zip",
+    "sha256": "3ed56667f4b828242bd732d7d1dd7f2861e54432239d7fa63877014cbb0304d4",
+    "size_bytes": 91353,
+    "retrieved_at_utc": "2026-10-09T12:35:01.857216+00:00"
+  },
+  "processing": [
+    "Select only source members listed in each dataset lineage.",
+    "Preserve original observation order and values. Normalize column names and parse physical types.",
+    "Append technical source_file/source_row/record_id. Append documented derived columns only.",
+    "Retain nulls, duplicates, unknown categories and sentinel values. Do not fit preprocessing.",
+    "For Energy Efficiency, ignore trailing empty Excel columns and completely blank rows.",
+    "Recompute marts from the full primary prepared table; no deduplication."
+  ],
+  "logical_datasets": {
+    "wine_samples": {
+      "layer": "prepared",
+      "path": "prepared/wine_samples.parquet",
+      "rows": 6497,
+      "grain": "Một dòng mẫu rượu trong file gốc; các vector số có thể trùng.",
+      "primary_key": [
+        "record_id"
+      ],
+      "schema": [
+        {
+          "name": "record_id",
+          "type": "string",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Khóa kỹ thuật ổn định trong snapshot: tên file + số dòng, không phải ID thực thể.",
+          "source_column": null
+        },
+        {
+          "name": "source_file",
+          "type": "string",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Tên file gốc bên trong archive nguồn.",
+          "source_column": null
+        },
+        {
+          "name": "source_row",
+          "type": "int64",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Số thứ tự bản ghi trong file nguồn, bắt đầu từ 1 sau header.",
+          "source_column": null
+        },
+        {
+          "name": "wine_type",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "red/white, derived từ file nguồn.",
+          "source_column": null
+        },
+        {
+          "name": "fixed_acidity",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Fixed acidity, giữ thang số gốc; archive không khai báo đơn vị.",
+          "source_column": "fixed acidity"
+        },
+        {
+          "name": "volatile_acidity",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Volatile acidity, giữ thang số gốc.",
+          "source_column": "volatile acidity"
+        },
+        {
+          "name": "citric_acid",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Citric acid, giữ thang số gốc.",
+          "source_column": "citric acid"
+        },
+        {
+          "name": "residual_sugar",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Residual sugar, giữ thang số gốc.",
+          "source_column": "residual sugar"
+        },
+        {
+          "name": "chlorides",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Chlorides, giữ thang số gốc.",
+          "source_column": "chlorides"
+        },
+        {
+          "name": "free_sulfur_dioxide",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Free sulfur dioxide, giữ thang số gốc.",
+          "source_column": "free sulfur dioxide"
+        },
+        {
+          "name": "total_sulfur_dioxide",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Total sulfur dioxide, giữ thang số gốc.",
+          "source_column": "total sulfur dioxide"
+        },
+        {
+          "name": "density",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Density, giữ thang số gốc.",
+          "source_column": "density"
+        },
+        {
+          "name": "ph",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "pH của mẫu; không có đơn vị.",
+          "source_column": "pH"
+        },
+        {
+          "name": "sulphates",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Sulphates, giữ thang số gốc.",
+          "source_column": "sulphates"
+        },
+        {
+          "name": "alcohol",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Alcohol, giữ thang số gốc.",
+          "source_column": "alcohol"
+        },
+        {
+          "name": "quality",
+          "type": "int64",
+          "nullable": false,
+          "role": "target",
+          "description": "Target: điểm chất lượng sensory, ordinal 0–10.",
+          "source_column": "quality"
+        }
+      ],
+      "sha256": "b2ee7b1863a6ff8ad94ddc869cc9dbab3088c7fb523b8e253b2202352981e450",
+      "size_bytes": 119405,
+      "lineage": [
+        "source.zip!winequality-red.csv",
+        "source.zip!winequality-white.csv"
+      ]
+    },
+    "quality_distribution": {
+      "layer": "marts",
+      "path": "marts/quality_distribution.parquet",
+      "rows": 13,
+      "grain": "Một dòng cho mỗi nhóm wine_type × quality",
+      "primary_key": [
+        "wine_type",
+        "quality"
+      ],
+      "schema": [
+        {
+          "name": "wine_type",
+          "type": "string",
+          "nullable": false,
+          "role": "group_key",
+          "description": "red/white, derived từ file nguồn.",
+          "source_column": null
+        },
+        {
+          "name": "quality",
+          "type": "int64",
+          "nullable": false,
+          "role": "group_key",
+          "description": "Target: điểm chất lượng sensory, ordinal 0–10.",
+          "source_column": null
+        },
+        {
+          "name": "source_records",
+          "type": "int64",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Số bản ghi ở bảng prepared chính trong nhóm, gồm dòng trùng.",
+          "source_column": null
+        },
+        {
+          "name": "mean_alcohol",
+          "type": "double",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Trung bình alcohol theo wine_type × quality.",
+          "source_column": null
+        }
+      ],
+      "sha256": "ec9ec28f7a12623370dd938abe14d560ae4eee1c2625fc1098ee7203b3760764",
+      "size_bytes": 3157,
+      "lineage": [
+        "wine_samples"
+      ]
+    }
+  },
+  "relationships": [],
+  "files": [
+    {
+      "path": "data/wine_quality/prepared/wine_samples.parquet",
+      "rows": 6497,
+      "size_bytes": 119405,
+      "sha256": "b2ee7b1863a6ff8ad94ddc869cc9dbab3088c7fb523b8e253b2202352981e450",
+      "compression": "zstd"
+    },
+    {
+      "path": "data/wine_quality/marts/quality_distribution.parquet",
+      "rows": 13,
+      "size_bytes": 3157,
+      "sha256": "ec9ec28f7a12623370dd938abe14d560ae4eee1c2625fc1098ee7203b3760764",
+      "compression": "zstd"
+    }
+  ],
+  "quality_report": "metadata/quality_report.json"
+}

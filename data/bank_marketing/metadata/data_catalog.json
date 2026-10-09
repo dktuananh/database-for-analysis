@@ -1,0 +1,315 @@
+{
+  "schema_version": 1,
+  "project_id": "bank_marketing",
+  "model_version": "1.0.0",
+  "storage_format": "Parquet / Zstandard",
+  "source": {
+    "provider": "UCI Machine Learning Repository",
+    "uci_id": 222,
+    "source_url": "https://archive.ics.uci.edu/dataset/222/bank+marketing",
+    "doi": "https://doi.org/10.24432/C5K306",
+    "citation": "Moro, S., Rita, P., & Cortez, P. (2014). Bank Marketing [Dataset]. UCI Machine Learning Repository.",
+    "publication_citation": null,
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "license_verified_on": "2026-10-09",
+    "archive_path": "raw/source.zip",
+    "download_url": "https://archive.ics.uci.edu/static/public/222/bank%2Bmarketing.zip",
+    "sha256": "e0bf5f5de5b846e2f18e9d90606637267d46dfa260e0f17bb12e605db5efbeb4",
+    "size_bytes": 1023843,
+    "retrieved_at_utc": "2026-10-09T12:34:59.789083+00:00"
+  },
+  "processing": [
+    "Select only source members listed in each dataset lineage.",
+    "Preserve original observation order and values. Normalize column names and parse physical types.",
+    "Append technical source_file/source_row/record_id. Append documented derived columns only.",
+    "Retain nulls, duplicates, unknown categories and sentinel values. Do not fit preprocessing.",
+    "For Energy Efficiency, ignore trailing empty Excel columns and completely blank rows.",
+    "Recompute marts from the full primary prepared table; no deduplication."
+  ],
+  "logical_datasets": {
+    "campaign_contacts": {
+      "layer": "prepared",
+      "path": "prepared/campaign_contacts.parquet",
+      "rows": 41188,
+      "grain": "Một quan sát chiến dịch từ bank-additional-full.csv, không có khóa khách hàng.",
+      "primary_key": [
+        "record_id"
+      ],
+      "schema": [
+        {
+          "name": "record_id",
+          "type": "string",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Khóa kỹ thuật ổn định trong snapshot: tên file + số dòng, không phải ID thực thể.",
+          "source_column": null
+        },
+        {
+          "name": "source_file",
+          "type": "string",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Tên file gốc bên trong archive nguồn.",
+          "source_column": null
+        },
+        {
+          "name": "source_row",
+          "type": "int64",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Số thứ tự bản ghi trong file nguồn, bắt đầu từ 1 sau header.",
+          "source_column": null
+        },
+        {
+          "name": "age",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Tuổi theo nguồn, năm.",
+          "source_column": "age"
+        },
+        {
+          "name": "job",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Nghề nghiệp dạng category, có unknown.",
+          "source_column": "job"
+        },
+        {
+          "name": "marital",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Tình trạng hôn nhân; divorced gồm ly hôn/góa theo nguồn.",
+          "source_column": "marital"
+        },
+        {
+          "name": "education",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Trình độ học vấn dạng category.",
+          "source_column": "education"
+        },
+        {
+          "name": "default",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Có tín dụng vỡ nợ: yes/no/unknown.",
+          "source_column": "default"
+        },
+        {
+          "name": "housing",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Có khoản vay nhà: yes/no/unknown.",
+          "source_column": "housing"
+        },
+        {
+          "name": "loan",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Có khoản vay cá nhân: yes/no/unknown.",
+          "source_column": "loan"
+        },
+        {
+          "name": "contact",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Kênh liên hệ cellular/telephone.",
+          "source_column": "contact"
+        },
+        {
+          "name": "month",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Tháng của lần liên hệ cuối; không có năm đầy đủ.",
+          "source_column": "month"
+        },
+        {
+          "name": "day_of_week",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Ngày trong tuần của lần liên hệ cuối.",
+          "source_column": "day_of_week"
+        },
+        {
+          "name": "duration",
+          "type": "int64",
+          "nullable": false,
+          "role": "unavailable_at_default_prediction_time",
+          "description": "Thời lượng cuộc gọi cuối, giây. Chỉ biết sau cuộc gọi, loại khỏi dự báo trước cuộc gọi.",
+          "source_column": "duration"
+        },
+        {
+          "name": "campaign",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Số lần liên hệ trong chiến dịch hiện tại, gồm lần cuối.",
+          "source_column": "campaign"
+        },
+        {
+          "name": "pdays",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Số ngày kể từ chiến dịch trước; 999 là chưa từng liên hệ, giữ sentinel.",
+          "source_column": "pdays"
+        },
+        {
+          "name": "previous",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Số lần liên hệ trước chiến dịch hiện tại.",
+          "source_column": "previous"
+        },
+        {
+          "name": "poutcome",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Kết quả chiến dịch trước: failure/nonexistent/success.",
+          "source_column": "poutcome"
+        },
+        {
+          "name": "emp_var_rate",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Employment variation rate, chỉ số theo quý từ nguồn.",
+          "source_column": "emp.var.rate"
+        },
+        {
+          "name": "cons_price_idx",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Consumer price index, chỉ số theo tháng từ nguồn.",
+          "source_column": "cons.price.idx"
+        },
+        {
+          "name": "cons_conf_idx",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Consumer confidence index, chỉ số theo tháng từ nguồn.",
+          "source_column": "cons.conf.idx"
+        },
+        {
+          "name": "euribor3m",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Euribor kỳ hạn 3 tháng, chỉ số theo ngày từ nguồn.",
+          "source_column": "euribor3m"
+        },
+        {
+          "name": "nr_employed",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Number of employees, chỉ số theo quý từ nguồn; giữ đơn vị/thang gốc.",
+          "source_column": "nr.employed"
+        },
+        {
+          "name": "subscribed",
+          "type": "string",
+          "nullable": false,
+          "role": "target",
+          "description": "Target: đăng ký tiền gửi, yes/no; đổi tên từ y, không đổi nhãn.",
+          "source_column": "y"
+        }
+      ],
+      "sha256": "2cf1774512323ed018b5f6d6545a670a0ca16126a0359697d47e9adb2dae64e0",
+      "size_bytes": 394100,
+      "lineage": [
+        "source.zip!bank-additional.zip!bank-additional/bank-additional-full.csv"
+      ]
+    },
+    "channel_outcomes": {
+      "layer": "marts",
+      "path": "marts/channel_outcomes.parquet",
+      "rows": 6,
+      "grain": "Một dòng cho mỗi nhóm contact × poutcome",
+      "primary_key": [
+        "contact",
+        "poutcome"
+      ],
+      "schema": [
+        {
+          "name": "contact",
+          "type": "string",
+          "nullable": false,
+          "role": "group_key",
+          "description": "Kênh liên hệ cellular/telephone.",
+          "source_column": null
+        },
+        {
+          "name": "poutcome",
+          "type": "string",
+          "nullable": false,
+          "role": "group_key",
+          "description": "Kết quả chiến dịch trước: failure/nonexistent/success.",
+          "source_column": null
+        },
+        {
+          "name": "source_records",
+          "type": "int64",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Số bản ghi ở bảng prepared chính trong nhóm, gồm dòng trùng.",
+          "source_column": null
+        },
+        {
+          "name": "subscribers",
+          "type": "int64",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Số quan sát subscribed = yes trong nhóm.",
+          "source_column": null
+        },
+        {
+          "name": "subscription_rate",
+          "type": "double",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "subscribers / source_records tại đúng nhóm, không lấy trung bình các tỷ lệ.",
+          "source_column": null
+        }
+      ],
+      "sha256": "b4dda4c0873bd23199c4d2c89695f7a5be61f8d78ad5ddff5fa08b906619fa4e",
+      "size_bytes": 3693,
+      "lineage": [
+        "campaign_contacts"
+      ]
+    }
+  },
+  "relationships": [],
+  "files": [
+    {
+      "path": "data/bank_marketing/prepared/campaign_contacts.parquet",
+      "rows": 41188,
+      "size_bytes": 394100,
+      "sha256": "2cf1774512323ed018b5f6d6545a670a0ca16126a0359697d47e9adb2dae64e0",
+      "compression": "zstd"
+    },
+    {
+      "path": "data/bank_marketing/marts/channel_outcomes.parquet",
+      "rows": 6,
+      "size_bytes": 3693,
+      "sha256": "b4dda4c0873bd23199c4d2c89695f7a5be61f8d78ad5ddff5fa08b906619fa4e",
+      "compression": "zstd"
+    }
+  ],
+  "quality_report": "metadata/quality_report.json"
+}

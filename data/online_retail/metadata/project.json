@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "id": "online_retail",
+  "slug": "online-retail",
+  "name": "Online Retail",
+  "domain": "retail_analytics",
+  "difficulty": "beginner_to_intermediate",
+  "status": "data_ready",
+  "storage_model": "tabular_snapshot",
+  "tasks": [
+    "data_quality",
+    "sql",
+    "rfm_segmentation",
+    "market_basket",
+    "cohort_analysis"
+  ],
+  "description": "Giá trị giao dịch có dấu thay đổi thế nào theo tháng và quốc gia?",
+  "primary_dataset": "invoice_lines",
+  "primary_rows": 541909,
+  "source": {
+    "provider": "UCI Machine Learning Repository",
+    "uci_id": 352,
+    "source_url": "https://archive.ics.uci.edu/dataset/352/online+retail",
+    "doi": "https://doi.org/10.24432/C5BW33",
+    "citation": "Chen, D. (2015). Online Retail [Dataset]. UCI Machine Learning Repository.",
+    "publication_citation": null,
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "license_verified_on": "2026-10-09",
+    "archive_path": "raw/source.zip",
+    "download_url": "https://archive.ics.uci.edu/static/public/352/online%2Bretail.zip",
+    "sha256": "f5385cbb54bbebf7196389109c6b0621faab0c304e3702548165e71c84aede8b",
+    "size_bytes": 23715478,
+    "retrieved_at_utc": "2026-10-09T12:34:55.770409+00:00"
+  },
+  "business_questions": [
+    "Giá trị giao dịch có dấu thay đổi thế nào theo tháng và quốc gia?",
+    "RFM của khách hàng thay đổi thế nào khi xử lý hoàn/hủy và dòng trùng?",
+    "Sản phẩm nào thường xuất hiện cùng trong một hóa đơn bán hàng?"
+  ],
+  "learning_guidance": [
+    "Giữ toàn bộ 541.909 dòng, cả null, số lượng/giá âm và dòng trùng. Đây là dữ liệu để học xử lý chất lượng.",
+    "InvoiceNo không phải khóa dòng. StockCode có mã dịch vụ/điều chỉnh; Description có thể thay đổi cho cùng mã.",
+    "line_amount_gbp = quantity × unit_price_gbp; đây là giá trị có dấu theo nguồn, chưa phải doanh thu kế toán đã đối soát.",
+    "Mart tháng dùng tất cả dòng, không loại trùng. Tháng 12/2011 chỉ có đến ngày 09 nên không so tăng trưởng nguyên tháng.",
+    "RFM cần khách hàng có ID, quy tắc hoàn/hủy và trùng được công bố. Chốt ngày quan sát rồi chỉ dùng lịch sử trước ngày đó.",
+    "Market basket thường giới hạn hóa đơn không hủy, quantity > 0, unit_price_gbp > 0; công bố cách xử lý mã phi sản phẩm.",
+    "Cohort chỉ đo khách hàng quan sát được trong snapshot, không có lịch sử trước 12/2010 hoặc sau 09/12/2011."
+  ],
+  "ml_contract": {
+    "targets": [],
+    "technical_columns_to_exclude": [
+      "record_id",
+      "source_file",
+      "source_row"
+    ],
+    "exclude_at_default_prediction_time": [],
+    "preprocessing": "No fitted imputation, encoding, scaling, resampling or train/test split. Fit only on learner training data."
+  },
+  "learning_path": [
+    {
+      "id": "quality",
+      "title": "Đọc nguồn và kiểm tra chất lượng",
+      "output": "Quy tắc xử lý null, trùng, sentinel và outlier"
+    },
+    {
+      "id": "eda",
+      "title": "SQL và EDA",
+      "output": "Kết quả truy vấn có grain và denominator đúng"
+    },
+    {
+      "id": "model",
+      "title": "Phân tích hoặc mô hình",
+      "output": "Baseline, validation phù hợp và báo cáo giới hạn"
+    }
+  ]
+}

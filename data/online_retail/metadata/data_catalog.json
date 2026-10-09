@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "project_id": "online_retail",
+  "model_version": "1.0.0",
+  "storage_format": "Parquet / Zstandard",
+  "source": {
+    "provider": "UCI Machine Learning Repository",
+    "uci_id": 352,
+    "source_url": "https://archive.ics.uci.edu/dataset/352/online+retail",
+    "doi": "https://doi.org/10.24432/C5BW33",
+    "citation": "Chen, D. (2015). Online Retail [Dataset]. UCI Machine Learning Repository.",
+    "publication_citation": null,
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "license_verified_on": "2026-10-09",
+    "archive_path": "raw/source.zip",
+    "download_url": "https://archive.ics.uci.edu/static/public/352/online%2Bretail.zip",
+    "sha256": "f5385cbb54bbebf7196389109c6b0621faab0c304e3702548165e71c84aede8b",
+    "size_bytes": 23715478,
+    "retrieved_at_utc": "2026-10-09T12:34:55.770409+00:00"
+  },
+  "processing": [
+    "Select only source members listed in each dataset lineage.",
+    "Preserve original observation order and values. Normalize column names and parse physical types.",
+    "Append technical source_file/source_row/record_id. Append documented derived columns only.",
+    "Retain nulls, duplicates, unknown categories and sentinel values. Do not fit preprocessing.",
+    "For Energy Efficiency, ignore trailing empty Excel columns and completely blank rows.",
+    "Recompute marts from the full primary prepared table; no deduplication."
+  ],
+  "logical_datasets": {
+    "invoice_lines": {
+      "layer": "prepared",
+      "path": "prepared/invoice_lines.parquet",
+      "rows": 541909,
+      "grain": "Một dòng dữ liệu giao dịch nguồn, bao gồm điều chỉnh, hoàn/hủy và trùng.",
+      "primary_key": [
+        "record_id"
+      ],
+      "schema": [
+        {
+          "name": "record_id",
+          "type": "string",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Khóa kỹ thuật ổn định trong snapshot: tên file + số dòng, không phải ID thực thể.",
+          "source_column": null
+        },
+        {
+          "name": "source_file",
+          "type": "string",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Tên file gốc bên trong archive nguồn.",
+          "source_column": null
+        },
+        {
+          "name": "source_row",
+          "type": "int64",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Số thứ tự bản ghi trong file nguồn, bắt đầu từ 1 sau header.",
+          "source_column": null
+        },
+        {
+          "name": "invoice_no",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Mã hóa đơn; bắt đầu bằng C/c chỉ hủy theo nguồn. Không duy nhất tại grain dòng.",
+          "source_column": "InvoiceNo"
+        },
+        {
+          "name": "stock_code",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Mã sản phẩm hoặc mã dịch vụ/điều chỉnh, giữ dạng text.",
+          "source_column": "StockCode"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "nullable": true,
+          "role": "feature",
+          "description": "Mô tả sản phẩm gốc; cho phép null, không tự điền hoặc chuẩn hóa nội dung.",
+          "source_column": "Description"
+        },
+        {
+          "name": "quantity",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Số lượng có dấu từ nguồn; gồm giá trị âm.",
+          "source_column": "Quantity"
+        },
+        {
+          "name": "invoice_date",
+          "type": "timestamp[ns]",
+          "nullable": false,
+          "role": "feature",
+          "description": "Thời điểm hóa đơn, timezone không được nguồn công bố.",
+          "source_column": "InvoiceDate"
+        },
+        {
+          "name": "unit_price_gbp",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Giá một đơn vị theo bảng nguồn, GBP; giữ cả zero và âm.",
+          "source_column": "UnitPrice"
+        },
+        {
+          "name": "customer_id",
+          "type": "string",
+          "nullable": true,
+          "role": "feature",
+          "description": "Mã khách hàng dạng text; null nghĩa là nguồn không có ID, không phải một khách hàng chung.",
+          "source_column": "CustomerID"
+        },
+        {
+          "name": "country",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Quốc gia theo dữ liệu nguồn.",
+          "source_column": "Country"
+        },
+        {
+          "name": "is_cancellation",
+          "type": "bool",
+          "nullable": false,
+          "role": "feature",
+          "description": "Cờ derived khi invoice_no bắt đầu bằng C/c.",
+          "source_column": null
+        },
+        {
+          "name": "line_amount_gbp",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "quantity × unit_price_gbp, giá trị có dấu của dòng theo nguồn, GBP.",
+          "source_column": null
+        }
+      ],
+      "sha256": "6415e4176ca4c5258dc44aae3100a738f9c1de96d1ae76afec61d236e525c7ae",
+      "size_bytes": 6733261,
+      "lineage": [
+        "source.zip!Online Retail.xlsx"
+      ]
+    },
+    "monthly_transactions": {
+      "layer": "marts",
+      "path": "marts/monthly_transactions.parquet",
+      "rows": 13,
+      "grain": "Một dòng cho mỗi nhóm month",
+      "primary_key": [
+        "month"
+      ],
+      "schema": [
+        {
+          "name": "month",
+          "type": "timestamp[ns]",
+          "nullable": false,
+          "role": "group_key",
+          "description": "Tháng quan sát, lưu ngày đầu tháng.",
+          "source_column": null
+        },
+        {
+          "name": "source_records",
+          "type": "int64",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Số bản ghi ở bảng prepared chính trong nhóm, gồm dòng trùng.",
+          "source_column": null
+        },
+        {
+          "name": "invoices",
+          "type": "int64",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Số invoice_no distinct trong tháng, gồm hóa đơn hủy.",
+          "source_column": null
+        },
+        {
+          "name": "identified_customers",
+          "type": "int64",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Số customer_id distinct không null trong tháng; không cộng qua các tháng.",
+          "source_column": null
+        },
+        {
+          "name": "cancellation_lines",
+          "type": "int64",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Số dòng có cờ hủy theo prefix hóa đơn.",
+          "source_column": null
+        },
+        {
+          "name": "signed_quantity",
+          "type": "int64",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Tổng quantity có dấu của tất cả dòng trong nhóm.",
+          "source_column": null
+        },
+        {
+          "name": "signed_amount_gbp",
+          "type": "double",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Tổng quantity × unit_price_gbp của tất cả dòng, GBP.",
+          "source_column": null
+        }
+      ],
+      "sha256": "c44e81283767da9c86997a0ff7413735977568fe7d24594dfacb5ceb483e7a7a",
+      "size_bytes": 5473,
+      "lineage": [
+        "invoice_lines"
+      ]
+    }
+  },
+  "relationships": [],
+  "files": [
+    {
+      "path": "data/online_retail/prepared/invoice_lines.parquet",
+      "rows": 541909,
+      "size_bytes": 6733261,
+      "sha256": "6415e4176ca4c5258dc44aae3100a738f9c1de96d1ae76afec61d236e525c7ae",
+      "compression": "zstd"
+    },
+    {
+      "path": "data/online_retail/marts/monthly_transactions.parquet",
+      "rows": 13,
+      "size_bytes": 5473,
+      "sha256": "c44e81283767da9c86997a0ff7413735977568fe7d24594dfacb5ceb483e7a7a",
+      "compression": "zstd"
+    }
+  ],
+  "quality_report": "metadata/quality_report.json"
+}

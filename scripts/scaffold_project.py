@@ -22,6 +22,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("name", help="Human-readable project name")
     parser.add_argument("--domain", default="general_analytics", help="Analytics domain identifier")
     parser.add_argument("--difficulty", default="beginner", help="Learning difficulty label")
+    parser.add_argument("--storage-model", choices=["dimensional", "tabular_snapshot"], default="dimensional",
+                        help="Use tabular_snapshot for data science observations; dimensional for BI")
     return parser.parse_args()
 
 
@@ -38,7 +40,9 @@ def main() -> None:
     if project_root.exists():
         raise SystemExit(f"Project already exists: {project_root.relative_to(REPOSITORY_ROOT)}")
 
-    for layer in ("dimensions", "facts", "marts", "metadata"):
+    layers = ("dimensions", "facts", "marts", "metadata") if args.storage_model == "dimensional" else (
+        "raw", "prepared", "marts", "metadata")
+    for layer in layers:
         (project_root / layer).mkdir(parents=True, exist_ok=False)
 
     slug = args.project_id.replace("_", "-")
@@ -52,6 +56,8 @@ def main() -> None:
             "domain": args.domain,
             "difficulty": args.difficulty,
             "status": "draft",
+            "storage_model": args.storage_model,
+            "source": {"source_url": "", "citation": "", "license": "not_verified", "license_url": ""},
             "description": "Mô tả ngắn bài toán và phạm vi dữ liệu.",
             "business_questions": ["Câu hỏi kinh doanh chính cần trả lời là gì?"],
             "learning_path": [
@@ -67,7 +73,7 @@ def main() -> None:
         {
             "schema_version": 1,
             "project_id": args.project_id,
-            "datasets": {},
+            "logical_datasets": {},
             "relationships": [],
             "files": [],
         },

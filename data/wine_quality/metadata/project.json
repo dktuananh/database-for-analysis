@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "id": "wine_quality",
+  "slug": "wine-quality",
+  "name": "Wine Quality (Red + White)",
+  "domain": "quality_regression",
+  "difficulty": "beginner_to_intermediate",
+  "status": "data_ready",
+  "storage_model": "tabular_snapshot",
+  "tasks": [
+    "regression",
+    "ordinal_classification",
+    "feature_selection"
+  ],
+  "description": "Những đặc tính hóa lý nào liên quan đến quality?",
+  "primary_dataset": "wine_samples",
+  "primary_rows": 6497,
+  "source": {
+    "provider": "UCI Machine Learning Repository",
+    "uci_id": 186,
+    "source_url": "https://archive.ics.uci.edu/dataset/186/wine+quality",
+    "doi": "https://doi.org/10.24432/C56S3T",
+    "citation": "Cortez, P., Cerdeira, A., Almeida, F., Matos, T., & Reis, J. (2009). Wine Quality [Dataset]. UCI Machine Learning Repository.",
+    "publication_citation": "Cortez, P., Cerdeira, A., Almeida, F., Matos, T., & Reis, J. (2009). Modeling wine preferences by data mining from physicochemical properties. Decision Support Systems, 47(4), 547–553. https://doi.org/10.1016/j.dss.2009.05.016 (requested in winequality.names).",
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "license_verified_on": "2026-10-09",
+    "archive_path": "raw/source.zip",
+    "download_url": "https://archive.ics.uci.edu/static/public/186/wine%2Bquality.zip",
+    "sha256": "3ed56667f4b828242bd732d7d1dd7f2861e54432239d7fa63877014cbb0304d4",
+    "size_bytes": 91353,
+    "retrieved_at_utc": "2026-10-09T12:35:01.857216+00:00"
+  },
+  "business_questions": [
+    "Những đặc tính hóa lý nào liên quan đến quality?",
+    "Sai số dự báo và mất cân bằng điểm quality khác nhau thế nào giữa rượu đỏ và trắng?"
+  ],
+  "learning_guidance": [
+    "Gộp 1.599 mẫu đỏ và 4.898 mẫu trắng, giữ wine_type và mọi dòng trùng để người học quyết định cách xử lý.",
+    "quality là điểm ordinal 0–10. Không tự nhị phân hóa good/bad; nếu dùng classification phải công bố ngưỡng và phân phối lớp.",
+    "Giữ các dòng có vector feature giống nhau trong cùng split để hạn chế contamination; fit scaling chỉ trên train.",
+    "Không có brand, giá, giống nho hoặc khóa mẫu tự nhiên; record_id chỉ là khóa kỹ thuật của snapshot."
+  ],
+  "ml_contract": {
+    "targets": [
+      "quality"
+    ],
+    "technical_columns_to_exclude": [
+      "record_id",
+      "source_file",
+      "source_row"
+    ],
+    "exclude_at_default_prediction_time": [],
+    "preprocessing": "No fitted imputation, encoding, scaling, resampling or train/test split. Fit only on learner training data."
+  },
+  "learning_path": [
+    {
+      "id": "quality",
+      "title": "Đọc nguồn và kiểm tra chất lượng",
+      "output": "Quy tắc xử lý null, trùng, sentinel và outlier"
+    },
+    {
+      "id": "eda",
+      "title": "SQL và EDA",
+      "output": "Kết quả truy vấn có grain và denominator đúng"
+    },
+    {
+      "id": "model",
+      "title": "Phân tích hoặc mô hình",
+      "output": "Baseline, validation phù hợp và báo cáo giới hạn"
+    }
+  ]
+}

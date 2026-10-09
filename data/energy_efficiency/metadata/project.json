@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "id": "energy_efficiency",
+  "slug": "energy-efficiency",
+  "name": "Energy Efficiency",
+  "domain": "building_energy",
+  "difficulty": "beginner_to_intermediate",
+  "status": "data_ready",
+  "storage_model": "tabular_snapshot",
+  "tasks": [
+    "multioutput_regression",
+    "grouped_validation",
+    "feature_importance"
+  ],
+  "description": "Hình học công trình và diện tích kính liên quan thế nào đến heating/cooling load?",
+  "primary_dataset": "building_simulations",
+  "primary_rows": 768,
+  "source": {
+    "provider": "UCI Machine Learning Repository",
+    "uci_id": 242,
+    "source_url": "https://archive.ics.uci.edu/dataset/242/energy+efficiency",
+    "doi": "https://doi.org/10.24432/C51307",
+    "citation": "Tsanas, A., & Xifara, A. (2012). Energy Efficiency [Dataset]. UCI Machine Learning Repository.",
+    "publication_citation": null,
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "license_verified_on": "2026-10-09",
+    "archive_path": "raw/source.zip",
+    "download_url": "https://archive.ics.uci.edu/static/public/242/energy%2Befficiency.zip",
+    "sha256": "499441eee27929a4b00417f58fd8c63c9cc14b8a71520cd0dd27fcb626738351",
+    "size_bytes": 76321,
+    "retrieved_at_utc": "2026-10-09T12:35:03.012414+00:00"
+  },
+  "business_questions": [
+    "Hình học công trình và diện tích kính liên quan thế nào đến heating/cooling load?",
+    "Mô hình dự báo có khái quát tốt khi giữ riêng một nhóm hình dạng công trình không?"
+  ],
+  "learning_guidance": [
+    "768 cấu hình mô phỏng Ecotect từ 12 hình dạng công trình, không phải đo tiêu thụ điện từ 768 công trình thực tế.",
+    "Hai target là heating_load và cooling_load. Loại cả hai khỏi X cho bài multi-output; không dùng một target để dự báo target còn lại trừ khi nó thực sự đã biết.",
+    "orientation và glazing_area_distribution là mã category, không phải đại lượng liên tục.",
+    "Đánh giá bằng group holdout theo hình dạng (relative_compactness/surface_area/wall_area/roof_area/overall_height), so với random split.",
+    "File Excel có thể có dòng/cột trống cuối bảng. Chỉ đọc 10 cột X1–X8, Y1–Y2 và bỏ dòng hoàn toàn trống; phải còn đúng 768 dòng."
+  ],
+  "ml_contract": {
+    "targets": [
+      "heating_load",
+      "cooling_load"
+    ],
+    "technical_columns_to_exclude": [
+      "record_id",
+      "source_file",
+      "source_row"
+    ],
+    "exclude_at_default_prediction_time": [],
+    "preprocessing": "No fitted imputation, encoding, scaling, resampling or train/test split. Fit only on learner training data."
+  },
+  "learning_path": [
+    {
+      "id": "quality",
+      "title": "Đọc nguồn và kiểm tra chất lượng",
+      "output": "Quy tắc xử lý null, trùng, sentinel và outlier"
+    },
+    {
+      "id": "eda",
+      "title": "SQL và EDA",
+      "output": "Kết quả truy vấn có grain và denominator đúng"
+    },
+    {
+      "id": "model",
+      "title": "Phân tích hoặc mô hình",
+      "output": "Baseline, validation phù hợp và báo cáo giới hạn"
+    }
+  ]
+}

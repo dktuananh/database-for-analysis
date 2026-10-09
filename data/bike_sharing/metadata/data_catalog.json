@@ -1,0 +1,465 @@
+{
+  "schema_version": 1,
+  "project_id": "bike_sharing",
+  "model_version": "1.0.0",
+  "storage_format": "Parquet / Zstandard",
+  "source": {
+    "provider": "UCI Machine Learning Repository",
+    "uci_id": 275,
+    "source_url": "https://archive.ics.uci.edu/dataset/275/bike+sharing+dataset",
+    "doi": "https://doi.org/10.24432/C5W894",
+    "citation": "Fanaee-T, H. (2013). Bike Sharing [Dataset]. UCI Machine Learning Repository.",
+    "publication_citation": "Fanaee-T, H., & Gama, J. (2013). Event labeling combining ensemble detectors and background knowledge. Progress in Artificial Intelligence. https://doi.org/10.1007/s13748-013-0040-3 (requested in the source Readme).",
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "license_verified_on": "2026-10-09",
+    "archive_path": "raw/source.zip",
+    "download_url": "https://archive.ics.uci.edu/static/public/275/bike%2Bsharing%2Bdataset.zip",
+    "sha256": "b70182d0d0508e9abbb79306ce5c0cec34869000f8220175ac83d11dbe845401",
+    "size_bytes": 279992,
+    "retrieved_at_utc": "2026-10-09T12:34:57.301146+00:00"
+  },
+  "processing": [
+    "Select only source members listed in each dataset lineage.",
+    "Preserve original observation order and values. Normalize column names and parse physical types.",
+    "Append technical source_file/source_row/record_id. Append documented derived columns only.",
+    "Retain nulls, duplicates, unknown categories and sentinel values. Do not fit preprocessing.",
+    "For Energy Efficiency, ignore trailing empty Excel columns and completely blank rows.",
+    "Recompute marts from the full primary prepared table; no deduplication."
+  ],
+  "logical_datasets": {
+    "hourly_rentals": {
+      "layer": "prepared",
+      "path": "prepared/hourly_rentals.parquet",
+      "rows": 17379,
+      "grain": "Một giờ quan sát trong hệ thống thuê xe.",
+      "primary_key": [
+        "record_id"
+      ],
+      "schema": [
+        {
+          "name": "record_id",
+          "type": "string",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Khóa kỹ thuật ổn định trong snapshot: tên file + số dòng, không phải ID thực thể.",
+          "source_column": null
+        },
+        {
+          "name": "source_file",
+          "type": "string",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Tên file gốc bên trong archive nguồn.",
+          "source_column": null
+        },
+        {
+          "name": "source_row",
+          "type": "int64",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Số thứ tự bản ghi trong file nguồn, bắt đầu từ 1 sau header.",
+          "source_column": null
+        },
+        {
+          "name": "instant",
+          "type": "int64",
+          "nullable": false,
+          "role": "unavailable_at_default_prediction_time",
+          "description": "Chỉ số dòng gốc; không dùng làm predictor.",
+          "source_column": "instant"
+        },
+        {
+          "name": "date",
+          "type": "timestamp[ns]",
+          "nullable": false,
+          "role": "feature",
+          "description": "Ngày quan sát 2011–2012.",
+          "source_column": "dteday"
+        },
+        {
+          "name": "season",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Mã mùa 1–4 giữ nguyên. Readme gốc ghi 1 springer/2 summer/3 fall/4 winter, trang UCI ghi 1 winter/2 spring/3 summer/4 fall; nhãn chưa được thống nhất.",
+          "source_column": "season"
+        },
+        {
+          "name": "year_code",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Mã năm: 0 = 2011, 1 = 2012.",
+          "source_column": "yr"
+        },
+        {
+          "name": "month",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Tháng 1–12.",
+          "source_column": "mnth"
+        },
+        {
+          "name": "hour",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Giờ 0–23; chỉ có ở hourly_rentals.",
+          "source_column": "hr"
+        },
+        {
+          "name": "holiday",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Ngày nghỉ theo nguồn: 0/1.",
+          "source_column": "holiday"
+        },
+        {
+          "name": "weekday",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Ngày trong tuần, 0 Sunday đến 6 Saturday.",
+          "source_column": "weekday"
+        },
+        {
+          "name": "working_day",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "1 khi không phải cuối tuần/ngày nghỉ, còn lại 0.",
+          "source_column": "workingday"
+        },
+        {
+          "name": "weather_situation",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Mã 1 clear, 2 mist/cloudy, 3 light snow/rain, 4 heavy rain/snow/fog; chi tiết trong Readme.txt gốc.",
+          "source_column": "weathersit"
+        },
+        {
+          "name": "temperature_normalized",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Nhiệt độ đã chuẩn hóa ở nguồn, giữ thang normalized.",
+          "source_column": "temp"
+        },
+        {
+          "name": "feels_like_normalized",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Nhiệt độ cảm nhận đã chuẩn hóa ở nguồn.",
+          "source_column": "atemp"
+        },
+        {
+          "name": "humidity_normalized",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Độ ẩm chia cho 100 ở nguồn.",
+          "source_column": "hum"
+        },
+        {
+          "name": "windspeed_normalized",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Tốc độ gió chia cho 67 ở nguồn.",
+          "source_column": "windspeed"
+        },
+        {
+          "name": "casual_count",
+          "type": "int64",
+          "nullable": false,
+          "role": "unavailable_at_default_prediction_time",
+          "description": "Lượt thuê khách vãng lai; thành phần của target nên không dùng khi dự báo tổng.",
+          "source_column": "casual"
+        },
+        {
+          "name": "registered_count",
+          "type": "int64",
+          "nullable": false,
+          "role": "unavailable_at_default_prediction_time",
+          "description": "Lượt thuê khách đăng ký; thành phần của target nên không dùng khi dự báo tổng.",
+          "source_column": "registered"
+        },
+        {
+          "name": "rental_count",
+          "type": "int64",
+          "nullable": false,
+          "role": "target",
+          "description": "Tổng lượt thuê, bằng casual_count + registered_count.",
+          "source_column": "cnt"
+        },
+        {
+          "name": "timestamp",
+          "type": "timestamp[ns]",
+          "nullable": false,
+          "role": "feature",
+          "description": "date + hour ở bảng giờ, timezone không được nguồn công bố.",
+          "source_column": null
+        }
+      ],
+      "sha256": "45cd6854a9b046f503807a9181b5ff710746dcf9b7881f9907522870aac0766c",
+      "size_bytes": 422083,
+      "lineage": [
+        "source.zip!hour.csv"
+      ]
+    },
+    "daily_rentals": {
+      "layer": "prepared",
+      "path": "prepared/daily_rentals.parquet",
+      "rows": 731,
+      "grain": "Một ngày aggregate chính thức từ nguồn, không phải bản ghi giờ mới.",
+      "primary_key": [
+        "record_id"
+      ],
+      "schema": [
+        {
+          "name": "record_id",
+          "type": "string",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Khóa kỹ thuật ổn định trong snapshot: tên file + số dòng, không phải ID thực thể.",
+          "source_column": null
+        },
+        {
+          "name": "source_file",
+          "type": "string",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Tên file gốc bên trong archive nguồn.",
+          "source_column": null
+        },
+        {
+          "name": "source_row",
+          "type": "int64",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Số thứ tự bản ghi trong file nguồn, bắt đầu từ 1 sau header.",
+          "source_column": null
+        },
+        {
+          "name": "instant",
+          "type": "int64",
+          "nullable": false,
+          "role": "unavailable_at_default_prediction_time",
+          "description": "Chỉ số dòng gốc; không dùng làm predictor.",
+          "source_column": "instant"
+        },
+        {
+          "name": "date",
+          "type": "timestamp[ns]",
+          "nullable": false,
+          "role": "feature",
+          "description": "Ngày quan sát 2011–2012.",
+          "source_column": "dteday"
+        },
+        {
+          "name": "season",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Mã mùa 1–4 giữ nguyên. Readme gốc ghi 1 springer/2 summer/3 fall/4 winter, trang UCI ghi 1 winter/2 spring/3 summer/4 fall; nhãn chưa được thống nhất.",
+          "source_column": "season"
+        },
+        {
+          "name": "year_code",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Mã năm: 0 = 2011, 1 = 2012.",
+          "source_column": "yr"
+        },
+        {
+          "name": "month",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Tháng 1–12.",
+          "source_column": "mnth"
+        },
+        {
+          "name": "holiday",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Ngày nghỉ theo nguồn: 0/1.",
+          "source_column": "holiday"
+        },
+        {
+          "name": "weekday",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Ngày trong tuần, 0 Sunday đến 6 Saturday.",
+          "source_column": "weekday"
+        },
+        {
+          "name": "working_day",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "1 khi không phải cuối tuần/ngày nghỉ, còn lại 0.",
+          "source_column": "workingday"
+        },
+        {
+          "name": "weather_situation",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Mã 1 clear, 2 mist/cloudy, 3 light snow/rain, 4 heavy rain/snow/fog; chi tiết trong Readme.txt gốc.",
+          "source_column": "weathersit"
+        },
+        {
+          "name": "temperature_normalized",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Nhiệt độ đã chuẩn hóa ở nguồn, giữ thang normalized.",
+          "source_column": "temp"
+        },
+        {
+          "name": "feels_like_normalized",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Nhiệt độ cảm nhận đã chuẩn hóa ở nguồn.",
+          "source_column": "atemp"
+        },
+        {
+          "name": "humidity_normalized",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Độ ẩm chia cho 100 ở nguồn.",
+          "source_column": "hum"
+        },
+        {
+          "name": "windspeed_normalized",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "Tốc độ gió chia cho 67 ở nguồn.",
+          "source_column": "windspeed"
+        },
+        {
+          "name": "casual_count",
+          "type": "int64",
+          "nullable": false,
+          "role": "unavailable_at_default_prediction_time",
+          "description": "Lượt thuê khách vãng lai; thành phần của target nên không dùng khi dự báo tổng.",
+          "source_column": "casual"
+        },
+        {
+          "name": "registered_count",
+          "type": "int64",
+          "nullable": false,
+          "role": "unavailable_at_default_prediction_time",
+          "description": "Lượt thuê khách đăng ký; thành phần của target nên không dùng khi dự báo tổng.",
+          "source_column": "registered"
+        },
+        {
+          "name": "rental_count",
+          "type": "int64",
+          "nullable": false,
+          "role": "target",
+          "description": "Tổng lượt thuê, bằng casual_count + registered_count.",
+          "source_column": "cnt"
+        }
+      ],
+      "sha256": "b4afd9f031943dfcc297644adb21eb8722a1a86f37fffbb814269aa49f33c1d3",
+      "size_bytes": 47955,
+      "lineage": [
+        "source.zip!day.csv"
+      ]
+    },
+    "monthly_rentals": {
+      "layer": "marts",
+      "path": "marts/monthly_rentals.parquet",
+      "rows": 24,
+      "grain": "Một dòng cho mỗi nhóm month",
+      "primary_key": [
+        "month"
+      ],
+      "schema": [
+        {
+          "name": "month",
+          "type": "timestamp[ns]",
+          "nullable": false,
+          "role": "group_key",
+          "description": "Tháng quan sát, lưu ngày đầu tháng.",
+          "source_column": null
+        },
+        {
+          "name": "source_records",
+          "type": "int64",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Số bản ghi ở bảng prepared chính trong nhóm, gồm dòng trùng.",
+          "source_column": null
+        },
+        {
+          "name": "rental_count",
+          "type": "int64",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Tổng lượt thuê của các giờ quan sát trong tháng.",
+          "source_column": null
+        },
+        {
+          "name": "casual_count",
+          "type": "int64",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Tổng lượt thuê khách vãng lai của các giờ quan sát trong tháng.",
+          "source_column": null
+        },
+        {
+          "name": "registered_count",
+          "type": "int64",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Tổng lượt thuê khách đăng ký của các giờ quan sát trong tháng.",
+          "source_column": null
+        }
+      ],
+      "sha256": "551c29bf1c6e9bdb780206a2bfe037bb954c5df411327fe1cb8d107a261cec85",
+      "size_bytes": 4290,
+      "lineage": [
+        "hourly_rentals"
+      ]
+    }
+  },
+  "relationships": [],
+  "files": [
+    {
+      "path": "data/bike_sharing/prepared/hourly_rentals.parquet",
+      "rows": 17379,
+      "size_bytes": 422083,
+      "sha256": "45cd6854a9b046f503807a9181b5ff710746dcf9b7881f9907522870aac0766c",
+      "compression": "zstd"
+    },
+    {
+      "path": "data/bike_sharing/prepared/daily_rentals.parquet",
+      "rows": 731,
+      "size_bytes": 47955,
+      "sha256": "b4afd9f031943dfcc297644adb21eb8722a1a86f37fffbb814269aa49f33c1d3",
+      "compression": "zstd"
+    },
+    {
+      "path": "data/bike_sharing/marts/monthly_rentals.parquet",
+      "rows": 24,
+      "size_bytes": 4290,
+      "sha256": "551c29bf1c6e9bdb780206a2bfe037bb954c5df411327fe1cb8d107a261cec85",
+      "compression": "zstd"
+    }
+  ],
+  "quality_report": "metadata/quality_report.json"
+}

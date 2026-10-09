@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "project_id": "energy_efficiency",
+  "model_version": "1.0.0",
+  "storage_format": "Parquet / Zstandard",
+  "source": {
+    "provider": "UCI Machine Learning Repository",
+    "uci_id": 242,
+    "source_url": "https://archive.ics.uci.edu/dataset/242/energy+efficiency",
+    "doi": "https://doi.org/10.24432/C51307",
+    "citation": "Tsanas, A., & Xifara, A. (2012). Energy Efficiency [Dataset]. UCI Machine Learning Repository.",
+    "publication_citation": null,
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "license_verified_on": "2026-10-09",
+    "archive_path": "raw/source.zip",
+    "download_url": "https://archive.ics.uci.edu/static/public/242/energy%2Befficiency.zip",
+    "sha256": "499441eee27929a4b00417f58fd8c63c9cc14b8a71520cd0dd27fcb626738351",
+    "size_bytes": 76321,
+    "retrieved_at_utc": "2026-10-09T12:35:03.012414+00:00"
+  },
+  "processing": [
+    "Select only source members listed in each dataset lineage.",
+    "Preserve original observation order and values. Normalize column names and parse physical types.",
+    "Append technical source_file/source_row/record_id. Append documented derived columns only.",
+    "Retain nulls, duplicates, unknown categories and sentinel values. Do not fit preprocessing.",
+    "For Energy Efficiency, ignore trailing empty Excel columns and completely blank rows.",
+    "Recompute marts from the full primary prepared table; no deduplication."
+  ],
+  "logical_datasets": {
+    "building_simulations": {
+      "layer": "prepared",
+      "path": "prepared/building_simulations.parquet",
+      "rows": 768,
+      "grain": "Một cấu hình công trình trong mô phỏng nguồn.",
+      "primary_key": [
+        "record_id"
+      ],
+      "schema": [
+        {
+          "name": "record_id",
+          "type": "string",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Khóa kỹ thuật ổn định trong snapshot: tên file + số dòng, không phải ID thực thể.",
+          "source_column": null
+        },
+        {
+          "name": "source_file",
+          "type": "string",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Tên file gốc bên trong archive nguồn.",
+          "source_column": null
+        },
+        {
+          "name": "source_row",
+          "type": "int64",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Số thứ tự bản ghi trong file nguồn, bắt đầu từ 1 sau header.",
+          "source_column": null
+        },
+        {
+          "name": "relative_compactness",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "X1: Relative compactness, giữ thang nguồn.",
+          "source_column": "X1"
+        },
+        {
+          "name": "surface_area",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "X2: Surface area, giữ thang nguồn.",
+          "source_column": "X2"
+        },
+        {
+          "name": "wall_area",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "X3: Wall area, giữ thang nguồn.",
+          "source_column": "X3"
+        },
+        {
+          "name": "roof_area",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "X4: Roof area, giữ thang nguồn.",
+          "source_column": "X4"
+        },
+        {
+          "name": "overall_height",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "X5: Overall height, giữ thang nguồn.",
+          "source_column": "X5"
+        },
+        {
+          "name": "orientation",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "X6: Mã orientation 2–5, categorical.",
+          "source_column": "X6"
+        },
+        {
+          "name": "glazing_area",
+          "type": "double",
+          "nullable": false,
+          "role": "feature",
+          "description": "X7: Glazing area, giữ thang nguồn.",
+          "source_column": "X7"
+        },
+        {
+          "name": "glazing_area_distribution",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "X8: Mã glazing area distribution 0–5, categorical.",
+          "source_column": "X8"
+        },
+        {
+          "name": "heating_load",
+          "type": "double",
+          "nullable": false,
+          "role": "target",
+          "description": "Y1: Target heating load từ mô phỏng, giữ thang nguồn; không giả định kWh.",
+          "source_column": "Y1"
+        },
+        {
+          "name": "cooling_load",
+          "type": "double",
+          "nullable": false,
+          "role": "target",
+          "description": "Y2: Target cooling load từ mô phỏng, giữ thang nguồn; không giả định kWh.",
+          "source_column": "Y2"
+        }
+      ],
+      "sha256": "d858f61970856b5aff0f00e9ed2aee4bb52726b768ab140e0a6235110f3e0fea",
+      "size_bytes": 18340,
+      "lineage": [
+        "source.zip!ENB2012_data.xlsx"
+      ]
+    },
+    "orientation_load_summary": {
+      "layer": "marts",
+      "path": "marts/orientation_load_summary.parquet",
+      "rows": 4,
+      "grain": "Một dòng cho mỗi nhóm orientation",
+      "primary_key": [
+        "orientation"
+      ],
+      "schema": [
+        {
+          "name": "orientation",
+          "type": "int64",
+          "nullable": false,
+          "role": "group_key",
+          "description": "X6: Mã orientation 2–5, categorical.",
+          "source_column": null
+        },
+        {
+          "name": "source_records",
+          "type": "int64",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Số bản ghi ở bảng prepared chính trong nhóm, gồm dòng trùng.",
+          "source_column": null
+        },
+        {
+          "name": "mean_heating_load",
+          "type": "double",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Trung bình heating_load theo orientation.",
+          "source_column": null
+        },
+        {
+          "name": "mean_cooling_load",
+          "type": "double",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Trung bình cooling_load theo orientation.",
+          "source_column": null
+        }
+      ],
+      "sha256": "1727a3118588268810daa1f307b79dd41ba3c922b7622b2cb4c324e2988d8874",
+      "size_bytes": 3202,
+      "lineage": [
+        "building_simulations"
+      ]
+    }
+  },
+  "relationships": [],
+  "files": [
+    {
+      "path": "data/energy_efficiency/prepared/building_simulations.parquet",
+      "rows": 768,
+      "size_bytes": 18340,
+      "sha256": "d858f61970856b5aff0f00e9ed2aee4bb52726b768ab140e0a6235110f3e0fea",
+      "compression": "zstd"
+    },
+    {
+      "path": "data/energy_efficiency/marts/orientation_load_summary.parquet",
+      "rows": 4,
+      "size_bytes": 3202,
+      "sha256": "1727a3118588268810daa1f307b79dd41ba3c922b7622b2cb4c324e2988d8874",
+      "compression": "zstd"
+    }
+  ],
+  "quality_report": "metadata/quality_report.json"
+}

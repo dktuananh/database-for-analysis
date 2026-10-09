@@ -1,0 +1,420 @@
+{
+  "schema_version": 1,
+  "project_id": "student_performance",
+  "model_version": "1.0.0",
+  "storage_format": "Parquet / Zstandard",
+  "source": {
+    "provider": "UCI Machine Learning Repository",
+    "uci_id": 320,
+    "source_url": "https://archive.ics.uci.edu/dataset/320/student+performance",
+    "doi": "https://doi.org/10.24432/C5TG7T",
+    "citation": "Cortez, P. (2008). Student Performance [Dataset]. UCI Machine Learning Repository.",
+    "publication_citation": null,
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "license_verified_on": "2026-10-09",
+    "archive_path": "raw/source.zip",
+    "download_url": "https://archive.ics.uci.edu/static/public/320/student%2Bperformance.zip",
+    "sha256": "82ae9d66437b9808df42e8c89d2bb179c46e9cfbcf06f38abc1d20b3b747e177",
+    "size_bytes": 40735,
+    "retrieved_at_utc": "2026-10-09T12:35:00.671253+00:00"
+  },
+  "processing": [
+    "Select only source members listed in each dataset lineage.",
+    "Preserve original observation order and values. Normalize column names and parse physical types.",
+    "Append technical source_file/source_row/record_id. Append documented derived columns only.",
+    "Retain nulls, duplicates, unknown categories and sentinel values. Do not fit preprocessing.",
+    "For Energy Efficiency, ignore trailing empty Excel columns and completely blank rows.",
+    "Recompute marts from the full primary prepared table; no deduplication."
+  ],
+  "logical_datasets": {
+    "subject_results": {
+      "layer": "prepared",
+      "path": "prepared/subject_results.parquet",
+      "rows": 1044,
+      "grain": "Một quan sát học sinh × môn trong file gốc; không có ID học sinh đáng tin cậy.",
+      "primary_key": [
+        "record_id"
+      ],
+      "schema": [
+        {
+          "name": "record_id",
+          "type": "string",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Khóa kỹ thuật ổn định trong snapshot: tên file + số dòng, không phải ID thực thể.",
+          "source_column": null
+        },
+        {
+          "name": "source_file",
+          "type": "string",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Tên file gốc bên trong archive nguồn.",
+          "source_column": null
+        },
+        {
+          "name": "source_row",
+          "type": "int64",
+          "nullable": false,
+          "role": "identifier",
+          "description": "Số thứ tự bản ghi trong file nguồn, bắt đầu từ 1 sau header.",
+          "source_column": null
+        },
+        {
+          "name": "subject",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Môn học: mathematics hoặc portuguese; derived từ file nguồn.",
+          "source_column": null
+        },
+        {
+          "name": "school",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Trường: GP hoặc MS.",
+          "source_column": "school"
+        },
+        {
+          "name": "sex",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Mã giới tính F/M trong nguồn.",
+          "source_column": "sex"
+        },
+        {
+          "name": "age",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Tuổi, năm.",
+          "source_column": "age"
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Loại nơi ở: U urban, R rural.",
+          "source_column": "address"
+        },
+        {
+          "name": "famsize",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Quy mô gia đình: LE3 <=3, GT3 >3 người.",
+          "source_column": "famsize"
+        },
+        {
+          "name": "pstatus",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Tình trạng sống chung của bố mẹ: T together, A apart.",
+          "source_column": "Pstatus"
+        },
+        {
+          "name": "medu",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Học vấn mẹ: 0 none, 1 primary, 2 lớp 5–9, 3 secondary, 4 higher.",
+          "source_column": "Medu"
+        },
+        {
+          "name": "fedu",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Học vấn bố: cùng mã 0–4 như medu.",
+          "source_column": "Fedu"
+        },
+        {
+          "name": "mjob",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Nghề mẹ: teacher/health/services/at_home/other.",
+          "source_column": "Mjob"
+        },
+        {
+          "name": "fjob",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Nghề bố: teacher/health/services/at_home/other.",
+          "source_column": "Fjob"
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Lý do chọn trường: home/reputation/course/other.",
+          "source_column": "reason"
+        },
+        {
+          "name": "guardian",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Người giám hộ: mother/father/other.",
+          "source_column": "guardian"
+        },
+        {
+          "name": "traveltime",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Thời gian đi học: 1 <15 phút, 2 15–30 phút, 3 30–60 phút, 4 >60 phút.",
+          "source_column": "traveltime"
+        },
+        {
+          "name": "studytime",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Học mỗi tuần: 1 <2 giờ, 2 2–5 giờ, 3 5–10 giờ, 4 >10 giờ.",
+          "source_column": "studytime"
+        },
+        {
+          "name": "failures",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Số lần trượt môn trước đó; giữ mã nguồn, xem student.txt.",
+          "source_column": "failures"
+        },
+        {
+          "name": "schoolsup",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Hỗ trợ giáo dục thêm: yes/no.",
+          "source_column": "schoolsup"
+        },
+        {
+          "name": "famsup",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Hỗ trợ học tập từ gia đình: yes/no.",
+          "source_column": "famsup"
+        },
+        {
+          "name": "paid",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Học thêm có trả phí cho môn học: yes/no.",
+          "source_column": "paid"
+        },
+        {
+          "name": "activities",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Hoạt động ngoại khóa: yes/no.",
+          "source_column": "activities"
+        },
+        {
+          "name": "nursery",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Đã học mẫu giáo: yes/no.",
+          "source_column": "nursery"
+        },
+        {
+          "name": "higher",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Muốn học bậc cao hơn: yes/no.",
+          "source_column": "higher"
+        },
+        {
+          "name": "internet",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Có Internet ở nhà: yes/no.",
+          "source_column": "internet"
+        },
+        {
+          "name": "romantic",
+          "type": "string",
+          "nullable": false,
+          "role": "feature",
+          "description": "Có quan hệ tình cảm: yes/no.",
+          "source_column": "romantic"
+        },
+        {
+          "name": "famrel",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Chất lượng quan hệ gia đình: ordinal 1 rất xấu đến 5 rất tốt.",
+          "source_column": "famrel"
+        },
+        {
+          "name": "freetime",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Thời gian rảnh sau học: ordinal 1 rất ít đến 5 rất nhiều.",
+          "source_column": "freetime"
+        },
+        {
+          "name": "goout",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Đi chơi với bạn: ordinal 1 rất ít đến 5 rất nhiều.",
+          "source_column": "goout"
+        },
+        {
+          "name": "dalc",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Tiêu thụ rượu ngày làm việc: ordinal 1 rất ít đến 5 rất nhiều.",
+          "source_column": "Dalc"
+        },
+        {
+          "name": "walc",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Tiêu thụ rượu cuối tuần: ordinal 1 rất ít đến 5 rất nhiều.",
+          "source_column": "Walc"
+        },
+        {
+          "name": "health",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Tình trạng sức khỏe tự báo cáo: ordinal 1 rất xấu đến 5 rất tốt.",
+          "source_column": "health"
+        },
+        {
+          "name": "absences",
+          "type": "int64",
+          "nullable": false,
+          "role": "feature",
+          "description": "Số buổi vắng học theo nguồn.",
+          "source_column": "absences"
+        },
+        {
+          "name": "g1",
+          "type": "int64",
+          "nullable": false,
+          "role": "unavailable_at_default_prediction_time",
+          "description": "Điểm kỳ 1, 0–20; chỉ dùng nếu đã biết ở thời điểm dự báo.",
+          "source_column": "G1"
+        },
+        {
+          "name": "g2",
+          "type": "int64",
+          "nullable": false,
+          "role": "unavailable_at_default_prediction_time",
+          "description": "Điểm kỳ 2, 0–20; chỉ dùng nếu đã biết ở thời điểm dự báo.",
+          "source_column": "G2"
+        },
+        {
+          "name": "g3",
+          "type": "int64",
+          "nullable": false,
+          "role": "target",
+          "description": "Target: điểm cuối kỳ, 0–20.",
+          "source_column": "G3"
+        }
+      ],
+      "sha256": "e9a56a95b93dff2ae890413c63f29c15a0ad31925025020d090c31b41a7887b9",
+      "size_bytes": 34953,
+      "lineage": [
+        "source.zip!student.zip!student-mat.csv",
+        "source.zip!student.zip!student-por.csv"
+      ]
+    },
+    "subject_grade_summary": {
+      "layer": "marts",
+      "path": "marts/subject_grade_summary.parquet",
+      "rows": 4,
+      "grain": "Một dòng cho mỗi nhóm subject × school",
+      "primary_key": [
+        "subject",
+        "school"
+      ],
+      "schema": [
+        {
+          "name": "subject",
+          "type": "string",
+          "nullable": false,
+          "role": "group_key",
+          "description": "Môn học: mathematics hoặc portuguese; derived từ file nguồn.",
+          "source_column": null
+        },
+        {
+          "name": "school",
+          "type": "string",
+          "nullable": false,
+          "role": "group_key",
+          "description": "Trường: GP hoặc MS.",
+          "source_column": null
+        },
+        {
+          "name": "source_records",
+          "type": "int64",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Số bản ghi ở bảng prepared chính trong nhóm, gồm dòng trùng.",
+          "source_column": null
+        },
+        {
+          "name": "mean_g3",
+          "type": "double",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Trung bình g3 của các quan sát môn học trong nhóm.",
+          "source_column": null
+        },
+        {
+          "name": "mean_absences",
+          "type": "double",
+          "nullable": false,
+          "role": "aggregate",
+          "description": "Trung bình absences của các quan sát môn học trong nhóm.",
+          "source_column": null
+        }
+      ],
+      "sha256": "c85657af4cae16a1fdc98261ea2711781827d08d8a51be2dcf8b3656b5ac4e62",
+      "size_bytes": 3563,
+      "lineage": [
+        "subject_results"
+      ]
+    }
+  },
+  "relationships": [],
+  "files": [
+    {
+      "path": "data/student_performance/prepared/subject_results.parquet",
+      "rows": 1044,
+      "size_bytes": 34953,
+      "sha256": "e9a56a95b93dff2ae890413c63f29c15a0ad31925025020d090c31b41a7887b9",
+      "compression": "zstd"
+    },
+    {
+      "path": "data/student_performance/marts/subject_grade_summary.parquet",
+      "rows": 4,
+      "size_bytes": 3563,
+      "sha256": "c85657af4cae16a1fdc98261ea2711781827d08d8a51be2dcf8b3656b5ac4e62",
+      "compression": "zstd"
+    }
+  ],
+  "quality_report": "metadata/quality_report.json"
+}

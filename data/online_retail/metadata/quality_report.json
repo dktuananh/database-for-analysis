@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "project_id": "online_retail",
+  "status": "passed",
+  "checks": [
+    {
+      "name": "source snapshot row count",
+      "status": "passed",
+      "details": 541909
+    },
+    {
+      "name": "invoice_lines: exact column contract",
+      "status": "passed",
+      "details": [
+        "record_id",
+        "source_file",
+        "source_row",
+        "invoice_no",
+        "stock_code",
+        "description",
+        "quantity",
+        "invoice_date",
+        "unit_price_gbp",
+        "customer_id",
+        "country",
+        "is_cancellation",
+        "line_amount_gbp"
+      ]
+    },
+    {
+      "name": "invoice_lines: non-null unique snapshot keys",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "invoice_lines: source row provenance unique",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "invoice_lines: contiguous source rows Online Retail.xlsx",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "invoice_lines: key maps to source Online Retail.xlsx",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "invoice_lines: required values present",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "invoice_lines: finite numeric values",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "line amount = quantity x unit price",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "cancellation flag from invoice prefix",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "invoice dates cover known snapshot",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "mart name contract",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "mart full reconciliation",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "mart population reconciles",
+      "status": "passed",
+      "details": null
+    }
+  ],
+  "profiles": {
+    "invoice_lines": {
+      "rows": 541909,
+      "columns": 13,
+      "null_counts": {
+        "record_id": 0,
+        "source_file": 0,
+        "source_row": 0,
+        "invoice_no": 0,
+        "stock_code": 0,
+        "description": 1454,
+        "quantity": 0,
+        "invoice_date": 0,
+        "unit_price_gbp": 0,
+        "customer_id": 135080,
+        "country": 0,
+        "is_cancellation": 0,
+        "line_amount_gbp": 0
+      },
+      "duplicate_value_rows_after_first": 5268,
+      "duplicate_policy": "preserved; excludes record_id/source_file/source_row from comparison",
+      "numeric_ranges": {
+        "quantity": {
+          "min": -80995.0,
+          "max": 80995.0
+        },
+        "unit_price_gbp": {
+          "min": -11062.06,
+          "max": 38970.0
+        },
+        "line_amount_gbp": {
+          "min": -168469.6,
+          "max": 168469.6
+        }
+      }
+    }
+  },
+  "observations": {
+    "cancellation_lines": 9288,
+    "nonpositive_quantity_lines": 10624,
+    "nonpositive_unit_price_lines": 2517,
+    "policy": "All source observations retained; no imputation or deduplication"
+  }
+}

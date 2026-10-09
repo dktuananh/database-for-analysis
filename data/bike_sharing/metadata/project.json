@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "id": "bike_sharing",
+  "slug": "bike-sharing",
+  "name": "Bike Sharing",
+  "domain": "mobility_forecasting",
+  "difficulty": "beginner_to_intermediate",
+  "status": "data_ready",
+  "storage_model": "tabular_snapshot",
+  "tasks": [
+    "time_series",
+    "regression",
+    "sql"
+  ],
+  "description": "Nhu cầu xe đạp khác nhau thế nào theo giờ, ngày làm việc và mùa?",
+  "primary_dataset": "hourly_rentals",
+  "primary_rows": 17379,
+  "source": {
+    "provider": "UCI Machine Learning Repository",
+    "uci_id": 275,
+    "source_url": "https://archive.ics.uci.edu/dataset/275/bike+sharing+dataset",
+    "doi": "https://doi.org/10.24432/C5W894",
+    "citation": "Fanaee-T, H. (2013). Bike Sharing [Dataset]. UCI Machine Learning Repository.",
+    "publication_citation": "Fanaee-T, H., & Gama, J. (2013). Event labeling combining ensemble detectors and background knowledge. Progress in Artificial Intelligence. https://doi.org/10.1007/s13748-013-0040-3 (requested in the source Readme).",
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "license_verified_on": "2026-10-09",
+    "archive_path": "raw/source.zip",
+    "download_url": "https://archive.ics.uci.edu/static/public/275/bike%2Bsharing%2Bdataset.zip",
+    "sha256": "b70182d0d0508e9abbb79306ce5c0cec34869000f8220175ac83d11dbe845401",
+    "size_bytes": 279992,
+    "retrieved_at_utc": "2026-10-09T12:34:57.301146+00:00"
+  },
+  "business_questions": [
+    "Nhu cầu xe đạp khác nhau thế nào theo giờ, ngày làm việc và mùa?",
+    "Baseline mùa vụ và mô hình hồi quy dự báo nhu cầu tốt đến mức nào?"
+  ],
+  "learning_guidance": [
+    "2011–2012, Capital Bikeshare. File hour.csv thực tế có 17.379 dòng dù trang nguồn ghi 17.389; dùng số đo từ file.",
+    "day.csv có 731 ngày là aggregate cùng hệ thống. Không nối dọc ngày và giờ rồi cộng lượt thuê.",
+    "Không có đủ mọi giờ trong lịch. Không tự điền giờ vắng bằng zero; resample và công bố chính sách missing trước khi tạo lag.",
+    "Dự báo rental_count: loại casual_count và registered_count vì tổng hai biến bằng target.",
+    "Chia train/validation/test theo thời gian, rolling-origin backtest; tạo lag bằng shift trước khi rolling.",
+    "Thời tiết đo trong giờ chỉ dùng nếu đã biết ở thời điểm dự báo; bài dự báo tương lai cần forecast thời tiết hoặc loại biến này.",
+    "Các biến nhiệt độ, độ ẩm, gió được chuẩn hóa ở nguồn. Giữ đơn vị normalized và không tự giải chuẩn hóa aggregate ngày.",
+    "Readme.txt gốc và trang UCI hiện tại ghi nhãn season/chuẩn hóa nhiệt độ khác nhau. Giữ mã season số, không tự gán tên mùa hoặc đổi về Celsius khi chưa thống nhất định nghĩa."
+  ],
+  "ml_contract": {
+    "targets": [
+      "rental_count"
+    ],
+    "technical_columns_to_exclude": [
+      "record_id",
+      "source_file",
+      "source_row"
+    ],
+    "exclude_at_default_prediction_time": [
+      "instant",
+      "casual_count",
+      "registered_count"
+    ],
+    "preprocessing": "No fitted imputation, encoding, scaling, resampling or train/test split. Fit only on learner training data."
+  },
+  "learning_path": [
+    {
+      "id": "quality",
+      "title": "Đọc nguồn và kiểm tra chất lượng",
+      "output": "Quy tắc xử lý null, trùng, sentinel và outlier"
+    },
+    {
+      "id": "eda",
+      "title": "SQL và EDA",
+      "output": "Kết quả truy vấn có grain và denominator đúng"
+    },
+    {
+      "id": "model",
+      "title": "Phân tích hoặc mô hình",
+      "output": "Baseline, validation phù hợp và báo cáo giới hạn"
+    }
+  ]
+}

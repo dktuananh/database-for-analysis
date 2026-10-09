@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "project_id": "energy_efficiency",
+  "status": "passed",
+  "checks": [
+    {
+      "name": "source snapshot row count",
+      "status": "passed",
+      "details": 768
+    },
+    {
+      "name": "building_simulations: exact column contract",
+      "status": "passed",
+      "details": [
+        "record_id",
+        "source_file",
+        "source_row",
+        "relative_compactness",
+        "surface_area",
+        "wall_area",
+        "roof_area",
+        "overall_height",
+        "orientation",
+        "glazing_area",
+        "glazing_area_distribution",
+        "heating_load",
+        "cooling_load"
+      ]
+    },
+    {
+      "name": "building_simulations: non-null unique snapshot keys",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "building_simulations: source row provenance unique",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "building_simulations: contiguous source rows ENB2012_data.xlsx",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "building_simulations: key maps to source ENB2012_data.xlsx",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "building_simulations: required values present",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "building_simulations: finite numeric values",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "orientation valid category codes",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "glazing distribution valid codes",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "surface_area positive",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "wall_area positive",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "roof_area positive",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "overall_height positive",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "heating_load positive",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "cooling_load positive",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "simulation configuration unique",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "mart name contract",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "mart full reconciliation",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "mart population reconciles",
+      "status": "passed",
+      "details": null
+    }
+  ],
+  "profiles": {
+    "building_simulations": {
+      "rows": 768,
+      "columns": 13,
+      "null_counts": {
+        "record_id": 0,
+        "source_file": 0,
+        "source_row": 0,
+        "relative_compactness": 0,
+        "surface_area": 0,
+        "wall_area": 0,
+        "roof_area": 0,
+        "overall_height": 0,
+        "orientation": 0,
+        "glazing_area": 0,
+        "glazing_area_distribution": 0,
+        "heating_load": 0,
+        "cooling_load": 0
+      },
+      "duplicate_value_rows_after_first": 0,
+      "duplicate_policy": "preserved; excludes record_id/source_file/source_row from comparison",
+      "numeric_ranges": {
+        "relative_compactness": {
+          "min": 0.62,
+          "max": 0.98
+        },
+        "surface_area": {
+          "min": 514.5,
+          "max": 808.5
+        },
+        "wall_area": {
+          "min": 245.0,
+          "max": 416.5
+        },
+        "roof_area": {
+          "min": 110.25,
+          "max": 220.5
+        },
+        "overall_height": {
+          "min": 3.5,
+          "max": 7.0
+        },
+        "orientation": {
+          "min": 2.0,
+          "max": 5.0
+        },
+        "glazing_area": {
+          "min": 0.0,
+          "max": 0.4
+        },
+        "glazing_area_distribution": {
+          "min": 0.0,
+          "max": 5.0
+        },
+        "heating_load": {
+          "min": 6.01,
+          "max": 43.1
+        },
+        "cooling_load": {
+          "min": 10.9,
+          "max": 48.03
+        }
+      },
+      "target_summary": {
+        "heating_load": {
+          "non_null": 768,
+          "distinct": 587
+        },
+        "cooling_load": {
+          "non_null": 768,
+          "distinct": 636
+        }
+      }
+    }
+  },
+  "observations": {}
+}

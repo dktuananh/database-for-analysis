@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "id": "student_performance",
+  "slug": "student-performance",
+  "name": "Student Performance",
+  "domain": "education_analytics",
+  "difficulty": "beginner_to_intermediate",
+  "status": "data_ready",
+  "storage_model": "tabular_snapshot",
+  "tasks": [
+    "regression",
+    "classification",
+    "grouped_validation"
+  ],
+  "description": "Phân phối điểm cuối kỳ khác nhau thế nào giữa môn Toán và tiếng Bồ Đào Nha?",
+  "primary_dataset": "subject_results",
+  "primary_rows": 1044,
+  "source": {
+    "provider": "UCI Machine Learning Repository",
+    "uci_id": 320,
+    "source_url": "https://archive.ics.uci.edu/dataset/320/student+performance",
+    "doi": "https://doi.org/10.24432/C5TG7T",
+    "citation": "Cortez, P. (2008). Student Performance [Dataset]. UCI Machine Learning Repository.",
+    "publication_citation": null,
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "license_verified_on": "2026-10-09",
+    "archive_path": "raw/source.zip",
+    "download_url": "https://archive.ics.uci.edu/static/public/320/student%2Bperformance.zip",
+    "sha256": "82ae9d66437b9808df42e8c89d2bb179c46e9cfbcf06f38abc1d20b3b747e177",
+    "size_bytes": 40735,
+    "retrieved_at_utc": "2026-10-09T12:35:00.671253+00:00"
+  },
+  "business_questions": [
+    "Phân phối điểm cuối kỳ khác nhau thế nào giữa môn Toán và tiếng Bồ Đào Nha?",
+    "Hiệu quả dự báo G3 trước học kỳ và sau G2 khác nhau ra sao?"
+  ],
+  "learning_guidance": [
+    "Gộp 395 dòng Toán và 649 dòng tiếng Bồ Đào Nha; 1.044 là số quan sát môn học, không phải 1.044 học sinh riêng biệt.",
+    "Không có student ID. Các thuộc tính ghép trong tài liệu nguồn chỉ là heuristic và có thể va chạm, không tạo khóa học sinh giả.",
+    "Nên thực hành từng môn riêng. Nếu gộp hai môn, xác định nhóm cùng học sinh theo hướng dẫn nguồn rồi audit sự mơ hồ trước group split.",
+    "Dự báo từ đầu kỳ phải loại g1, g2 và biến chỉ biết sau thời điểm dự báo. Bài sau G2 có thể dùng g1/g2 nếu công bố thời điểm.",
+    "Biến dạng thang thứ bậc 1–5 cần giữ nghĩa ordinal; association không chứng minh tác động nhân quả."
+  ],
+  "ml_contract": {
+    "targets": [
+      "g3"
+    ],
+    "technical_columns_to_exclude": [
+      "record_id",
+      "source_file",
+      "source_row"
+    ],
+    "exclude_at_default_prediction_time": [
+      "g1",
+      "g2"
+    ],
+    "preprocessing": "No fitted imputation, encoding, scaling, resampling or train/test split. Fit only on learner training data."
+  },
+  "learning_path": [
+    {
+      "id": "quality",
+      "title": "Đọc nguồn và kiểm tra chất lượng",
+      "output": "Quy tắc xử lý null, trùng, sentinel và outlier"
+    },
+    {
+      "id": "eda",
+      "title": "SQL và EDA",
+      "output": "Kết quả truy vấn có grain và denominator đúng"
+    },
+    {
+      "id": "model",
+      "title": "Phân tích hoặc mô hình",
+      "output": "Baseline, validation phù hợp và báo cáo giới hạn"
+    }
+  ]
+}

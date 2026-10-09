@@ -1,41 +1,54 @@
-# Data project contract
+# Quy ước kho dữ liệu
 
-Mỗi thư mục con trực tiếp của `data/` là một project phân tích độc lập. Tên thư mục dùng `snake_case` và trùng với `id` trong `metadata/project.json`.
+Mỗi thư mục con của `data/` là một project dữ liệu độc lập, dùng tên `snake_case` trùng với `metadata/project.json.id`. Project học tập ở nơi khác có thể đọc file trực tiếp.
 
-## Bốn layer bắt buộc
+Danh sách: [CATALOG.md](CATALOG.md). Registry cho chương trình: [index.json](index.json).
 
-| Layer | Mục đích | Quy tắc |
+## Hai mô hình lưu trữ
+
+Bộ observation dùng cho machine learning chọn `tabular_snapshot`, gồm raw/prepared/marts/metadata. Global Superstore dùng mô hình `dimensional`, gồm dimensions/facts/marts/metadata. Chọn theo grain và bài tập, không tạo dimension hoặc key thực thể giả.
+
+| Layer | Nội dung | Quy tắc |
 | --- | --- | --- |
-| `dimensions/` | Entity tham chiếu đã chuẩn hóa | Một primary key không null, grain rõ ràng |
-| `facts/` | Sự kiện có foreign key tới dimension | Measure phù hợp với grain; partition khi có lợi cho truy vấn |
-| `marts/` | Aggregate phục vụ dashboard | Có thể tái tạo từ fact và dimension |
-| `metadata/` | Project manifest và data catalog | Ghi schema, grain, key, relationship, lineage và quality checks |
+| `raw/` | Snapshot tải từ nguồn | Không sửa byte nguồn; lưu URL, thời điểm lấy, SHA-256 và giấy phép |
+| `prepared/` | Observation chuẩn hóa tên cột/kiểu | Giữ giá trị gốc và provenance; công bố biến derived và dòng bị loại |
+| `dimensions/` | Entity tham chiếu trong dimensional model | Primary key không null và duy nhất, grain rõ |
+| `facts/` | Sự kiện trong dimensional model | Foreign key hợp lệ, measure đúng grain, partition khi có lợi |
+| `marts/` | Bảng tổng hợp | Tái tạo được từ bảng chính, công thức và population rõ |
+| `metadata/` | Hợp đồng và kiểm tra | Manifest, schema, dictionary, source lineage, license, chất lượng |
 
-## Metadata bắt buộc
+## Metadata và tài liệu
 
-- `project.json`: tên, slug, domain, độ khó, business questions và learning path.
-- `data_catalog.json`: schema vật lý, business grain, primary key, foreign key, relationship và danh sách file.
+- `project.json`: id, tên, domain, status, bảng chính, nguồn, câu hỏi thực hành và giới hạn.
+- `data_catalog.json`: đường dẫn, số dòng, grain, schema vật lý, nullability, key, lineage và SHA-256.
+- `data_dictionary.md`: ý nghĩa, tên cột gốc, thang đo/đơn vị đã xác minh, target và thời điểm có sẵn.
+- `quality_report.json`: assertion đã chạy, null, trùng, miền giá trị và vấn đề được giữ lại có chủ đích.
+- `LICENSE.md`: ghi nguồn tác giả, DOI/URL, liên kết giấy phép và mô tả thay đổi.
+- README từng project: cách đọc, quy tắc xử lý, câu hỏi gợi ý, split phù hợp và lệnh tái tạo.
 
-Không dùng tên chung chung như `data.parquet`. Ưu tiên tên thể hiện vai trò như `fact_transaction`, `dim_customer` hoặc `monthly_revenue_kpis`.
+Trong 6 project UCI mới, `path` của logical dataset tính từ thư mục project. Catalog Global Superstore cũ dùng đường dẫn tính từ layer; `index.json` chuẩn hóa cả hai thành đường dẫn tính từ repository root. Wildcard của Superstore giữ nguyên để engine đọc Hive partition.
 
-## Definition of done cho một project
+`record_id` của snapshot chỉ là tên file + số thứ tự bản ghi. Nó giúp đối chiếu raw, không chứng minh hai dòng thuộc hai khách hàng, học sinh hoặc mẫu khác nhau.
 
-- Parquet đọc được và có compression phù hợp.
-- Primary key duy nhất, foreign key không có bản ghi mồ côi ngoài quy ước đã ghi.
-- Mart khớp với số liệu tổng hợp lại từ fact.
-- Có ít nhất một query kiểm tra grain và một query trả lời câu hỏi kinh doanh.
-- Asset dashboard được build từ Parquet, không chỉnh số liệu thủ công.
-- Workspace hướng dẫn giải thích được đường đi từ dữ liệu đến kết luận.
+## Chất lượng phụ thuộc domain
 
-## Minimum quality contract
+Không áp quy tắc quantity dương của Global Superstore lên Online Retail: lượng âm có thể là điều chỉnh/hoàn hàng. Missing có ý nghĩa và `unknown`/sentinel được giữ để người học chọn chính sách. Duplicate observation được báo cáo; duplicate primary key luôn làm validator thất bại.
 
-| Dimension | Assertion tối thiểu |
-| --- | --- |
-| Completeness | Primary/foreign key và analytical measure bắt buộc không null |
-| Uniqueness | Primary key duy nhất tại business grain đã công bố |
-| Referential integrity | Mọi foreign key ánh xạ được tới parent dataset |
-| Domain validity | Quantity dương; sales và shipping cost không âm; discount trong `[0, 1]` |
-| Temporal validity | Ship date không trước order date; period filter có coverage rõ ràng |
-| Reconciliation | Mart subtotal và total khớp phép tổng hợp từ fact |
+Không impute, scale, encode, resample hoặc fit feature selection trên toàn bộ dataset. Thực hiện trong project học tập sau khi chia tập phù hợp. Công bố thời điểm dự báo để loại leakage và giữ test cuối cho đánh giá.
 
-Catalog hiện hành: `global_superstore/metadata/data_catalog.json`.
+`passed` nghĩa là snapshot phù hợp hợp đồng đã công bố. Người học vẫn cần EDA và xử lý theo mục đích. Dữ liệu prepared và raw cho phép thực hành ở hai mức khác nhau.
+
+## Definition of done
+
+1. Có file dữ liệu thực tế, đọc được, dùng Zstandard cho Parquet.
+2. Nguồn và quyền phân phối được kiểm tra, raw có checksum đã pin.
+3. Key/schema/count/domain qua validator, null/trùng/sentinel có chính sách rõ.
+4. Mart reconcile với observation; không cộng observation và aggregate.
+5. Có query kiểm tra grain và query trả lời câu hỏi domain.
+6. Tái tạo offline từ raw và kiểm tra giá trị với nguồn được.
+
+Website/notebook kết quả là phần mở rộng tùy chọn. `data_ready` đủ để project khác dùng dữ liệu; Global Superstore có workspace/dashboard trong `docs/` với trạng thái `published` từ trước.
+
+## Quy tắc Global Superstore
+
+Các kiểm tra cũ vẫn áp dụng riêng cho model đó: primary key duy nhất, foreign key không mồ côi, quantity dương, sales/shipping cost không âm, discount trong [0, 1], ship date không trước order date và marts reconcile. Catalog: [global_superstore/metadata/data_catalog.json](global_superstore/metadata/data_catalog.json).

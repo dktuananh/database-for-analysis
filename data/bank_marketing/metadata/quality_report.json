@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "project_id": "bank_marketing",
+  "status": "passed",
+  "checks": [
+    {
+      "name": "source snapshot row count",
+      "status": "passed",
+      "details": 41188
+    },
+    {
+      "name": "campaign_contacts: exact column contract",
+      "status": "passed",
+      "details": [
+        "record_id",
+        "source_file",
+        "source_row",
+        "age",
+        "job",
+        "marital",
+        "education",
+        "default",
+        "housing",
+        "loan",
+        "contact",
+        "month",
+        "day_of_week",
+        "duration",
+        "campaign",
+        "pdays",
+        "previous",
+        "poutcome",
+        "emp_var_rate",
+        "cons_price_idx",
+        "cons_conf_idx",
+        "euribor3m",
+        "nr_employed",
+        "subscribed"
+      ]
+    },
+    {
+      "name": "campaign_contacts: non-null unique snapshot keys",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "campaign_contacts: source row provenance unique",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "campaign_contacts: contiguous source rows bank-additional-full.csv",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "campaign_contacts: key maps to source bank-additional-full.csv",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "campaign_contacts: required values present",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "campaign_contacts: finite numeric values",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "target labels yes/no",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "age in [1, 120]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "duration nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "pdays nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "previous nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "campaign includes at least one contact",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "mart name contract",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "mart full reconciliation",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "mart population reconciles",
+      "status": "passed",
+      "details": null
+    }
+  ],
+  "profiles": {
+    "campaign_contacts": {
+      "rows": 41188,
+      "columns": 24,
+      "null_counts": {
+        "record_id": 0,
+        "source_file": 0,
+        "source_row": 0,
+        "age": 0,
+        "job": 0,
+        "marital": 0,
+        "education": 0,
+        "default": 0,
+        "housing": 0,
+        "loan": 0,
+        "contact": 0,
+        "month": 0,
+        "day_of_week": 0,
+        "duration": 0,
+        "campaign": 0,
+        "pdays": 0,
+        "previous": 0,
+        "poutcome": 0,
+        "emp_var_rate": 0,
+        "cons_price_idx": 0,
+        "cons_conf_idx": 0,
+        "euribor3m": 0,
+        "nr_employed": 0,
+        "subscribed": 0
+      },
+      "duplicate_value_rows_after_first": 12,
+      "duplicate_policy": "preserved; excludes record_id/source_file/source_row from comparison",
+      "numeric_ranges": {
+        "age": {
+          "min": 17.0,
+          "max": 98.0
+        },
+        "duration": {
+          "min": 0.0,
+          "max": 4918.0
+        },
+        "campaign": {
+          "min": 1.0,
+          "max": 56.0
+        },
+        "pdays": {
+          "min": 0.0,
+          "max": 999.0
+        },
+        "previous": {
+          "min": 0.0,
+          "max": 7.0
+        },
+        "emp_var_rate": {
+          "min": -3.4,
+          "max": 1.4
+        },
+        "cons_price_idx": {
+          "min": 92.201,
+          "max": 94.767
+        },
+        "cons_conf_idx": {
+          "min": -50.8,
+          "max": -26.9
+        },
+        "euribor3m": {
+          "min": 0.634,
+          "max": 5.045
+        },
+        "nr_employed": {
+          "min": 4963.6,
+          "max": 5228.1
+        }
+      },
+      "target_summary": {
+        "subscribed": {
+          "non_null": 41188,
+          "distinct": 2
+        }
+      }
+    }
+  },
+  "observations": {
+    "unknown_category_counts": {
+      "job": 330,
+      "marital": 80,
+      "education": 1731,
+      "default": 8597,
+      "housing": 990,
+      "loan": 990
+    },
+    "pdays_999_not_previously_contacted": 39673,
+    "positive_target_rate": 0.11265417111780131
+  }
+}

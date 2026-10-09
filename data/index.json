@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "projects": [
+    {
+      "id": "bank_marketing",
+      "name": "Bank Marketing (Additional Full)",
+      "domain": "marketing_classification",
+      "status": "data_ready",
+      "primary_dataset": "campaign_contacts",
+      "primary_rows": 41188,
+      "parquet_files": 2,
+      "parquet_size_bytes": 397793,
+      "datasets": {
+        "campaign_contacts": "data/bank_marketing/prepared/campaign_contacts.parquet",
+        "channel_outcomes": "data/bank_marketing/marts/channel_outcomes.parquet"
+      },
+      "readme": "data/bank_marketing/README.md",
+      "catalog": "data/bank_marketing/metadata/data_catalog.json",
+      "source_url": "https://archive.ics.uci.edu/dataset/222/bank+marketing",
+      "license": "CC-BY-4.0",
+      "license_note": "See project LICENSE.md"
+    },
+    {
+      "id": "bike_sharing",
+      "name": "Bike Sharing",
+      "domain": "mobility_forecasting",
+      "status": "data_ready",
+      "primary_dataset": "hourly_rentals",
+      "primary_rows": 17379,
+      "parquet_files": 3,
+      "parquet_size_bytes": 474328,
+      "datasets": {
+        "hourly_rentals": "data/bike_sharing/prepared/hourly_rentals.parquet",
+        "daily_rentals": "data/bike_sharing/prepared/daily_rentals.parquet",
+        "monthly_rentals": "data/bike_sharing/marts/monthly_rentals.parquet"
+      },
+      "readme": "data/bike_sharing/README.md",
+      "catalog": "data/bike_sharing/metadata/data_catalog.json",
+      "source_url": "https://archive.ics.uci.edu/dataset/275/bike+sharing+dataset",
+      "license": "CC-BY-4.0",
+      "license_note": "See project LICENSE.md"
+    },
+    {
+      "id": "energy_efficiency",
+      "name": "Energy Efficiency",
+      "domain": "building_energy",
+      "status": "data_ready",
+      "primary_dataset": "building_simulations",
+      "primary_rows": 768,
+      "parquet_files": 2,
+      "parquet_size_bytes": 21542,
+      "datasets": {
+        "building_simulations": "data/energy_efficiency/prepared/building_simulations.parquet",
+        "orientation_load_summary": "data/energy_efficiency/marts/orientation_load_summary.parquet"
+      },
+      "readme": "data/energy_efficiency/README.md",
+      "catalog": "data/energy_efficiency/metadata/data_catalog.json",
+      "source_url": "https://archive.ics.uci.edu/dataset/242/energy+efficiency",
+      "license": "CC-BY-4.0",
+      "license_note": "See project LICENSE.md"
+    },
+    {
+      "id": "global_superstore",
+      "name": "Global Superstore",
+      "domain": "retail_analytics",
+      "status": "published",
+      "primary_dataset": "fact_order_line",
+      "primary_rows": 51290,
+      "parquet_files": 16,
+      "parquet_size_bytes": 2732073,
+      "datasets": {
+        "dim_date": "data/global_superstore/dimensions/dim_date.parquet",
+        "dim_customer": "data/global_superstore/dimensions/dim_customer.parquet",
+        "dim_product": "data/global_superstore/dimensions/dim_product.parquet",
+        "dim_geography": "data/global_superstore/dimensions/dim_geography.parquet",
+        "dim_ship_mode": "data/global_superstore/dimensions/dim_ship_mode.parquet",
+        "dim_order_priority": "data/global_superstore/dimensions/dim_order_priority.parquet",
+        "fact_order": "data/global_superstore/facts/fact_order/order_year=*/part-*.parquet",
+        "fact_order_line": "data/global_superstore/facts/fact_order_line/order_year=*/part-*.parquet",
+        "monthly_sales_kpis": "data/global_superstore/marts/monthly_sales_kpis.parquet",
+        "country_sales_kpis": "data/global_superstore/marts/country_sales_kpis.parquet"
+      },
+      "readme": "data/README.md",
+      "catalog": "data/global_superstore/metadata/data_catalog.json",
+      "source_url": null,
+      "license": "not_verified",
+      "license_note": "Legacy source license has not been verified; not covered by the new CC-BY-4.0 datasets."
+    },
+    {
+      "id": "online_retail",
+      "name": "Online Retail",
+      "domain": "retail_analytics",
+      "status": "data_ready",
+      "primary_dataset": "invoice_lines",
+      "primary_rows": 541909,
+      "parquet_files": 2,
+      "parquet_size_bytes": 6738734,
+      "datasets": {
+        "invoice_lines": "data/online_retail/prepared/invoice_lines.parquet",
+        "monthly_transactions": "data/online_retail/marts/monthly_transactions.parquet"
+      },
+      "readme": "data/online_retail/README.md",
+      "catalog": "data/online_retail/metadata/data_catalog.json",
+      "source_url": "https://archive.ics.uci.edu/dataset/352/online+retail",
+      "license": "CC-BY-4.0",
+      "license_note": "See project LICENSE.md"
+    },
+    {
+      "id": "student_performance",
+      "name": "Student Performance",
+      "domain": "education_analytics",
+      "status": "data_ready",
+      "primary_dataset": "subject_results",
+      "primary_rows": 1044,
+      "parquet_files": 2,
+      "parquet_size_bytes": 38516,
+      "datasets": {
+        "subject_results": "data/student_performance/prepared/subject_results.parquet",
+        "subject_grade_summary": "data/student_performance/marts/subject_grade_summary.parquet"
+      },
+      "readme": "data/student_performance/README.md",
+      "catalog": "data/student_performance/metadata/data_catalog.json",
+      "source_url": "https://archive.ics.uci.edu/dataset/320/student+performance",
+      "license": "CC-BY-4.0",
+      "license_note": "See project LICENSE.md"
+    },
+    {
+      "id": "wine_quality",
+      "name": "Wine Quality (Red + White)",
+      "domain": "quality_regression",
+      "status": "data_ready",
+      "primary_dataset": "wine_samples",
+      "primary_rows": 6497,
+      "parquet_files": 2,
+      "parquet_size_bytes": 122562,
+      "datasets": {
+        "wine_samples": "data/wine_quality/prepared/wine_samples.parquet",
+        "quality_distribution": "data/wine_quality/marts/quality_distribution.parquet"
+      },
+      "readme": "data/wine_quality/README.md",
+      "catalog": "data/wine_quality/metadata/data_catalog.json",
+      "source_url": "https://archive.ics.uci.edu/dataset/186/wine+quality",
+      "license": "CC-BY-4.0",
+      "license_note": "See project LICENSE.md"
+    }
+  ]
+}

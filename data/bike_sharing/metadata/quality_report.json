@@ -1,0 +1,572 @@
+{
+  "schema_version": 1,
+  "project_id": "bike_sharing",
+  "status": "passed",
+  "checks": [
+    {
+      "name": "source snapshot row count",
+      "status": "passed",
+      "details": 17379
+    },
+    {
+      "name": "hourly_rentals: exact column contract",
+      "status": "passed",
+      "details": [
+        "record_id",
+        "source_file",
+        "source_row",
+        "instant",
+        "date",
+        "season",
+        "year_code",
+        "month",
+        "hour",
+        "holiday",
+        "weekday",
+        "working_day",
+        "weather_situation",
+        "temperature_normalized",
+        "feels_like_normalized",
+        "humidity_normalized",
+        "windspeed_normalized",
+        "casual_count",
+        "registered_count",
+        "rental_count",
+        "timestamp"
+      ]
+    },
+    {
+      "name": "hourly_rentals: non-null unique snapshot keys",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hourly_rentals: source row provenance unique",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hourly_rentals: contiguous source rows hour.csv",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hourly_rentals: key maps to source hour.csv",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hourly_rentals: required values present",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hourly_rentals: finite numeric values",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "daily_rentals: exact column contract",
+      "status": "passed",
+      "details": [
+        "record_id",
+        "source_file",
+        "source_row",
+        "instant",
+        "date",
+        "season",
+        "year_code",
+        "month",
+        "holiday",
+        "weekday",
+        "working_day",
+        "weather_situation",
+        "temperature_normalized",
+        "feels_like_normalized",
+        "humidity_normalized",
+        "windspeed_normalized",
+        "casual_count",
+        "registered_count",
+        "rental_count"
+      ]
+    },
+    {
+      "name": "daily_rentals: non-null unique snapshot keys",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "daily_rentals: source row provenance unique",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "daily_rentals: contiguous source rows day.csv",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "daily_rentals: key maps to source day.csv",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "daily_rentals: required values present",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "daily_rentals: finite numeric values",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "official daily row count",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hourly_rentals: component counts reconcile",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hourly_rentals: rental_count nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hourly_rentals: casual_count nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hourly_rentals: registered_count nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "temperature_normalized in [0, 1]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "feels_like_normalized in [0, 1]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "humidity_normalized in [0, 1]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "windspeed_normalized in [0, 1]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "season in [1, 4]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "weather_situation in [1, 4]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "weekday in [0, 6]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "holiday in [0, 1]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "working_day in [0, 1]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "year_code in [0, 1]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "month in [1, 12]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hourly_rentals: year/date consistent",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hourly_rentals: month/date consistent",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hourly_rentals: weekday/date consistent",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hourly_rentals: working day consistent",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "daily_rentals: component counts reconcile",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "daily_rentals: rental_count nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "daily_rentals: casual_count nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "daily_rentals: registered_count nonnegative",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "temperature_normalized in [0, 1]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "feels_like_normalized in [0, 1]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "humidity_normalized in [0, 1]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "windspeed_normalized in [0, 1]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "season in [1, 4]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "weather_situation in [1, 4]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "weekday in [0, 6]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "holiday in [0, 1]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "working_day in [0, 1]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "year_code in [0, 1]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "month in [1, 12]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "daily_rentals: year/date consistent",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "daily_rentals: month/date consistent",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "daily_rentals: weekday/date consistent",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "daily_rentals: working day consistent",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hour in [0, 23]",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hour timestamp derived correctly",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hourly grain unique",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "daily grain unique",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hour/day rental_count reconciliation",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hour/day casual_count reconciliation",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "hour/day registered_count reconciliation",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "mart name contract",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "mart full reconciliation",
+      "status": "passed",
+      "details": null
+    },
+    {
+      "name": "mart population reconciles",
+      "status": "passed",
+      "details": null
+    }
+  ],
+  "profiles": {
+    "hourly_rentals": {
+      "rows": 17379,
+      "columns": 21,
+      "null_counts": {
+        "record_id": 0,
+        "source_file": 0,
+        "source_row": 0,
+        "instant": 0,
+        "date": 0,
+        "season": 0,
+        "year_code": 0,
+        "month": 0,
+        "hour": 0,
+        "holiday": 0,
+        "weekday": 0,
+        "working_day": 0,
+        "weather_situation": 0,
+        "temperature_normalized": 0,
+        "feels_like_normalized": 0,
+        "humidity_normalized": 0,
+        "windspeed_normalized": 0,
+        "casual_count": 0,
+        "registered_count": 0,
+        "rental_count": 0,
+        "timestamp": 0
+      },
+      "duplicate_value_rows_after_first": 0,
+      "duplicate_policy": "preserved; excludes record_id/source_file/source_row from comparison",
+      "numeric_ranges": {
+        "instant": {
+          "min": 1.0,
+          "max": 17379.0
+        },
+        "season": {
+          "min": 1.0,
+          "max": 4.0
+        },
+        "year_code": {
+          "min": 0.0,
+          "max": 1.0
+        },
+        "month": {
+          "min": 1.0,
+          "max": 12.0
+        },
+        "hour": {
+          "min": 0.0,
+          "max": 23.0
+        },
+        "holiday": {
+          "min": 0.0,
+          "max": 1.0
+        },
+        "weekday": {
+          "min": 0.0,
+          "max": 6.0
+        },
+        "working_day": {
+          "min": 0.0,
+          "max": 1.0
+        },
+        "weather_situation": {
+          "min": 1.0,
+          "max": 4.0
+        },
+        "temperature_normalized": {
+          "min": 0.02,
+          "max": 1.0
+        },
+        "feels_like_normalized": {
+          "min": 0.0,
+          "max": 1.0
+        },
+        "humidity_normalized": {
+          "min": 0.0,
+          "max": 1.0
+        },
+        "windspeed_normalized": {
+          "min": 0.0,
+          "max": 0.8507
+        },
+        "casual_count": {
+          "min": 0.0,
+          "max": 367.0
+        },
+        "registered_count": {
+          "min": 0.0,
+          "max": 886.0
+        },
+        "rental_count": {
+          "min": 1.0,
+          "max": 977.0
+        }
+      },
+      "target_summary": {
+        "rental_count": {
+          "non_null": 17379,
+          "distinct": 869
+        }
+      }
+    },
+    "daily_rentals": {
+      "rows": 731,
+      "columns": 19,
+      "null_counts": {
+        "record_id": 0,
+        "source_file": 0,
+        "source_row": 0,
+        "instant": 0,
+        "date": 0,
+        "season": 0,
+        "year_code": 0,
+        "month": 0,
+        "holiday": 0,
+        "weekday": 0,
+        "working_day": 0,
+        "weather_situation": 0,
+        "temperature_normalized": 0,
+        "feels_like_normalized": 0,
+        "humidity_normalized": 0,
+        "windspeed_normalized": 0,
+        "casual_count": 0,
+        "registered_count": 0,
+        "rental_count": 0
+      },
+      "duplicate_value_rows_after_first": 0,
+      "duplicate_policy": "preserved; excludes record_id/source_file/source_row from comparison",
+      "numeric_ranges": {
+        "instant": {
+          "min": 1.0,
+          "max": 731.0
+        },
+        "season": {
+          "min": 1.0,
+          "max": 4.0
+        },
+        "year_code": {
+          "min": 0.0,
+          "max": 1.0
+        },
+        "month": {
+          "min": 1.0,
+          "max": 12.0
+        },
+        "holiday": {
+          "min": 0.0,
+          "max": 1.0
+        },
+        "weekday": {
+          "min": 0.0,
+          "max": 6.0
+        },
+        "working_day": {
+          "min": 0.0,
+          "max": 1.0
+        },
+        "weather_situation": {
+          "min": 1.0,
+          "max": 3.0
+        },
+        "temperature_normalized": {
+          "min": 0.0591304,
+          "max": 0.861667
+        },
+        "feels_like_normalized": {
+          "min": 0.0790696,
+          "max": 0.840896
+        },
+        "humidity_normalized": {
+          "min": 0.0,
+          "max": 0.9725
+        },
+        "windspeed_normalized": {
+          "min": 0.0223917,
+          "max": 0.507463
+        },
+        "casual_count": {
+          "min": 2.0,
+          "max": 3410.0
+        },
+        "registered_count": {
+          "min": 20.0,
+          "max": 6946.0
+        },
+        "rental_count": {
+          "min": 22.0,
+          "max": 8714.0
+        }
+      },
+      "target_summary": {
+        "rental_count": {
+          "non_null": 731,
+          "distinct": 696
+        }
+      }
+    }
+  },
+  "observations": {
+    "missing_calendar_hours": 165,
+    "upstream_page_instances": 17389,
+    "actual_hour_csv_records": 17379
+  }
+}

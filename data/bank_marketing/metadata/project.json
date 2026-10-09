@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "id": "bank_marketing",
+  "slug": "bank-marketing",
+  "name": "Bank Marketing (Additional Full)",
+  "domain": "marketing_classification",
+  "difficulty": "beginner_to_intermediate",
+  "status": "data_ready",
+  "storage_model": "tabular_snapshot",
+  "tasks": [
+    "classification",
+    "imbalanced_learning",
+    "categorical_encoding"
+  ],
+  "description": "Tỷ lệ đăng ký tiền gửi khác nhau thế nào theo kênh và kết quả chiến dịch trước?",
+  "primary_dataset": "campaign_contacts",
+  "primary_rows": 41188,
+  "source": {
+    "provider": "UCI Machine Learning Repository",
+    "uci_id": 222,
+    "source_url": "https://archive.ics.uci.edu/dataset/222/bank+marketing",
+    "doi": "https://doi.org/10.24432/C5K306",
+    "citation": "Moro, S., Rita, P., & Cortez, P. (2014). Bank Marketing [Dataset]. UCI Machine Learning Repository.",
+    "publication_citation": null,
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "license_verified_on": "2026-10-09",
+    "archive_path": "raw/source.zip",
+    "download_url": "https://archive.ics.uci.edu/static/public/222/bank%2Bmarketing.zip",
+    "sha256": "e0bf5f5de5b846e2f18e9d90606637267d46dfa260e0f17bb12e605db5efbeb4",
+    "size_bytes": 1023843,
+    "retrieved_at_utc": "2026-10-09T12:34:59.789083+00:00"
+  },
+  "business_questions": [
+    "Tỷ lệ đăng ký tiền gửi khác nhau thế nào theo kênh và kết quả chiến dịch trước?",
+    "Mô hình trước cuộc gọi có cải thiện PR-AUC và recall so với baseline không?"
+  ],
+  "learning_guidance": [
+    "Chỉ dùng bank-additional-full.csv, không ghép sample 10% hay phiên bản bank-full cũ vào cùng dữ liệu.",
+    "Một dòng là quan sát chiến dịch theo nguồn, không phải khách hàng duy nhất; không có ID để bảo đảm tách khách hàng.",
+    "duration chỉ biết sau cuộc gọi. Loại duration khỏi mô hình dùng trước cuộc gọi; đây là leakage quan trọng.",
+    "unknown là category được giữ nguyên, pdays = 999 nghĩa là chưa liên hệ trước, không phải 999 ngày thông thường.",
+    "Nguồn sắp xếp theo thời gian 05/2008–11/2010 nhưng không có ngày đầy đủ. Giữ source_row, có thể holdout theo thứ tự; không dựng ngày giả từ month.",
+    "Fit encoder, imputer, scaler và resampling chỉ trên train. Dùng PR-AUC, precision/recall, calibration và threshold theo bài toán."
+  ],
+  "ml_contract": {
+    "targets": [
+      "subscribed"
+    ],
+    "technical_columns_to_exclude": [
+      "record_id",
+      "source_file",
+      "source_row"
+    ],
+    "exclude_at_default_prediction_time": [
+      "duration"
+    ],
+    "preprocessing": "No fitted imputation, encoding, scaling, resampling or train/test split. Fit only on learner training data."
+  },
+  "learning_path": [
+    {
+      "id": "quality",
+      "title": "Đọc nguồn và kiểm tra chất lượng",
+      "output": "Quy tắc xử lý null, trùng, sentinel và outlier"
+    },
+    {
+      "id": "eda",
+      "title": "SQL và EDA",
+      "output": "Kết quả truy vấn có grain và denominator đúng"
+    },
+    {
+      "id": "model",
+      "title": "Phân tích hoặc mô hình",
+      "output": "Baseline, validation phù hợp và báo cáo giới hạn"
+    }
+  ]
+}
